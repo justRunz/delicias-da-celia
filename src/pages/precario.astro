@@ -1,0 +1,370 @@
+---
+import Base from "../layouts/Base.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactCta from "../components/ContactCta.astro";
+import Icon from "../components/Icon.astro";
+import { precario } from "../data/precario";
+import { company } from "../data/site";
+---
+
+<Base
+  title="Preçário 2026 · As Delícias da Célia, bolos, salgados e refeições"
+  description="Preços 2026 de bolos, tartes, sobremesas, salgados à dúzia, refeições, pão quente e doçaria de Natal. Encomendas em Vale de Figueira, Santarém."
+>
+  <PageHero current="Preçário">
+    Preçário <em>2026.</em>
+    <p slot="aside">
+      Os nossos preços de bolos, salgados, refeições e pão. Os valores podem variar conforme o tamanho, a
+      quantidade e a personalização: peça-nos um orçamento.
+    </p>
+  </PageHero>
+
+  <section class="menu" data-menu>
+    <div class="container">
+      <nav class="tabs" aria-label="Categorias do preçário" data-reveal="up">
+        <div class="tabs__scroll" data-tabs>
+          {precario.map((s, i) => (
+            <a href={`#${s.id}`} class:list={["chip", { "is-active": i === 0 }]} data-tab={s.id}>
+              {s.label}
+            </a>
+          ))}
+        </div>
+      </nav>
+
+      <div class="menu__sections">
+        {precario.map((section) => (
+          <section class="card" id={section.id} aria-labelledby={`${section.id}-t`} data-section>
+            <header class="card__head" data-reveal="up">
+              <h2 class="card__title display" id={`${section.id}-t`}>{section.label}</h2>
+              <p class="card__intro">{section.intro}</p>
+            </header>
+
+            <div class="card__groups">
+              {section.groups.map((g) => (
+                <div class="group">
+                  <div class="group__head">
+                    <h3 class="group__title">{g.title}</h3>
+                    {g.priceHead && <span class="group__price-head">{g.priceHead}</span>}
+                  </div>
+                  <ul role="list" class="lines" data-lines>
+                    {g.items.map((it) => (
+                      <li class="line">
+                        <span class="line__name">
+                          {it.name}
+                          {it.note && <small>{it.note}</small>}
+                        </span>
+                        <span class="line__dots" aria-hidden="true"></span>
+                        <span class:list={["line__price", { "is-ask": it.price === "Sob consulta" }]}>{it.price}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  {g.footnote && <p class="group__note">{g.footnote}</p>}
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <aside class="soon" data-reveal="up">
+          <span class="soon__badge">Brevemente</span>
+          <p class="soon__title display">Preçário da época natalícia 2026</p>
+          <p class="soon__text">
+            Bolos-rei, troncos, fritos de Natal e o cardápio completo. Siga-nos no
+            <a href={company.instagram} target="_blank" rel="noopener">Instagram</a> para saber primeiro.
+          </p>
+        </aside>
+
+        <p class="menu__legal" data-reveal="up">
+          Preços em euros. Podem variar conforme o tamanho, a quantidade e a personalização.
+          «Sob consulta»: diga-nos o que procura e enviamos o preço.
+        </p>
+
+        <div class="menu__cta" data-reveal="up">
+          <a href="#contacto" class="btn btn--accent" data-magnetic>
+            Fazer uma encomenda
+            <Icon name="arrow-right" />
+          </a>
+          <a href={company.whatsapp} class="btn btn--ghost" target="_blank" rel="noopener" data-magnetic>
+            <Icon name="whatsapp" />
+            Perguntar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>
+
+<style>
+  .menu {
+    padding-bottom: var(--section);
+  }
+
+  /* --- Onglets (puces) collés sous l'en-tête --- */
+  .tabs {
+    position: sticky;
+    top: calc(var(--header-h) - 1px);
+    z-index: 5;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 1rem var(--gutter);
+    background: var(--c-bg);
+    transition: top 0.5s var(--ease-out);
+  }
+
+  :global(html:has(.header.is-hidden)) .tabs {
+    top: 0;
+  }
+
+  .tabs__scroll {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .tabs__scroll::-webkit-scrollbar {
+    display: none;
+  }
+
+  .menu__sections {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 980px;
+    margin: 1.5rem auto 0;
+  }
+
+  /* --- Carte d'une catégorie --- */
+  .card {
+    position: relative;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-lg);
+    background: var(--c-surface);
+    /* L'ancre s'arrête sous l'en-tête et les onglets */
+    scroll-margin-top: calc(var(--header-h) + 5rem);
+  }
+
+  /* Dentelle rose en haut de chaque carte, comme le napperon du logo */
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 2rem;
+    right: 2rem;
+    top: -1px;
+    height: 7px;
+    background: radial-gradient(circle at 50% 0, var(--c-brand) 3.5px, transparent 4px) 0 0 / 14px 7px repeat-x;
+    opacity: 0.6;
+  }
+
+  .card__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .card__title {
+    font-size: var(--fs-2xl);
+  }
+
+  .card__intro {
+    max-width: 34ch;
+    color: var(--c-muted);
+    font-size: var(--fs-sm);
+  }
+
+  .card__groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+  }
+
+  .group__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .group__title {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-accent-deep);
+  }
+
+  .group__price-head {
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  /* --- Lignes de menu : nom ……… prix --- */
+  .lines {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding-block: 0.55rem;
+  }
+
+  .line__name {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--f-display);
+    font-size: 1.12rem;
+    line-height: 1.3;
+    font-variation-settings: "opsz" 36, "SOFT" 100;
+  }
+
+  .line__name small {
+    font-family: var(--f-body);
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  .line__dots {
+    flex: 1;
+    min-width: 1.5rem;
+    border-bottom: 2px dotted var(--c-line);
+    transform: translateY(-0.3em);
+    transform-origin: left;
+  }
+
+  .line__price {
+    flex: none;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    color: var(--c-ink);
+  }
+
+  .line__price.is-ask {
+    font-weight: 400;
+    font-style: italic;
+    color: var(--c-accent-deep);
+  }
+
+  .group__note {
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius);
+    background: var(--c-accent-soft);
+    font-size: var(--fs-xs);
+    color: var(--c-accent-deep);
+  }
+
+  /* --- Bloc « brevemente » --- */
+  .soon {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 2px dashed var(--c-brand);
+    border-radius: var(--radius-lg);
+    background: var(--c-accent-soft);
+  }
+
+  .soon__badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--c-brand);
+    color: #fff;
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .soon__title {
+    font-size: var(--fs-xl);
+  }
+
+  .soon__text {
+    color: var(--c-ink-soft);
+  }
+
+  .soon__text a {
+    color: var(--c-accent-deep);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .menu__legal {
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+    text-align: center;
+  }
+
+  .menu__cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .line__name {
+      font-size: 1.02rem;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>("[data-tab]")];
+  const bar = document.querySelector<HTMLElement>("[data-tabs]")!;
+
+  const activate = (id: string) => {
+    tabs.forEach((t) => {
+      const on = t.dataset.tab === id;
+      t.classList.toggle("is-active", on);
+      if (on) {
+        t.setAttribute("aria-current", "true");
+        bar.scrollTo({ left: t.offsetLeft - bar.clientWidth / 2 + t.offsetWidth / 2, behavior: "smooth" });
+      } else t.removeAttribute("aria-current");
+    });
+  };
+
+  // Onglet actif = catégorie au milieu de l'écran
+  document.querySelectorAll<HTMLElement>("[data-section]").forEach((section) => {
+    ScrollTrigger.create({
+      trigger: section,
+      start: "top 45%",
+      end: "bottom 45%",
+      onToggle: (self) => self.isActive && activate(section.id),
+    });
+  });
+
+  if (!reduced) {
+    // Lignes du menu : arrivent en cascade, les pointillés se tracent de gauche à droite
+    document.querySelectorAll<HTMLElement>("[data-lines]").forEach((list) => {
+      const lines = list.querySelectorAll(".line");
+      const tl = gsap.timeline({ scrollTrigger: { trigger: list, start: "top 85%" } });
+      tl.from(lines, { opacity: 0, y: 14, duration: 0.7, ease: "expo.out", stagger: 0.035 }).from(
+        list.querySelectorAll(".line__dots"),
+        { scaleX: 0, duration: 0.9, ease: "power3.out", stagger: 0.035 },
+        0.1,
+      );
+    });
+  }
+</script>

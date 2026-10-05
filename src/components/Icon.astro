@@ -1,7 +1,7 @@
 ---
 /** Icônes SVG inline (tracé 1.5, style Phosphor). */
 interface Props {
-  name: "arrow-right" | "arrow-down" | "phone" | "star" | "map-pin" | "facebook" | "whatsapp" | "clock" | "check" | "menu" | "close";
+  name: "arrow-right" | "arrow-down" | "phone" | "star" | "map-pin" | "facebook" | "instagram" | "whatsapp" | "clock" | "check" | "menu" | "close";
   size?: number;
   class?: string;
 }
@@ -33,6 +33,13 @@ const { name, size = 18, class: className } = Astro.props;
     </>
   )}
   {name === "facebook" && <path d="M14.5 8H17V4.5h-2.5A4 4 0 0 0 10.5 8.5V11H8v3.5h2.5V21H14v-6.5h2.6L17 11h-3V8.9a.9.9 0 0 1 .5-.9Z" />}
+  {name === "instagram" && (
+    <>
+      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+      <circle cx="12" cy="12" r="3.8" />
+      <circle cx="17.2" cy="6.8" r=".6" fill="currentColor" />
+    </>
+  )}
   {name === "whatsapp" && (
     <>
       <path d="M4.5 19.5 5.6 16A8.25 8.25 0 1 1 8.4 18.6Z" />

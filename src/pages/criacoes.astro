@@ -127,45 +127,6 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     display: none;
   }
 
-  .chip {
-    flex: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.05rem;
-    border: 1px solid var(--c-line);
-    border-radius: 999px;
-    background: var(--c-surface);
-    font-size: var(--fs-sm);
-    white-space: nowrap;
-    color: var(--c-ink-soft);
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.2s var(--ease-out);
-  }
-
-  .chip span {
-    font-size: var(--fs-xs);
-    color: var(--c-muted);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .chip:hover {
-    border-color: var(--c-brand);
-  }
-
-  .chip:active {
-    transform: scale(0.96);
-  }
-
-  .chip.is-active {
-    background: var(--c-accent);
-    border-color: var(--c-accent);
-    color: var(--c-on-dark);
-  }
-
-  .chip.is-active span {
-    color: rgb(247 241 234 / 0.7);
-  }
-
   /* --- Grille --- */
   .grid {
     display: grid;

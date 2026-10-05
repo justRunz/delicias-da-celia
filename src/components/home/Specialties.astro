@@ -57,6 +57,10 @@ const items = [
       <p class="spec__intro" data-reveal="up">
         Tudo é feito por encomenda. Diga-nos o que procura e para quando, e nós preparamos.
       </p>
+      <a href="/precario" class="btn btn--ghost spec__price" data-reveal="up">
+        Ver o preçário
+        <Icon name="arrow-right" />
+      </a>
     </header>
 
     <ol class="spec__list" role="list" data-spec-list>
@@ -106,6 +110,10 @@ const items = [
   .spec__title {
     font-size: var(--fs-2xl);
     max-width: 12ch;
+  }
+
+  .spec__price {
+    align-self: flex-start;
   }
 
   .spec__intro {

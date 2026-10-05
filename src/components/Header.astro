@@ -71,6 +71,12 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
       <Icon name="whatsapp" size={16} />
       WhatsApp
     </a>
+    <a href={company.instagram} class="btn btn--ghost drawer__icon" target="_blank" rel="noopener" aria-label="Instagram">
+      <Icon name="instagram" size={18} />
+    </a>
+    <a href={company.facebook} class="btn btn--ghost drawer__icon" target="_blank" rel="noopener" aria-label="Facebook">
+      <Icon name="facebook" size={18} />
+    </a>
   </div>
 </div>
 
@@ -223,6 +229,10 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     display: block;
     font-size: clamp(2.2rem, 10vw, 3.1rem);
     line-height: 1.05;
+  }
+
+  .drawer__icon {
+    padding-inline: 1rem;
   }
 
   .drawer__foot {

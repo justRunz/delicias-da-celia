@@ -22,9 +22,17 @@ const year = new Date().getFullYear();
       <div class="footer__contact">
         <a class="link-underline" href={company.phoneHref}>{company.phone}</a>
         <span>{company.place}, {company.city}</span>
-        <a href={company.facebook} target="_blank" rel="noopener" class="footer__social" aria-label="Facebook">
-          <Icon name="facebook" />
-        </a>
+        <div class="footer__socials">
+          <a href={company.instagram} target="_blank" rel="noopener" class="footer__social" aria-label="Instagram">
+            <Icon name="instagram" />
+          </a>
+          <a href={company.facebook} target="_blank" rel="noopener" class="footer__social" aria-label="Facebook">
+            <Icon name="facebook" />
+          </a>
+          <a href={company.whatsapp} target="_blank" rel="noopener" class="footer__social" aria-label="WhatsApp">
+            <Icon name="whatsapp" />
+          </a>
+        </div>
       </div>
     </div>
 
@@ -72,6 +80,11 @@ const year = new Date().getFullYear();
     align-items: center;
     flex-wrap: wrap;
     gap: 1.5rem;
+  }
+
+  .footer__socials {
+    display: flex;
+    gap: 0.5rem;
   }
 
   .footer__social {

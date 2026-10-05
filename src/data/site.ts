@@ -10,6 +10,9 @@ export const company = {
   phoneHref: `tel:+${phoneDigits}`,
   whatsapp: `https://wa.me/${phoneDigits}?text=${encodeURIComponent("Olá Célia! Gostava de fazer uma encomenda.")}`,
   facebook: "https://www.facebook.com/asdeliciasdacelia.pt/",
+  instagram: "https://www.instagram.com/_as_delicias_da_celia_/",
+  instagramHandle: "@_as_delicias_da_celia_",
+  linktree: "https://linktr.ee/Asdeliciasdacelia",
   place: "Vale de Figueira",
   city: "Santarém",
   // Recommandations Facebook (vérifié le 5 octobre 2026)
@@ -21,6 +24,7 @@ export const company = {
 export const nav = [
   { label: "Especialidades", href: "/#especialidades" },
   { label: "Criações", href: "/criacoes" },
+  { label: "Preçário", href: "/precario" },
   { label: "Quem somos", href: "/#sobre" },
   { label: "Como encomendar", href: "/#encomendar" },
 ];

@@ -24,3 +24,11 @@
 - **À fournir :** l'adresse e-mail de la Célia (destinataire), puis créer un compte Resend et renseigner `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO` (voir `.env.example`), en local dans `.env` et dans Vercel.
 - Sans nom de domaine vérifié, Resend n'envoie qu'à l'adresse du compte : créer le compte Resend avec l'adresse de la Célia.
 - Tant que la clé n'est pas renseignée : en développement, le formulaire affiche le remerciement avec la mention « versão de demonstração » ; en ligne, il invite à appeler ou à écrire par WhatsApp.
+
+## Preçário (/precario) et Instagram
+
+- Prix recopiés des 4 PDF du Linktree (linktr.ee/Asdeliciasdacelia) : `src/data/precario.ts`. À mettre à jour à chaque nouveau preçário.
+- Corrigé « Albarroba » en « Alfarroba » (faute probable du PDF) : à confirmer.
+- Salgados : prix lus comme « par dúzia, petit / normal » : à confirmer.
+- Le preçário de Natal 2026 est annoncé « brevemente » : l'ajouter quand il sort.
+- Instagram : https://www.instagram.com/_as_delicias_da_celia_/ (menu mobile, bloc contact, pied de page).

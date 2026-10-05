@@ -1,0 +1,159 @@
+// Preçário 2026, recopié des PDF du Linktree (linktr.ee/Asdeliciasdacelia, octobre 2026).
+// Prix en texte tel qu'affiché ; « sob consulta » = prix sur demande.
+
+export type Item = { name: string; note?: string; price: string };
+export type Group = { title: string; items: Item[]; footnote?: string; /** légende de la colonne des prix */ priceHead?: string };
+export type Section = { id: string; label: string; intro: string; groups: Group[] };
+
+const consulta = "Sob consulta";
+
+export const precario: Section[] = [
+  {
+    id: "bolos",
+    label: "Bolos e doces",
+    intro: "Bolos inteiros, tartes, tortas e sobremesas caseiras.",
+    groups: [
+      {
+        title: "Bolos",
+        items: [
+          { name: "Bolo de Aniversário", note: "Cenoura, chocolate, pão de ló, red velvet, amêndoa…", price: consulta },
+          { name: "Bolo de Aniversário Personalizado", price: consulta },
+          { name: "Bolo de Ananás", price: "25,00 €" },
+          { name: "Bolo de Caramelo", price: "25,00 €" },
+          { name: "Bolo de Bolacha", price: "25,00 €" },
+          { name: "Tarte de Amêndoa", price: "25,00 €" },
+          { name: "Tarte de Noz", price: "25,00 €" },
+          { name: "Tarte de Pinhão", price: "25,00 €" },
+          { name: "Tarte de Pastel de Nata", price: "25,00 €" },
+          { name: "Torta de Laranja", price: "25,00 €" },
+          { name: "Torta de Chocolate", price: "25,00 €" },
+          { name: "Torta de Coco", price: "25,00 €" },
+          { name: "Brigadeiro", price: "25,00 €" },
+          { name: "Delícias da Célia", note: "Vários sabores", price: "1,50 € / un." },
+        ],
+      },
+      {
+        title: "Sobremesas",
+        items: [
+          { name: "Melhor Bolo de Chocolate", price: "30,00 €" },
+          { name: "Pavlova de Frutos Vermelhos ou Ananás", price: "25,00 €" },
+          { name: "Semifrio", price: "25,00 €" },
+          { name: "Doce da Amiga", price: "20,00 €" },
+          { name: "Doce da Amiga Simples", price: "20,00 €" },
+          { name: "Pudim Flan", price: "20,00 €" },
+          { name: "Pudim de Ovos", price: "20,00 €" },
+          { name: "Baba de Camelo", price: "20,00 €" },
+          { name: "Mousse de Chocolate", price: "20,00 €" },
+          { name: "Salame de Chocolate", price: "15,00 €" },
+          { name: "Arroz Doce", price: "1,20 € / un." },
+        ],
+      },
+    ],
+  },
+  {
+    id: "salgados",
+    label: "Salgados",
+    intro: "Salgadinhos à dúzia, para festas, lanches e eventos.",
+    groups: [
+      {
+        title: "Salgados à dúzia",
+        priceHead: "Pequeno / normal",
+        footnote: "Mais 2,00 € por dúzia se forem entregues já cozidos ou fritos.",
+        items: [
+          { name: "Rissóis de Peixe", price: "8 € / 10 €" },
+          { name: "Rissóis de Camarão", price: "8 € / 10 €" },
+          { name: "Rissóis de Carne", price: "8 € / 10 €" },
+          { name: "Rissóis de Atum", price: "8 € / 10 €" },
+          { name: "Rissóis de Leitão", price: "8 € / 10 €" },
+          { name: "Croquetes", price: "8 € / 10 €" },
+          { name: "Pastéis de Bacalhau", price: "8 € / 10 €" },
+          { name: "Empadas de Frango", price: "10 € / 12 €" },
+          { name: "Trouxas de Frango e Cogumelos", price: "10 € / 12 €" },
+          { name: "Panados", price: "8 € / 10 €" },
+          { name: "Folhados de Salsicha", price: "8 € / 10 €" },
+          { name: "Folhados de Queijo e Fiambre", price: "8 € / 10 €" },
+          { name: "Bolinhas de Alheira", price: "8 € / 10 €" },
+          { name: "Croissants de Queijo e Fiambre", price: "8 € / 10 €" },
+          { name: "Coxinhas", price: "8 € / 10 €" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "refeicoes",
+    label: "Refeições",
+    intro: "Pratos caseiros e sopas, ao quilo ou por encomenda.",
+    groups: [
+      {
+        title: "Pratos",
+        items: [
+          { name: "Bacalhau com Broa", price: "18,00 € / kg" },
+          { name: "Bacalhau com Natas", price: "18,00 € / kg" },
+          { name: "Bacalhau Espiritual", price: "18,00 € / kg" },
+          { name: "Arroz de Pato", price: "18,00 € / kg" },
+          { name: "Lasanha", price: "18,00 € / kg" },
+          { name: "Quiches", price: "18,00 € / kg" },
+          { name: "Pão Recheado", price: "18,00 € / kg" },
+          { name: "Bola de Carne", price: "18,00 € / kg" },
+          { name: "Polvo à Lagareiro", price: consulta },
+        ],
+      },
+      {
+        title: "Sopas",
+        items: [
+          { name: "Canja de Galinha", price: consulta },
+          { name: "Sopa de Legumes", price: consulta },
+          { name: "Caldo Verde", price: consulta },
+          { name: "Sopa de Peixe", price: consulta },
+          { name: "Sopa da Pedra", price: consulta },
+        ],
+      },
+    ],
+  },
+  {
+    id: "epoca",
+    label: "Produtos da época",
+    intro: "Doçaria de Natal e de festas, por encomenda na época.",
+    groups: [
+      {
+        title: "Natal e festas",
+        items: [
+          { name: "Bolo Rei", price: "18,00 € / kg" },
+          { name: "Bolo Rei Folhado", price: "20,00 € / kg" },
+          { name: "Bolo Rei de Chocolate", price: "18,00 € / kg" },
+          { name: "Tronco de Natal", price: "15,00 €" },
+          { name: "Fritos de Natal", note: "Coscorões, enrolados, sonhos, azevias", price: "18,00 € / kg" },
+          { name: "Pão de Ló Húmido e de Chocolate", price: "15,00 €" },
+          { name: "Broas", note: "Noz, anis, mel, chocolate, frutas cristalizadas…", price: "12,00 € / kg" },
+          { name: "Bolos Secos de Alfarroba e Limão", price: "12,00 € / kg" },
+          { name: "Bolos Secos Torcidos", price: "10,00 € / kg" },
+          { name: "Ferraduras", price: "10,00 € / kg" },
+          { name: "Bolinhos Sortidos", price: "15,00 € / kg" },
+          { name: "Satélites", price: "1,50 € / un." },
+          { name: "Brigadeiros", price: "7,50 € / dúzia" },
+          { name: "Bolachas", price: "2,00 € / un." },
+          { name: "Cupcakes", price: "2,00 € / un." },
+          { name: "Macarons", price: "0,80 € / un." },
+          { name: "Tábua de Queijos", price: consulta },
+        ],
+      },
+    ],
+  },
+  {
+    id: "pao",
+    label: "Pão quente",
+    intro: "Pão caseiro acabado de cozer. A novidade da casa.",
+    groups: [
+      {
+        title: "Pão",
+        items: [
+          { name: "Pão com Farinheira", price: "2,00 €" },
+          { name: "Pão com Chouriço", price: "1,50 €" },
+          { name: "Pão Pequeno", price: "1,50 €" },
+          { name: "Bolinhas Redondas", price: "0,50 €" },
+          { name: "Bolinhas com Sementes", price: "0,50 €" },
+        ],
+      },
+    ],
+  },
+];
