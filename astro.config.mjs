@@ -4,8 +4,8 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  // À remplacer par le vrai nom de domaine une fois choisi
-  site: "https://asdeliciasdacelia.pt",
+  // Adresse publique du site (sous-domaine de jstrunz.me, branché sur Vercel)
+  site: "https://asdeliciasdacelia.jstrunz.me",
 
   // Le site reste statique ; seule la route /api/contacto (envoi du formulaire)
   // est rendue à la demande (voir `export const prerender = false` dans ce fichier).
