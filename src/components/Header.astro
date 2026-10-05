@@ -1,0 +1,354 @@
+---
+import Icon from "./Icon.astro";
+import Logo from "./Logo.astro";
+import { company, nav } from "../data/site";
+
+const drawerLinks = [{ label: "Início", href: "/" }, ...nav, { label: "Contacto", href: "#contacto" }];
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+// Lien de page (ex. /criacoes) actif selon l'adresse ; les ancres de l'accueil sont suivies au défilement
+const isPage = (href: string) => !href.includes("#") && href !== "/" && path === href;
+---
+
+<header class="header" data-header>
+  <div class="header__inner container">
+    <a href="/" class="header__brand" aria-label={`${company.name}, início`}>
+      <Logo />
+    </a>
+
+    <nav class="header__nav" aria-label="Navegação principal">
+      <ul role="list">
+        {nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["header__link", { "is-active": isPage(item.href) }]}
+              data-spy={item.href.includes("#") ? item.href.split("#")[1] : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a href={company.phoneHref} class="header__phone">
+        <Icon name="phone" size={16} />
+        <span>{company.phone}</span>
+      </a>
+      <a href="#contacto" class="btn btn--accent header__cta">Encomendar</a>
+      <button class="header__burger" aria-label="Abrir o menu" aria-expanded="false" data-burger>
+        <Icon name="menu" size={22} />
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Hors du <header> : son flou (backdrop-filter) enfermerait le menu dans sa hauteur -->
+<div class="drawer" data-drawer hidden>
+  <div class="drawer__head container">
+    <Logo />
+    <button class="header__burger drawer__close" aria-label="Fechar o menu" data-close>
+      <Icon name="close" size={22} />
+    </button>
+  </div>
+  <nav class="drawer__nav container" aria-label="Navegação">
+    {drawerLinks.map((item, i) => (
+      <a href={item.href} class="drawer__link" data-drawer-link>
+        <span class="drawer__num" data-drawer-fade>{String(i + 1).padStart(2, "0")}</span>
+        <span class="drawer__mask">
+          <span class="drawer__label display" data-drawer-label>{item.label}</span>
+        </span>
+      </a>
+    ))}
+  </nav>
+  <div class="drawer__foot container" data-drawer-fade>
+    <a href={company.phoneHref} class="btn">
+      <Icon name="phone" size={16} />
+      {company.phone}
+    </a>
+    <a href={company.whatsapp} class="btn btn--ghost" target="_blank" rel="noopener">
+      <Icon name="whatsapp" size={16} />
+      WhatsApp
+    </a>
+  </div>
+</div>
+
+<style>
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    height: var(--header-h);
+    /* Fond toujours plein (même couleur que la page) : le Safari d'iOS 26 s'en sert
+       pour colorer la zone de l'heure. Transparent, il laisse voir la page derrière. */
+    background: var(--c-bg);
+    transition: transform 0.5s var(--ease-out), box-shadow 0.4s;
+  }
+
+  .header.is-scrolled {
+    box-shadow: 0 1px 0 var(--c-line);
+  }
+
+  .header.is-hidden {
+    transform: translateY(-100%);
+    box-shadow: none;
+  }
+
+  .header__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .header__nav > ul {
+    display: flex;
+    gap: 2.25rem;
+  }
+
+  .header__link {
+    position: relative;
+    display: inline-block;
+    padding-block: 0.5rem;
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+    transition: color 0.3s;
+  }
+
+  /* Petit point framboise sous le lien actif / survolé */
+  .header__link::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -0.1rem;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--c-brand);
+    transform: scale(0);
+    transition: transform 0.5s var(--ease-spring);
+  }
+
+  .header__link:hover,
+  .header__link.is-active {
+    color: var(--c-ink);
+  }
+
+  .header__link:hover::after,
+  .header__link.is-active::after {
+    transform: scale(1);
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .header__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--c-ink-soft);
+  }
+
+  .header__cta {
+    padding: 0.7rem 1.2rem;
+  }
+
+  .header__burger {
+    display: none;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
+    background: none;
+    border: 0;
+  }
+
+  /* Tiroir mobile */
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    background: var(--c-bg);
+  }
+
+  .drawer[hidden] {
+    display: none;
+  }
+
+  .drawer__head {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .drawer__nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .drawer__link {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 0.15rem;
+  }
+
+  .drawer__num {
+    width: 1.75rem;
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Masque : le texte « sort » d'une fente en montant */
+  .drawer__mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.12em;
+  }
+
+  .drawer__label {
+    display: block;
+    font-size: clamp(2.2rem, 10vw, 3.1rem);
+    line-height: 1.05;
+  }
+
+  .drawer__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-block: 2rem;
+  }
+
+  @media (max-width: 1100px) {
+    .header__phone span {
+      display: none;
+    }
+  }
+
+  @media (max-width: 960px) {
+    .header__nav,
+    .header__phone,
+    .header__cta {
+      display: none;
+    }
+
+    .header__burger {
+      display: inline-flex;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const header = document.querySelector<HTMLElement>("[data-header]")!;
+  const hideOnScroll = window.matchMedia("(min-width: 961px)");
+  let last = window.scrollY;
+
+  const onScroll = () => {
+    const y = window.scrollY;
+    header.classList.toggle("is-scrolled", y > 20);
+    // Sur mobile, le header reste toujours visible : caché, il laisserait un vide
+    // sous l'heure de l'iPhone (Safari y affiche la page).
+    header.classList.toggle("is-hidden", hideOnScroll.matches && y > last && y > 400);
+    last = y;
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // Lien actif selon la section visible
+  const links = header.querySelectorAll<HTMLAnchorElement>("[data-spy]");
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((l) => l.classList.toggle("is-active", l.dataset.spy === e.target.id));
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  links.forEach((l) => {
+    const section = document.getElementById(l.dataset.spy!);
+    if (section) spy.observe(section);
+  });
+
+  // Tiroir mobile
+  const drawer = document.querySelector<HTMLElement>("[data-drawer]")!;
+  const burger = header.querySelector<HTMLButtonElement>("[data-burger]")!;
+  const close = drawer.querySelector<HTMLButtonElement>("[data-close]")!;
+  const labels = drawer.querySelectorAll<HTMLElement>("[data-drawer-label]");
+  const fades = drawer.querySelectorAll<HTMLElement>("[data-drawer-fade]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let tl: gsap.core.Timeline | null = null;
+
+  const lock = (on: boolean) => {
+    document.documentElement.style.overflow = on ? "hidden" : "";
+    if (on) window.lenis?.stop();
+    else window.lenis?.start();
+  };
+
+  const open = (e: MouseEvent) => {
+    drawer.hidden = false;
+    burger.setAttribute("aria-expanded", "true");
+    lock(true);
+    // Focus sur « fermer » seulement au clavier (detail = 0) : au doigt, Safari
+    // afficherait le contour de focus autour de la croix.
+    if (e.detail === 0) close.focus();
+    if (reduced) return;
+
+    // Cercle qui part du bouton burger et recouvre l'écran
+    const r = burger.getBoundingClientRect();
+    const at = `${r.left + r.width / 2}px ${r.top + r.height / 2}px`;
+    tl?.kill();
+    tl = gsap
+      .timeline({ defaults: { ease: "expo.out" } })
+      .fromTo(
+        drawer,
+        { clipPath: `circle(0px at ${at})` },
+        { clipPath: `circle(150% at ${at})`, duration: 0.9, ease: "expo.inOut" },
+      )
+      .fromTo(close, { rotate: -90, opacity: 0 }, { rotate: 0, opacity: 1, duration: 0.6 }, 0.35)
+      .fromTo(labels, { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.06 }, 0.4)
+      .fromTo(fades, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.04 }, 0.55);
+  };
+
+  const shut = (instant = false) => {
+    burger.setAttribute("aria-expanded", "false");
+    const done = () => {
+      drawer.hidden = true;
+      gsap.set([drawer, close, labels, fades], { clearProps: "all" });
+      lock(false);
+    };
+    if (instant || reduced || !tl) {
+      tl?.kill();
+      done();
+      if (!instant) burger.focus();
+      return;
+    }
+    // Même animation à l'envers, en plus rapide
+    tl.timeScale(1.6).eventCallback("onReverseComplete", () => {
+      done();
+      burger.focus();
+    });
+    tl.reverse();
+  };
+
+  burger.addEventListener("click", open);
+  close.addEventListener("click", () => shut());
+  drawer.addEventListener("keydown", (e) => e.key === "Escape" && shut());
+  // Clic sur un lien : on ferme sans animation, le défilement doux prend le relais
+  drawer.querySelectorAll("[data-drawer-link]").forEach((a) => a.addEventListener("click", () => shut(true)));
+</script>

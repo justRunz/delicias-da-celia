@@ -1,0 +1,725 @@
+---
+import Icon from "./Icon.astro";
+import DatePicker from "./DatePicker.astro";
+import { company } from "../data/site";
+
+const tipos = ["Bolo de aniversário", "Cake design", "Batizado ou comunhão", "Bolos secos e bolachas", "Doces e salgados", "Catering / mesa de festa", "Outro"];
+
+// Contour festonné du médaillon de remerciement (comme le napperon du logo)
+const scallops = 22;
+const R = 54;
+const doily =
+  Array.from({ length: scallops }, (_, i) => {
+    const p = (k: number) => {
+      const a = (k / scallops) * Math.PI * 2;
+      return `${(60 + R * Math.cos(a)).toFixed(2)} ${(60 + R * Math.sin(a)).toFixed(2)}`;
+    };
+    return `${i === 0 ? `M${p(0)}` : ""} A8 8 0 0 1 ${p(i + 1)}`;
+  }).join(" ") + " Z";
+---
+
+<section class="cta scallop" id="contacto">
+  <div class="cta__inner container">
+    <div class="cta__main">
+      <p class="eyebrow cta__eyebrow" data-reveal="up">Encomendas</p>
+      <h2 class="cta__title display" data-reveal="words">Tem uma festa <em>a caminho?</em></h2>
+      <p class="cta__lead" data-reveal="up">
+        Diga-nos o que tem em mente. Respondemos com ideias, sabores e o preço.
+      </p>
+
+      <a href={company.phoneHref} class="cta__phone display" data-reveal="up">
+        <span class="cta__phone-icon"><Icon name="phone" size={24} /></span>
+        {company.phone}
+      </a>
+
+      <div class="cta__actions" data-reveal="up">
+        <a href={company.whatsapp} class="btn btn--light" target="_blank" rel="noopener" data-magnetic>
+          <Icon name="whatsapp" />
+          WhatsApp
+        </a>
+        <a href={company.facebook} class="btn btn--outline-light" target="_blank" rel="noopener" data-magnetic>
+          <Icon name="facebook" />
+          Facebook
+        </a>
+      </div>
+
+      <ul class="cta__info" role="list" data-reveal="stagger">
+        <li>
+          <Icon name="map-pin" />
+          <span><strong>{company.place}</strong>{company.city}</span>
+        </li>
+        <li>
+          <Icon name="clock" />
+          <span><strong>Encomendas todos os dias</strong>Por telefone, mensagem ou pelo formulário</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card" data-reveal="up" data-card>
+      <form class="form" novalidate data-form>
+        <h3 class="form__title display">Pedir um orçamento</h3>
+        <p class="form__hint">Os campos com * são obrigatórios. Resposta por telefone ou e-mail.</p>
+
+        <div class="row">
+          <div class="field">
+            <label for="f-nome">Nome *</label>
+            <input id="f-nome" name="nome" type="text" autocomplete="name" required aria-describedby="f-nome-err" />
+            <p class="field__err" id="f-nome-err" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="f-tel">Telefone *</label>
+            <input id="f-tel" name="telefone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="f-tel-err" />
+            <p class="field__err" id="f-tel-err" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-email">E-mail *</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required aria-describedby="f-email-err" />
+          <p class="field__err" id="f-email-err" aria-live="polite"></p>
+        </div>
+
+        <div class="field">
+          <span class="field__label" id="f-tipo-label">
+            O que procura? <span class="field__note">Pode escolher várias opções.</span>
+          </span>
+          <div class="pills" role="group" aria-labelledby="f-tipo-label">
+            {tipos.map((t) => (
+              <label class="pill">
+                <input type="checkbox" name="tipo" value={t} />
+                <span>{t}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <DatePicker id="f-data" name="data" label="Data do evento" describedby="f-data-help" />
+            <p class="field__help" id="f-data-help">
+              Para hoje? <a href={company.phoneHref}>Ligue</a> ou envie{" "}
+              <a href={company.whatsapp} target="_blank" rel="noopener">mensagem</a>.
+            </p>
+          </div>
+          <div class="field">
+            <label for="f-pessoas">Número de pessoas</label>
+            <input id="f-pessoas" name="pessoas" type="number" inputmode="numeric" min="1" max="500" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="f-msg">Mensagem *</label>
+          <textarea id="f-msg" name="mensagem" rows="4" required aria-describedby="f-msg-help f-msg-err"></textarea>
+          <p class="field__help" id="f-msg-help">Sabores, tema, decoração, nome a escrever no bolo…</p>
+          <p class="field__err" id="f-msg-err" aria-live="polite"></p>
+        </div>
+
+        <!-- Piège à robots : champ invisible pour les humains -->
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+
+        <div class="field">
+          <label class="check">
+            <input type="checkbox" name="consentimento" required aria-describedby="f-rgpd-err" />
+            <span>Aceito que os meus dados sejam usados apenas para responder a este pedido. *</span>
+          </label>
+          <p class="field__err" id="f-rgpd-err" aria-live="polite"></p>
+        </div>
+
+        <div class="form__foot">
+          <button type="submit" class="btn btn--accent form__submit" data-submit>
+            <span data-label>Enviar pedido</span>
+            <Icon name="arrow-right" />
+          </button>
+          <p class="form__status" role="status" data-status></p>
+        </div>
+      </form>
+
+      <!-- Remerciement, affiché à la place du formulaire après l'envoi -->
+      <div class="thanks" data-thanks hidden tabindex="-1">
+        <svg class="thanks__badge" viewBox="0 0 120 120" aria-hidden="true">
+          <path class="thanks__doily" d={doily} data-thanks-doily />
+          <circle cx="60" cy="60" r="40" class="thanks__core" />
+          <path class="thanks__tick" d="M42 61 l12 12 l24 -26" data-thanks-tick />
+        </svg>
+        <h3 class="thanks__title display" data-thanks-title>Obrigado!</h3>
+        <p class="thanks__text">
+          Recebemos o seu pedido. Vamos entrar em contacto consigo <strong>o mais brevemente possível</strong>.
+        </p>
+        <p class="thanks__demo" data-thanks-demo hidden>
+          Versão de demonstração: o envio por e-mail ainda não está ligado, a mensagem não foi enviada.
+        </p>
+        <button type="button" class="btn btn--ghost" data-thanks-again>Enviar outro pedido</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    --scallop: var(--c-cocoa);
+    background: var(--c-cocoa);
+    color: var(--c-on-dark);
+    padding-block: var(--section);
+  }
+
+  .cta__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(3rem, 6vw, 7rem);
+    align-items: start;
+  }
+
+  .cta__main {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .cta__eyebrow {
+    color: rgb(247 241 234 / 0.6);
+  }
+
+  .cta__title {
+    font-size: var(--fs-3xl);
+    max-width: 11ch;
+  }
+
+  .cta__title :global(em) {
+    color: var(--c-accent-tint);
+  }
+
+  .cta__lead {
+    max-width: 40ch;
+    font-size: var(--fs-lg);
+    color: rgb(247 241 234 / 0.72);
+  }
+
+  .cta__phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    transition: color 0.4s;
+  }
+
+  .cta__phone:hover {
+    color: var(--c-accent-tint);
+  }
+
+  .cta__phone-icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 1.3em;
+    height: 1.3em;
+    border-radius: 50%;
+    background: var(--c-accent);
+    color: var(--c-on-dark);
+    font-size: 0.7em;
+  }
+
+  .cta__phone-icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1px solid var(--c-brand);
+    animation: ping 2.4s var(--ease-out) infinite;
+  }
+
+  @keyframes ping {
+    from {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    to {
+      transform: scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .cta__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    margin-top: 0.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(247 241 234 / 0.12);
+  }
+
+  .cta__info li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    color: rgb(247 241 234 / 0.65);
+    font-size: var(--fs-sm);
+  }
+
+  .cta__info li :global(svg) {
+    flex: none;
+    margin-top: 0.2rem;
+    color: var(--c-accent-tint);
+  }
+
+  .cta__info strong {
+    display: block;
+    font-weight: 500;
+    color: var(--c-on-dark);
+  }
+
+  /* --- Carte du formulaire --- */
+  .card {
+    position: relative;
+    padding: clamp(1.5rem, 3.5vw, 3rem);
+    border-radius: var(--radius-lg);
+    background: var(--c-bg);
+    color: var(--c-ink);
+    box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.5);
+  }
+
+  /* Petite dentelle rose en haut de la carte */
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    right: 1.5rem;
+    top: 0;
+    height: 7px;
+    background: radial-gradient(circle at 50% 0, var(--c-brand) 3.5px, transparent 4px) 0 0 / 14px 7px repeat-x;
+    opacity: 0.7;
+  }
+
+  .form[hidden] {
+    display: none;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form__title {
+    font-size: var(--fs-xl);
+  }
+
+  .form__hint {
+    margin-top: -0.75rem;
+    font-size: var(--fs-sm);
+    color: var(--c-muted);
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .field label,
+  .field__label {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+  }
+
+  input:not([type="checkbox"], [type="radio"]),
+  textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+    color: var(--c-ink);
+    /* 16 px minimum : sinon l'iPhone zoome sur le champ */
+    font: inherit;
+    font-size: max(16px, var(--fs-base));
+    transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 7rem;
+  }
+
+  input:hover,
+  textarea:hover {
+    border-color: color-mix(in srgb, var(--c-line) 50%, var(--c-ink-soft));
+  }
+
+  input:focus,
+  textarea:focus {
+    outline: none;
+    border-color: var(--c-accent);
+    background: #fff;
+    box-shadow: 0 0 0 4px var(--c-accent-soft);
+  }
+
+  .field__help {
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+  }
+
+  .field__note {
+    margin-left: 0.35rem;
+    font-size: var(--fs-xs);
+    font-weight: 400;
+    color: var(--c-muted);
+  }
+
+  .field__help a {
+    color: var(--c-accent-deep);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .field__err {
+    font-size: var(--fs-xs);
+    color: #b3261e;
+  }
+
+  .field__err:empty {
+    display: none;
+  }
+
+  .field.has-error input,
+  .field.has-error textarea {
+    border-color: #b3261e;
+  }
+
+  /* Choix du type d'encomenda : pastilles */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .pill {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .pill input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pill span {
+    display: inline-block;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    background: var(--c-surface);
+    font-size: var(--fs-sm);
+    font-weight: 400;
+    color: var(--c-ink-soft);
+    transition: background-color 0.25s, color 0.25s, border-color 0.25s, transform 0.3s var(--ease-spring);
+  }
+
+  .pill:hover span {
+    border-color: var(--c-brand);
+  }
+
+  .pill input:checked + span {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+    color: var(--c-on-dark);
+    transform: scale(1.04);
+  }
+
+  /* Petite coche dessinée qui apparaît dans les pastilles cochées */
+  .pill span::before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0.55em;
+    margin-right: 0;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0;
+    transform: translateY(-0.15em) rotate(45deg) scale(0.4);
+    transition: width 0.3s var(--ease-out), margin-right 0.3s var(--ease-out), opacity 0.3s, transform 0.4s var(--ease-spring);
+  }
+
+  .pill input:checked + span::before {
+    width: 0.3em;
+    margin-right: 0.5em;
+    opacity: 1;
+    transform: translateY(-0.15em) rotate(45deg) scale(1);
+  }
+
+  .pill input:focus-visible + span {
+    outline: 2px solid var(--c-accent);
+    outline-offset: 2px;
+  }
+
+  .check {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-weight: 400 !important;
+    color: var(--c-ink-soft);
+    cursor: pointer;
+  }
+
+  .check input {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.2rem;
+    accent-color: var(--c-accent);
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .form__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .form__submit[aria-busy="true"] {
+    pointer-events: none;
+    opacity: 0.75;
+  }
+
+  .form__status {
+    font-size: var(--fs-sm);
+  }
+
+  .form__status:empty {
+    display: none;
+  }
+
+  .form__status.is-error {
+    color: #b3261e;
+  }
+
+  /* --- Remerciement --- */
+  .thanks {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    padding-block: clamp(1.5rem, 4vw, 3rem);
+    text-align: center;
+    outline: none;
+  }
+
+  .thanks[hidden] {
+    display: none;
+  }
+
+  .thanks__badge {
+    width: 132px;
+    height: 132px;
+  }
+
+  .thanks__doily {
+    fill: var(--c-brand);
+    transform-origin: 60px 60px;
+  }
+
+  .thanks__core {
+    fill: #fff;
+    stroke: var(--c-brand);
+    stroke-width: 1.2;
+    stroke-dasharray: 0 4;
+    stroke-linecap: round;
+  }
+
+  .thanks__tick {
+    fill: none;
+    stroke: var(--c-accent);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .thanks__title {
+    font-size: var(--fs-2xl);
+  }
+
+  .thanks__text {
+    max-width: 38ch;
+    color: var(--c-ink-soft);
+  }
+
+  .thanks__text strong {
+    font-weight: 500;
+    color: var(--c-accent-deep);
+  }
+
+  .thanks__demo {
+    max-width: 40ch;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius);
+    background: var(--c-accent-soft);
+    font-size: var(--fs-xs);
+    color: var(--c-accent-deep);
+  }
+
+  @media (max-width: 900px) {
+    .cta__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .cta__main {
+      position: static;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  const form = document.querySelector<HTMLFormElement>("[data-form]");
+  if (form) {
+    const card = document.querySelector<HTMLElement>("[data-card]")!;
+    const status = form.querySelector<HTMLElement>("[data-status]")!;
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    const label = submit.querySelector<HTMLElement>("[data-label]")!;
+    const thanks = card.querySelector<HTMLElement>("[data-thanks]")!;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const messages: Record<string, (el: HTMLInputElement | HTMLTextAreaElement) => string> = {
+      nome: () => "Indique o seu nome.",
+      telefone: (el) => (el.value ? "Este número não parece válido." : "Indique um número de telefone."),
+      email: (el) => (el.value ? "Este e-mail não parece válido." : "Indique o seu e-mail."),
+      mensagem: (el) => (el.value ? "Conte um pouco mais (10 caracteres no mínimo)." : "Escreva uma mensagem."),
+      consentimento: () => "Precisamos do seu acordo para lhe responder.",
+    };
+
+
+    // Règles maison (plus fiables que pattern/minlength quand la valeur n'est pas tapée au clavier)
+    const extra: Record<string, (v: string) => boolean> = {
+      telefone: (v) => /^[0-9+().\s-]+$/.test(v) && v.replace(/\D/g, "").length >= 9,
+      mensagem: (v) => v.trim().length >= 10,
+    };
+
+    const check = (el: HTMLInputElement | HTMLTextAreaElement) => {
+      const field = el.closest(".field")!;
+      const rule = extra[el.name];
+      el.setCustomValidity(rule && el.value && !rule(el.value) ? "invalide" : "");
+      const err = field.querySelector<HTMLElement>(".field__err");
+      const ok = el.checkValidity();
+      field.classList.toggle("has-error", !ok);
+      el.setAttribute("aria-invalid", String(!ok));
+      if (err) err.textContent = ok ? "" : (messages[el.name]?.(el) ?? "Campo obrigatório.");
+      return ok;
+    };
+
+    const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("[required]")];
+    // On ne signale l'erreur qu'après le premier passage dans le champ
+    fields.forEach((el) => {
+      el.addEventListener("blur", () => el.value && check(el));
+      el.addEventListener("input", () => el.closest(".field")!.classList.contains("has-error") && check(el));
+      el.addEventListener("change", () => el.type === "checkbox" && check(el));
+    });
+
+    const showThanks = (nome: string, demo: boolean) => {
+      const first = nome.split(/\s+/)[0];
+      card.querySelector<HTMLElement>("[data-thanks-title]")!.textContent = first ? `Obrigado, ${first}!` : "Obrigado!";
+      card.querySelector<HTMLElement>("[data-thanks-demo]")!.hidden = !demo;
+      const from = card.offsetHeight;
+      form.hidden = true;
+      thanks.hidden = false;
+      thanks.focus({ preventScroll: true });
+      if (reduced) return;
+
+      // La carte change de hauteur en douceur, puis le napperon tourne et la coche se dessine
+      const to = card.offsetHeight;
+      const tick = card.querySelector<SVGPathElement>("[data-thanks-tick]")!;
+      const len = tick.getTotalLength();
+      gsap
+        .timeline()
+        .fromTo(card, { height: from }, { height: to, duration: 0.6, ease: "expo.inOut", clearProps: "height" })
+        .from(thanks.children, { opacity: 0, y: 20, duration: 0.8, ease: "expo.out", stagger: 0.07 }, 0.2)
+        .from("[data-thanks-doily]", { rotate: -120, scale: 0.5, transformOrigin: "50% 50%", duration: 1.2, ease: "back.out(1.6)" }, 0.2)
+        .fromTo(tick, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.out" }, 0.6);
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.textContent = "";
+      status.className = "form__status";
+
+      const invalid = fields.filter((el) => !check(el));
+      if (invalid.length) {
+        invalid[0].focus();
+        status.textContent = "Corrija os campos assinalados.";
+        status.classList.add("is-error");
+        return;
+      }
+
+      submit.setAttribute("aria-busy", "true");
+      label.textContent = "A enviar…";
+      const formData = new FormData(form);
+      const data: Record<string, unknown> = Object.fromEntries(formData.entries());
+      // Plusieurs choix possibles : tous les types cochés, pas seulement le dernier
+      data.tipo = formData.getAll("tipo");
+
+      try {
+        const response = await fetch("/api/contacto", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          status.textContent = result.error ?? "O envio falhou. Tente de novo ou ligue-nos.";
+          status.classList.add("is-error");
+          return;
+        }
+        form.reset();
+        showThanks(String(data.nome ?? ""), Boolean(result.demo));
+      } catch {
+        status.textContent = "O envio falhou: verifique a ligação à internet, ou ligue-nos.";
+        status.classList.add("is-error");
+      } finally {
+        submit.removeAttribute("aria-busy");
+        label.textContent = "Enviar pedido";
+      }
+    });
+
+    card.querySelector("[data-thanks-again]")!.addEventListener("click", () => {
+      thanks.hidden = true;
+      form.hidden = false;
+      form.querySelector<HTMLInputElement>("input")!.focus();
+    });
+  }
+</script>

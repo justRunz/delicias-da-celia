@@ -1,0 +1,312 @@
+---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import { company } from "../../data/site";
+import cake from "../../assets/photos/bolo-stitch.jpg";
+import rolls from "../../assets/photos/paezinhos.jpg";
+import board from "../../assets/photos/tabua-queijos.jpg";
+import logo from "../../assets/logo/logo-original.png";
+
+const ring = "feito à mão · por encomenda · em Santarém · ";
+---
+
+<section class="hero" id="topo" data-hero>
+  <div class="hero__inner container">
+    <div class="hero__text">
+      <p class="eyebrow" data-reveal="up">Pastelaria caseira em {company.city}</p>
+
+      <h1 class="hero__title display" data-reveal="words">
+        Bolos e salgados feitos em casa, <em>com tempo e carinho.</em>
+      </h1>
+
+      <p class="lead" data-reveal="up" data-delay="0.1">
+        Bolos de aniversário, bolos secos, doces, salgados e mesas para festas, preparados à mão na
+        nossa cozinha, em {company.place}.
+      </p>
+
+      <div class="hero__actions" data-reveal="up" data-delay="0.2">
+        <a href="#contacto" class="btn btn--accent" data-magnetic>
+          Fazer uma encomenda
+          <Icon name="arrow-right" />
+        </a>
+        <a href={company.phoneHref} class="btn btn--ghost" data-magnetic>
+          <Icon name="phone" />
+          {company.phone}
+        </a>
+      </div>
+
+      <div class="hero__proof" data-reveal="up" data-delay="0.3">
+        <span class="hero__stars" aria-hidden="true">
+          {[1, 2, 3, 4, 5].map(() => <Icon name="star" size={15} />)}
+        </span>
+        <span>
+          <strong>{company.rating.percent}% recomendam</strong> · {company.rating.count} avaliações no Facebook
+        </span>
+      </div>
+    </div>
+
+    <div class="hero__visual" aria-hidden="false">
+      <figure class="hero__main" data-reveal="clip">
+        <div class="hero__parallax" data-parallax="10">
+          <Image
+            src={cake}
+            alt="Bolo de aniversário com o Stitch e a Angel, cobertura azul e rosa com brilhos"
+            widths={[480, 720, 960, 1280]}
+            sizes="(max-width: 900px) 80vw, 38vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </figure>
+
+      <figure class="hero__small hero__small--a" data-reveal="pop" data-float>
+        <Image src={rolls} alt="Cesto de pãezinhos caseiros" widths={[240, 400]} sizes="200px" loading="eager" />
+      </figure>
+
+      <figure class="hero__small hero__small--b" data-reveal="pop" data-float="b">
+        <Image src={board} alt="Tábua de queijos, enchidos, uvas e frutos secos" widths={[240, 400]} sizes="180px" loading="eager" />
+      </figure>
+
+      <div class="hero__badge" data-reveal="pop">
+        <svg viewBox="0 0 200 200" class="hero__ring">
+          <defs>
+            <path id="ring-path" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" />
+          </defs>
+          <text>
+            <textPath href="#ring-path" textLength="486" lengthAdjust="spacing">{ring}</textPath>
+          </text>
+        </svg>
+        <Image class="hero__badge-logo" src={logo} alt="Logótipo As Delícias da Célia" widths={[160, 320]} sizes="120px" loading="eager" />
+      </div>
+    </div>
+  </div>
+
+  <a href="#especialidades" class="hero__scroll" aria-label="Ver as especialidades" data-reveal="up" data-delay="0.6">
+    <span class="hero__scroll-line"></span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    padding-block: calc(var(--header-h) + 3rem) 5rem;
+  }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .hero__title {
+    font-size: var(--fs-3xl);
+    max-width: 13ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero__proof {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: var(--fs-sm);
+    color: var(--c-muted);
+  }
+
+  .hero__proof strong {
+    color: var(--c-ink);
+    font-weight: 500;
+  }
+
+  .hero__stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--c-brand);
+  }
+
+  /* --- Visuel : photo en arche (vitrine de pâtisserie) + vignettes ------ */
+  .hero__visual {
+    position: relative;
+    justify-self: end;
+    width: min(100%, 520px);
+    aspect-ratio: 4 / 5;
+  }
+
+  .hero__main {
+    position: absolute;
+    inset: 0 8% 0 12%;
+    overflow: hidden;
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+    background: var(--c-flour);
+    box-shadow: 0 40px 80px -40px rgb(var(--c-shadow) / 0.45);
+  }
+
+  .hero__parallax {
+    position: absolute;
+    inset: -8% 0;
+  }
+
+  .hero__parallax :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 55%;
+  }
+
+  .hero__small {
+    position: absolute;
+    overflow: hidden;
+    border: 6px solid var(--c-surface);
+    background: var(--c-flour);
+    box-shadow: 0 24px 48px -20px rgb(var(--c-shadow) / 0.4);
+  }
+
+  .hero__small :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero__small--a {
+    left: -2%;
+    bottom: 6%;
+    width: 38%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .hero__small--b {
+    right: 0;
+    top: 12%;
+    width: 30%;
+    aspect-ratio: 3 / 4;
+    border-radius: 18px;
+    rotate: 5deg;
+  }
+
+  /* Tampon : le logo de la Célia, entouré d'un texte qui tourne */
+  .hero__badge {
+    position: absolute;
+    right: -4%;
+    bottom: -6%;
+    width: 168px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--c-surface);
+    color: var(--c-accent-deep);
+    box-shadow: 0 24px 48px -20px rgb(var(--c-shadow) / 0.45);
+  }
+
+  .hero__ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: spin 22s linear infinite;
+  }
+
+  .hero__ring text {
+    fill: currentColor;
+    font-family: var(--f-body);
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .hero__badge :global(.hero__badge-logo) {
+    width: 64%;
+    height: auto;
+    border-radius: 50%;
+    transition: transform 0.8s var(--ease-spring);
+  }
+
+  .hero__badge:hover :global(.hero__badge-logo) {
+    transform: rotate(-8deg) scale(1.06);
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .hero__scroll {
+    position: absolute;
+    left: 50%;
+    bottom: 1.5rem;
+    width: 1px;
+    height: 56px;
+    overflow: hidden;
+    background: var(--c-line);
+  }
+
+  .hero__scroll-line {
+    position: absolute;
+    inset: 0;
+    background: var(--c-accent);
+    animation: drip 2.2s var(--ease-out) infinite;
+  }
+
+  @keyframes drip {
+    0% {
+      transform: translateY(-100%);
+    }
+    60%,
+    100% {
+      transform: translateY(100%);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      padding-top: calc(var(--header-h) + 1.5rem);
+      padding-bottom: 4rem;
+    }
+
+    .hero__inner {
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+    }
+
+    .hero__visual {
+      justify-self: center;
+      width: min(100%, 420px);
+    }
+
+    .hero__badge {
+      width: 128px;
+      right: 0;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__proof {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+  }
+</style>

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "delicias-da-celia",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-lc", "cd /Users/ruigaspar/Documents/GitHub/delicias-da-celia && source ~/.nvm/nvm.sh && nvm use 23 >/dev/null && npx astro dev --port 4322"],
+      "port": 4322
+    }
+  ]
+}

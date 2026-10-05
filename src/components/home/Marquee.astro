@@ -1,0 +1,61 @@
+---
+/** Bandeau défilant : sa vitesse et son sens suivent le défilement de la page. */
+const items = ["Bolos de aniversário", "Bolos secos", "Doces", "Salgados", "Pão com chouriço", "Catering", "Cake design"];
+---
+
+<div class="marquee" data-marquee aria-label={items.join(", ")} role="img">
+  <div class="marquee__track" data-marquee-track>
+    {[0, 1].map(() => (
+      <div class="marquee__group" aria-hidden="true">
+        {items.map((item, i) => (
+          <>
+            <span class:list={["marquee__item display", { "is-italic": i % 2 === 1 }]}>{item}</span>
+            <svg class="marquee__sep" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 2c1.2 3.6 3.4 5.8 7 7-3.6 1.2-5.8 3.4-7 7-1.2-3.6-3.4-5.8-7-7 3.6-1.2 5.8-3.4 7-7Z" transform="translate(0 3)" />
+            </svg>
+          </>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    padding-block: clamp(1.25rem, 2vw, 2rem);
+    border-block: 1px solid var(--c-line);
+    background: var(--c-surface);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    flex: none;
+  }
+
+  .marquee__item {
+    padding-inline: clamp(1rem, 2vw, 2rem);
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3.25rem);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .marquee__item.is-italic {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    color: var(--c-accent-deep);
+  }
+
+  .marquee__sep {
+    flex: none;
+    width: clamp(18px, 2vw, 26px);
+    height: auto;
+    fill: var(--c-brand);
+  }
+</style>

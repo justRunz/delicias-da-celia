@@ -1,0 +1,314 @@
+---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import cake from "../../assets/photos/bolo-stitch.jpg";
+import parabens from "../../assets/photos/bolo-parabens.jpg";
+import stand from "../../assets/photos/banca.jpg";
+import chourico from "../../assets/photos/pao-chourico.jpg";
+import table from "../../assets/photos/mesa-salgados.jpg";
+
+// Les cinq spécialités reprises de la bannière de la Célia
+const items = [
+  {
+    title: "Bolos de aniversário",
+    category: "meninas",
+    text: "Com o tema, o nome e a idade que escolher: do Stitch e do Bluey ao clássico «Parabéns» com flores.",
+    img: cake,
+    alt: "Bolo de aniversário com o Stitch e a Angel",
+  },
+  {
+    title: "Cake design",
+    category: "adultos",
+    text: "Bolos decorados à medida para batizados, comunhões, casamentos e outras datas que merecem um centro de mesa.",
+    img: parabens,
+    alt: "Bolo retangular com «Parabens», pérolas e rosas de açúcar",
+  },
+  {
+    title: "Bolos secos",
+    category: "doces",
+    text: "Bolachas, broas e biscoitos embalados em saquinhos com laço. Para o lanche, para oferecer ou para vender na feira.",
+    img: stand,
+    alt: "Banca com saquinhos de bolos secos atados com laços",
+  },
+  {
+    title: "Doces e salgados",
+    category: "salgados",
+    text: "Pão com chouriço, folhados e salgadinhos de festa, feitos no próprio dia para chegarem à mesa ainda estaladiços.",
+    img: chourico,
+    alt: "Pães com chouriço acabados de sair do forno",
+  },
+  {
+    title: "Serviço de catering",
+    category: "salgados",
+    text: "Mesas completas para festas e eventos: salgados, doces, tábuas de queijos e enchidos. Diga-nos quantas pessoas, nós tratamos do resto.",
+    img: table,
+    alt: "Mesa de festa com dezenas de travessas de salgados, doces e uma tábua de queijos",
+  },
+];
+---
+
+<section class="spec section" id="especialidades">
+  <div class="container spec__inner">
+    <header class="spec__head">
+      <p class="eyebrow" data-reveal="up">Especialidades</p>
+      <h2 class="spec__title display" data-reveal="words">
+        Do lanche de domingo <em>à mesa da festa.</em>
+      </h2>
+      <p class="spec__intro" data-reveal="up">
+        Tudo é feito por encomenda. Diga-nos o que procura e para quando, e nós preparamos.
+      </p>
+    </header>
+
+    <ol class="spec__list" role="list" data-spec-list>
+      {items.map((item, i) => (
+        <li class="spec__item" data-spec-item={i}>
+          <span class="spec__num">{String(i + 1).padStart(2, "0")}</span>
+          <div class="spec__body">
+            <h3 class="spec__name display">{item.title}</h3>
+            <p class="spec__text">{item.text}</p>
+            <a class="spec__more link-underline" href={`/criacoes?categoria=${item.category}`}>
+              Ver exemplos
+              <Icon name="arrow-right" size={15} />
+            </a>
+          </div>
+          <figure class="spec__thumb">
+            <Image src={item.img} alt={item.alt} widths={[360, 640]} sizes="(max-width: 900px) 90vw, 1px" />
+          </figure>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  <!-- Aperçu qui suit le curseur (bureau uniquement) -->
+  <div class="spec__preview" data-spec-preview aria-hidden="true">
+    {items.map((item, i) => (
+      <Image class="spec__preview-img" src={item.img} alt="" widths={[480, 720]} sizes="320px" data-spec-img={i} />
+    ))}
+  </div>
+</section>
+
+<style>
+  .spec__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 6vw, 7rem);
+    align-items: start;
+  }
+
+  .spec__head {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .spec__title {
+    font-size: var(--fs-2xl);
+    max-width: 12ch;
+  }
+
+  .spec__intro {
+    color: var(--c-ink-soft);
+    max-width: 40ch;
+  }
+
+  .spec__list {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .spec__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 1rem;
+    padding-block: clamp(1.75rem, 3vw, 2.5rem);
+    border-bottom: 1px solid var(--c-line);
+    isolation: isolate;
+    cursor: default;
+  }
+
+  /* Fond rosé qui monte au survol */
+  .spec__item::before {
+    content: "";
+    position: absolute;
+    inset: 0 calc(var(--gutter) * -0.5);
+    z-index: -1;
+    border-radius: var(--radius);
+    background: var(--c-accent-soft);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.6s var(--ease-out);
+  }
+
+  .spec__num {
+    padding-top: 0.6rem;
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .spec__name {
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.75rem);
+    transition: transform 0.6s var(--ease-out), color 0.4s;
+  }
+
+  .spec__text {
+    max-width: 48ch;
+    margin-top: 0.6rem;
+    color: var(--c-ink-soft);
+  }
+
+  .spec__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.9rem;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    color: var(--c-accent-deep);
+  }
+
+  .spec__more :global(svg) {
+    transition: transform 0.4s var(--ease-out);
+  }
+
+  .spec__more:hover :global(svg) {
+    transform: translateX(4px);
+  }
+
+  .spec__thumb {
+    display: none;
+  }
+
+  @media (hover: hover) and (min-width: 901px) {
+    .spec__item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .spec__item:hover .spec__name {
+      transform: translateX(0.5rem);
+      font-style: italic;
+      font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+      color: var(--c-accent-deep);
+    }
+  }
+
+  .spec__preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 40;
+    width: 280px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    /* Petit tirage photo : cadre blanc, liseré fin et ombre douce */
+    border: 6px solid #fff;
+    border-radius: 16px;
+    background: var(--c-flour);
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.6;
+    box-shadow:
+      0 0 0 1px var(--c-line),
+      0 30px 60px -25px rgb(var(--c-shadow) / 0.55);
+  }
+
+  .spec__preview :global(.spec__preview-img) {
+    position: absolute;
+    border-radius: 10px;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    clip-path: inset(100% 0 0 0);
+  }
+
+  @media (max-width: 900px) {
+    .spec__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .spec__head {
+      position: static;
+    }
+
+    .spec__item {
+      grid-template-columns: 2.25rem minmax(0, 1fr);
+    }
+
+    .spec__thumb {
+      display: block;
+      grid-column: 2;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      aspect-ratio: 16 / 10;
+      background: var(--c-flour);
+    }
+
+    .spec__thumb :global(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .spec__preview {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+
+  // Aperçu photo qui suit le curseur, avec changement d'image en rideau
+  const list = document.querySelector<HTMLElement>("[data-spec-list]");
+  const preview = document.querySelector<HTMLElement>("[data-spec-preview]");
+  const canHover = window.matchMedia("(hover: hover) and (min-width: 901px)").matches;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (list && preview && canHover && !reduced) {
+    const imgs = preview.querySelectorAll<HTMLElement>("[data-spec-img]");
+    const xTo = gsap.quickTo(preview, "x", { duration: 0.7, ease: "power3.out" });
+    const yTo = gsap.quickTo(preview, "y", { duration: 0.7, ease: "power3.out" });
+    const rTo = gsap.quickTo(preview, "rotate", { duration: 0.9, ease: "power3.out" });
+    let current = -1;
+    let lastX = 0;
+    let z = 1;
+
+    const place = (e: PointerEvent) => {
+      const h = preview.offsetHeight;
+      // À droite du curseur : la photo accompagne le titre sans le cacher
+      xTo(e.clientX + 32);
+      yTo(e.clientY - h / 2);
+      // Légère inclinaison selon la vitesse horizontale
+      rTo(gsap.utils.clamp(-10, 10, (e.clientX - lastX) * 0.6));
+      lastX = e.clientX;
+    };
+
+    list.addEventListener("pointerenter", (e) => {
+      gsap.set(preview, { x: e.clientX + 32, y: e.clientY - preview.offsetHeight / 2 });
+      gsap.to(preview, { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.6)" });
+    });
+    list.addEventListener("pointerleave", () => {
+      gsap.to(preview, { opacity: 0, scale: 0.6, duration: 0.4, ease: "power2.in" });
+      current = -1;
+    });
+    list.addEventListener("pointermove", place);
+
+    list.querySelectorAll<HTMLElement>("[data-spec-item]").forEach((item) => {
+      item.addEventListener("pointerenter", () => {
+        const i = Number(item.dataset.specItem);
+        if (i === current) return;
+        current = i;
+        const img = imgs[i];
+        img.style.zIndex = String(++z);
+        gsap.fromTo(
+          img,
+          { clipPath: "inset(100% 0% 0% 0%)", scale: 1.2 },
+          { clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 0.7, ease: "expo.out" },
+        );
+      });
+    });
+  }
+</script>

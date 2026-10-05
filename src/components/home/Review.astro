@@ -1,0 +1,73 @@
+---
+import Icon from "../Icon.astro";
+import { company } from "../../data/site";
+---
+
+<section class="review section">
+  <div class="review__inner container">
+    <div class="review__stars" data-reveal="stagger" aria-label="5 estrelas">
+      {[1, 2, 3, 4, 5].map(() => <Icon name="star" size={22} />)}
+    </div>
+
+    <blockquote class="review__quote">
+      <p class="display" data-reveal="scrub">
+        «São muito bons os bolos, e a variedade de bolos é <em>excelente.</em>»
+      </p>
+      <footer data-reveal="up">
+        <span class="review__who">Carlos M.</span>
+        <span class="review__where">
+          Avaliação no Facebook · {company.rating.percent}% de {company.rating.count} clientes recomendam
+        </span>
+      </footer>
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .review__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-left: max(var(--gutter), 12vw);
+  }
+
+  .review__stars {
+    display: flex;
+    gap: 4px;
+    color: var(--c-brand);
+  }
+
+  .review__quote {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .review__quote p {
+    font-size: clamp(2rem, 1.3rem + 3vw, 4.25rem);
+    line-height: 1.08;
+    max-width: 18ch;
+  }
+
+  .review__quote footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .review__who {
+    font-weight: 500;
+  }
+
+  .review__where {
+    font-size: var(--fs-sm);
+    color: var(--c-muted);
+  }
+
+  @media (max-width: 768px) {
+    .review__inner {
+      padding-left: var(--gutter);
+    }
+  }
+</style>

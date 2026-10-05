@@ -1,0 +1,131 @@
+---
+/**
+ * Logo : reprend l'autocollant de la Célia (src/assets/logo/logo-original.png) en miniature —
+ * napperon rose festonné, couronne de pointillés, pâtissière au centre — suivi du nom.
+ * Le napperon tourne doucement au survol du lien parent.
+ */
+import { Image } from "astro:assets";
+import chef from "../assets/logo/chef.png";
+
+interface Props {
+  tone?: "dark" | "light";
+}
+const { tone = "dark" } = Astro.props;
+
+// Contour festonné : 18 arrondis autour d'un cercle
+const scallops = 18;
+const R = 21;
+const r = 4;
+const path =
+  Array.from({ length: scallops }, (_, i) => {
+    const p = (k: number) => {
+      const a = (k / scallops) * Math.PI * 2;
+      return `${(24 + R * Math.cos(a)).toFixed(2)} ${(24 + R * Math.sin(a)).toFixed(2)}`;
+    };
+    return `${i === 0 ? `M${p(0)}` : ""} A${r} ${r} 0 0 1 ${p(i + 1)}`;
+  }).join(" ") + " Z";
+---
+
+<span class:list={["logo", `logo--${tone}`]}>
+  <span class="logo__mark">
+    <svg class="logo__doily" viewBox="0 0 48 48" aria-hidden="true">
+      <path d={path} />
+      <circle cx="24" cy="24" r="18" class="logo__lace" />
+      <circle cx="24" cy="24" r="15.2" class="logo__dots" />
+    </svg>
+    <Image class="logo__chef" src={chef} alt="" width={96} height={100} loading="eager" />
+  </span>
+  <span class="logo__name">
+    <span class="logo__top">As Delícias</span>
+    <span class="logo__bottom">da Célia</span>
+  </span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: var(--c-ink);
+  }
+
+  .logo--light {
+    color: var(--c-on-dark);
+  }
+
+  .logo__mark {
+    position: relative;
+    flex: none;
+    width: 46px;
+    height: 46px;
+  }
+
+  .logo__doily {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  :global(a:hover) .logo__doily {
+    transform: rotate(80deg);
+  }
+
+  .logo__doily path {
+    fill: var(--c-brand);
+  }
+
+  .logo__lace {
+    fill: #fff;
+    stroke: var(--c-brand);
+    stroke-width: 0.6;
+    stroke-dasharray: 1.6 1.2;
+  }
+
+  .logo__dots {
+    fill: #fff;
+    stroke: var(--c-brand);
+    stroke-width: 0.9;
+    stroke-linecap: round;
+    stroke-dasharray: 0 2.4;
+  }
+
+  /* Pâtissière dans le médaillon blanc */
+  .logo__mark :global(.logo__chef) {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 29px;
+    height: 29px;
+    object-fit: cover;
+    object-position: 50% 30%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .logo__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    font-family: var(--f-display);
+    font-variation-settings: "opsz" 72, "SOFT" 100;
+  }
+
+  .logo__top {
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .logo__bottom {
+    font-size: 0.95rem;
+    font-style: italic;
+    font-variation-settings: "opsz" 72, "SOFT" 100, "WONK" 1;
+    color: var(--c-accent);
+    margin-top: 0.1rem;
+  }
+
+  .logo--light .logo__bottom {
+    color: var(--c-accent-tint);
+  }
+</style>

@@ -1,0 +1,262 @@
+---
+import { Image } from "astro:assets";
+import Icon from "../Icon.astro";
+import table from "../../assets/photos/mesa-salgados.jpg";
+import parabens from "../../assets/photos/bolo-parabens.jpg";
+import breads from "../../assets/photos/paes-caseiros.jpg";
+import slices from "../../assets/photos/pao-chourico-fatias.jpg";
+import board from "../../assets/photos/tabua-queijos.jpg";
+import rolls from "../../assets/photos/paezinhos.jpg";
+import chourico from "../../assets/photos/pao-chourico.jpg";
+import cake from "../../assets/photos/bolo-aniversario.jpg";
+
+// shape : forme du cadre (arche, ronde, carrée) pour rythmer la frise
+const photos = [
+  { src: table, alt: "Mesa de festa com travessas de salgados e doces", caption: "Mesa de festa", shape: "tall" },
+  { src: parabens, alt: "Bolo de «Parabéns» com rosas de açúcar e velas 65", caption: "Bolo de Parabéns", shape: "wide" },
+  { src: breads, alt: "Pães caseiros enfarinhados sobre um pano de cozinha", caption: "Pão caseiro", shape: "arch" },
+  { src: slices, alt: "Pão com chouriço cortado às fatias num cesto com naperon", caption: "Pão com chouriço", shape: "square" },
+  { src: board, alt: "Tábua de queijos, enchidos, uvas e nozes", caption: "Tábua de queijos e enchidos", shape: "tall" },
+  { src: rolls, alt: "Cesto de pãezinhos dourados", caption: "Pãezinhos", shape: "round" },
+  { src: chourico, alt: "Tabuleiro de pães com chouriço e pães redondos", caption: "Acabados de sair do forno", shape: "arch" },
+  { src: cake, alt: "Bolo de aniversário com o tema Bluey", caption: "Aniversário da Constança", shape: "tall" },
+];
+---
+
+<section class="gallery scallop" id="galeria" data-hscroll>
+  <div class="gallery__pin">
+    <div class="gallery__head container">
+      <div>
+        <p class="eyebrow" data-reveal="up">Galeria</p>
+        <h2 class="gallery__title display" data-reveal="words">Saído do <em>forno.</em></h2>
+      </div>
+      <div class="gallery__aside" data-reveal="up">
+        <p class="gallery__hint">Algumas encomendas recentes. Há mais de duzentas criações na galeria completa.</p>
+        <a href="/criacoes" class="btn" data-magnetic>
+          Ver todas as criações
+          <Icon name="arrow-right" />
+        </a>
+      </div>
+    </div>
+
+    <div class="gallery__viewport">
+      <ul class="gallery__track" role="list" data-hscroll-track>
+        {photos.map((p, i) => (
+          <li class:list={["gallery__item", `gallery__item--${p.shape}`]}>
+            <figure>
+              <div class="gallery__frame">
+                <Image src={p.src} alt={p.alt} widths={[400, 640, 900]} sizes="(max-width: 900px) 75vw, 32vw" />
+              </div>
+              <figcaption>
+                <span class="gallery__num">{String(i + 1).padStart(2, "0")}</span>
+                {p.caption}
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="gallery__progress container" aria-hidden="true">
+      <span class="gallery__bar"><span data-hscroll-progress></span></span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery {
+    background: var(--c-flour);
+    --scallop: var(--c-flour);
+  }
+
+  .gallery__pin {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(2rem, 4vh, 3.5rem);
+    padding-block: calc(var(--header-h) + 1rem) 2.5rem;
+  }
+
+  .gallery__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .gallery__title {
+    font-size: var(--fs-2xl);
+    margin-top: 1rem;
+  }
+
+  .gallery__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .gallery__hint {
+    max-width: 32ch;
+    font-size: var(--fs-sm);
+    color: var(--c-muted);
+  }
+
+  .gallery__viewport {
+    overflow: hidden;
+  }
+
+  .gallery__track {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(1.25rem, 2.5vw, 2.5rem);
+    width: max-content;
+    padding-inline: var(--gutter);
+  }
+
+  .gallery__item figure {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .gallery__frame {
+    overflow: hidden;
+    background: var(--c-line);
+    height: var(--h);
+    aspect-ratio: var(--ar);
+  }
+
+  .gallery__frame :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease-out);
+  }
+
+  .gallery__item:hover .gallery__frame :global(img) {
+    transform: scale(1.06);
+  }
+
+  .gallery__item--tall {
+    --h: min(52vh, 520px);
+    --ar: 3 / 4;
+  }
+
+  .gallery__item--tall .gallery__frame {
+    border-radius: var(--radius-lg);
+  }
+
+  .gallery__item--wide {
+    --h: min(38vh, 380px);
+    --ar: 16 / 10;
+  }
+
+  .gallery__item--wide .gallery__frame {
+    border-radius: var(--radius-lg);
+  }
+
+  .gallery__item--arch {
+    --h: min(48vh, 480px);
+    --ar: 4 / 5;
+  }
+
+  .gallery__item--arch .gallery__frame {
+    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
+  }
+
+  .gallery__item--square {
+    --h: min(34vh, 340px);
+    --ar: 1;
+  }
+
+  .gallery__item--square .gallery__frame {
+    border-radius: var(--radius-lg);
+  }
+
+  .gallery__item--round {
+    --h: min(36vh, 360px);
+    --ar: 1;
+  }
+
+  .gallery__item--round .gallery__frame {
+    border-radius: 50%;
+  }
+
+  figcaption {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    font-size: var(--fs-sm);
+    color: var(--c-ink-soft);
+  }
+
+  .gallery__num {
+    font-size: var(--fs-xs);
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gallery__bar {
+    position: relative;
+    display: block;
+    height: 2px;
+    background: var(--c-line);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .gallery__bar span {
+    position: absolute;
+    inset: 0;
+    background: var(--c-brand);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  /* Mobile / tablette : simple défilement horizontal au doigt */
+  @media (max-width: 899px) {
+    .gallery__pin {
+      min-height: 0;
+      padding-block: var(--section);
+    }
+
+    .gallery__head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .gallery__viewport {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .gallery__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gallery__item {
+      scroll-snap-align: center;
+    }
+
+    .gallery__item--tall,
+    .gallery__item--arch {
+      --h: 380px;
+    }
+
+    .gallery__item--wide {
+      --h: 240px;
+    }
+
+    .gallery__item--square,
+    .gallery__item--round {
+      --h: 260px;
+    }
+
+    .gallery__progress {
+      display: none;
+    }
+  }
+</style>

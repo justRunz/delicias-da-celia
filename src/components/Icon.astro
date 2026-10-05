@@ -1,0 +1,51 @@
+---
+/** Icônes SVG inline (tracé 1.5, style Phosphor). */
+interface Props {
+  name: "arrow-right" | "arrow-down" | "phone" | "star" | "map-pin" | "facebook" | "whatsapp" | "clock" | "check" | "menu" | "close";
+  size?: number;
+  class?: string;
+}
+const { name, size = 18, class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  {name === "arrow-right" && <path d="M4 12h16M14 6l6 6-6 6" />}
+  {name === "arrow-down" && <path d="M12 4v16M6 14l6 6 6-6" />}
+  {name === "phone" && (
+    <path d="M14.5 3.5a7 7 0 0 1 6 6M14 7a3.5 3.5 0 0 1 3 3M8.6 11.7a10.5 10.5 0 0 0 3.7 3.7l1.6-1.6a1 1 0 0 1 1-.25l3.4 1.1a1 1 0 0 1 .7.95V18a2 2 0 0 1-2.2 2A16 16 0 0 1 4 6.2 2 2 0 0 1 6 4h2.4a1 1 0 0 1 .95.7l1.1 3.4a1 1 0 0 1-.25 1Z" />
+  )}
+  {name === "star" && <path fill="currentColor" stroke="none" d="m12 2.8 2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8Z" />}
+  {name === "map-pin" && (
+    <>
+      <path d="M12 21s-7-5.6-7-11.5a7 7 0 0 1 14 0C19 15.4 12 21 12 21Z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </>
+  )}
+  {name === "facebook" && <path d="M14.5 8H17V4.5h-2.5A4 4 0 0 0 10.5 8.5V11H8v3.5h2.5V21H14v-6.5h2.6L17 11h-3V8.9a.9.9 0 0 1 .5-.9Z" />}
+  {name === "whatsapp" && (
+    <>
+      <path d="M4.5 19.5 5.6 16A8.25 8.25 0 1 1 8.4 18.6Z" />
+      <path d="M9 8.6c0 3.3 3 6.4 6.4 6.4l1.1-1.5-1.8-1-1 .8a4.8 4.8 0 0 1-2.9-2.9l.8-1-1-1.8Z" />
+    </>
+  )}
+  {name === "clock" && (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </>
+  )}
+  {name === "check" && <path d="m5 12.5 4.5 4.5L19 7.5" />}
+  {name === "menu" && <path d="M4 9h16M4 15h16" />}
+  {name === "close" && <path d="M6 6l12 12M18 6 6 18" />}
+</svg>

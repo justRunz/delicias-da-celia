@@ -1,0 +1,202 @@
+---
+/**
+ * Visionneuse plein écran (reprise d'Inova Deco).
+ * Usage : des liens <a data-lightbox href="grande-image.webp" data-caption="..."> dans un
+ * conteneur [data-lightbox-group]. Clavier (← → Échap) et glissement au doigt.
+ */
+import Icon from "./Icon.astro";
+---
+
+<dialog class="lb" data-lb aria-label="Visualizador de fotografias">
+  <figure class="lb__figure">
+    <img class="lb__img" alt="" data-lb-img />
+    <figcaption class="lb__caption">
+      <span class="lb__title display" data-lb-caption></span>
+      <span class="lb__count" data-lb-count></span>
+    </figcaption>
+  </figure>
+  <button class="lb__btn lb__close" data-lb-close aria-label="Fechar"><Icon name="close" size={22} /></button>
+  <button class="lb__btn lb__prev" data-lb-prev aria-label="Fotografia anterior"><Icon name="arrow-right" size={22} /></button>
+  <button class="lb__btn lb__next" data-lb-next aria-label="Fotografia seguinte"><Icon name="arrow-right" size={22} /></button>
+</dialog>
+
+<style>
+  .lb {
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgb(43 29 24 / 0.97);
+    color: var(--c-on-dark);
+  }
+
+  .lb::backdrop {
+    background: transparent;
+  }
+
+  .lb[open] {
+    display: grid;
+    place-items: center;
+    animation: lb-in 0.4s var(--ease-out);
+  }
+
+  .lb__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 4.5rem var(--gutter) 2rem;
+  }
+
+  .lb__img {
+    max-width: min(92vw, 1400px);
+    max-height: calc(100dvh - 10rem);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-lg);
+    transition: opacity 0.25s, transform 0.5s var(--ease-out);
+  }
+
+  .lb__img.is-loading {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  .lb__caption {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+  }
+
+  .lb__title {
+    font-size: var(--fs-lg);
+    font-style: italic;
+    font-variation-settings: "opsz" 72, "SOFT" 100, "WONK" 1;
+  }
+
+  .lb__count {
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
+    color: rgb(247 241 234 / 0.5);
+  }
+
+  .lb__btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid rgb(247 241 234 / 0.2);
+    border-radius: 50%;
+    background: rgb(247 241 234 / 0.05);
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .lb__btn:hover {
+    background: var(--c-accent);
+    border-color: var(--c-accent);
+  }
+
+  .lb__close {
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .lb__prev,
+  .lb__next {
+    top: 50%;
+    margin-top: -26px;
+  }
+
+  .lb__prev {
+    left: 1.25rem;
+  }
+
+  .lb__prev :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .lb__next {
+    right: 1.25rem;
+  }
+
+  @media (max-width: 700px) {
+    .lb__prev,
+    .lb__next {
+      top: auto;
+      bottom: 1.25rem;
+      margin-top: 0;
+    }
+  }
+
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("[data-lb]")!;
+  const img = dialog.querySelector<HTMLImageElement>("[data-lb-img]")!;
+  const caption = dialog.querySelector<HTMLElement>("[data-lb-caption]")!;
+  const count = dialog.querySelector<HTMLElement>("[data-lb-count]")!;
+
+  let items: HTMLAnchorElement[] = [];
+  let index = 0;
+
+  const show = (i: number) => {
+    index = (i + items.length) % items.length;
+    const link = items[index];
+    img.classList.add("is-loading");
+    img.onload = () => img.classList.remove("is-loading");
+    img.src = link.href;
+    img.alt = link.querySelector("img")?.alt ?? "";
+    caption.textContent = link.dataset.caption ?? "";
+    count.textContent = `${index + 1} / ${items.length}`;
+  };
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[data-lightbox]");
+      if (!link) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const group = link.closest("[data-lightbox-group]") ?? document;
+      // Ignore les photos masquées par un filtre
+      items = [...group.querySelectorAll<HTMLAnchorElement>("a[data-lightbox]")].filter((a) => a.offsetParent);
+      show(items.indexOf(link));
+      dialog.showModal();
+      window.lenis?.stop();
+    },
+    { capture: true },
+  );
+
+  dialog.addEventListener("close", () => window.lenis?.start());
+  dialog.querySelector("[data-lb-close]")!.addEventListener("click", () => dialog.close());
+  dialog.querySelector("[data-lb-prev]")!.addEventListener("click", () => show(index - 1));
+  dialog.querySelector("[data-lb-next]")!.addEventListener("click", () => show(index + 1));
+  dialog.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowLeft") show(index - 1);
+    if (e.key === "ArrowRight") show(index + 1);
+  });
+  // Clic sur le fond = fermer
+  dialog.addEventListener("click", (e) => e.target === dialog && dialog.close());
+
+  // Glissement au doigt
+  let startX = 0;
+  dialog.addEventListener("touchstart", (e) => (startX = e.touches[0].clientX), { passive: true });
+  dialog.addEventListener(
+    "touchend",
+    (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 50) show(index + (dx < 0 ? 1 : -1));
+    },
+    { passive: true },
+  );
+</script>

@@ -1,0 +1,161 @@
+---
+import { company } from "../../data/site";
+
+const steps = [
+  {
+    title: "Fale connosco",
+    text: `Ligue, mande mensagem pelo WhatsApp ou pelo Facebook. Diga o que procura, para quantas pessoas e para que dia.`,
+  },
+  {
+    title: "Combinamos os pormenores",
+    text: "Sabores, recheios, tamanho, tema e decoração. Fica a saber o preço antes de confirmar a encomenda.",
+  },
+  {
+    title: "Levante no dia",
+    text: `A encomenda fica pronta no dia e à hora combinados, para levantar em ${company.place}. Entrega a combinar.`,
+  },
+];
+---
+
+<section class="howto section scallop" id="encomendar">
+  <div class="howto__inner container">
+    <header class="howto__head">
+      <p class="eyebrow" data-reveal="up">Como encomendar</p>
+      <h2 class="howto__title display" data-reveal="words">Três passos <em>até à mesa.</em></h2>
+      <p class="howto__note" data-reveal="up">
+        Para bolos de aniversário e mesas de festa, convém encomendar com alguns dias de antecedência.
+      </p>
+    </header>
+
+    <div class="howto__steps" data-piping>
+      <!-- Ligne « poche à douille » qui se dessine au défilement -->
+      <svg class="howto__line" viewBox="0 0 40 600" preserveAspectRatio="none" aria-hidden="true">
+        <path
+          data-piping-path
+          d="M20 0 C 36 40, 4 80, 20 120 S 36 200, 20 240 S 4 320, 20 360 S 36 440, 20 480 S 4 560, 20 600"
+          vector-effect="non-scaling-stroke"
+        />
+      </svg>
+
+      <ol role="list">
+        {steps.map((s, i) => (
+          <li class="howto__step" data-step>
+            <span class="howto__dot display" data-step-dot>{i + 1}</span>
+            <div>
+              <h3 class="howto__name display">{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .howto {
+    background: var(--c-accent-soft);
+    --scallop: var(--c-accent-soft);
+  }
+
+  .howto__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2.5rem, 6vw, 7rem);
+    align-items: start;
+  }
+
+  .howto__head {
+    position: sticky;
+    top: calc(var(--header-h) + 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .howto__title {
+    font-size: var(--fs-2xl);
+    max-width: 10ch;
+  }
+
+  .howto__note {
+    max-width: 38ch;
+    color: var(--c-ink-soft);
+  }
+
+  .howto__steps {
+    position: relative;
+  }
+
+  .howto__line {
+    position: absolute;
+    left: 0;
+    top: 1.75rem;
+    bottom: 1.75rem;
+    width: 56px;
+    height: calc(100% - 3.5rem);
+    overflow: visible;
+  }
+
+  .howto__line path {
+    fill: none;
+    stroke: var(--c-brand);
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  .howto__steps ol {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 7vw, 6rem);
+  }
+
+  .howto__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    align-items: start;
+  }
+
+  .howto__dot {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--c-bg);
+    border: 1.5px solid var(--c-accent);
+    color: var(--c-accent-deep);
+    font-size: 1.5rem;
+    font-style: italic;
+    transition: background-color 0.5s, color 0.5s;
+  }
+
+  .howto__dot.is-on {
+    background: var(--c-accent);
+    color: var(--c-on-dark);
+  }
+
+  .howto__name {
+    font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem);
+    margin-top: 0.4rem;
+  }
+
+  .howto__step p {
+    margin-top: 0.75rem;
+    max-width: 44ch;
+    color: var(--c-ink-soft);
+  }
+
+  @media (max-width: 900px) {
+    .howto__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .howto__head {
+      position: static;
+    }
+  }
+</style>
