@@ -124,7 +124,7 @@ export const precario: Section[] = [
           { name: "Tronco de Natal", price: "15,00 €" },
           { name: "Fritos de Natal", note: "Coscorões, enrolados, sonhos, azevias", price: "18,00 € / kg" },
           { name: "Pão de Ló Húmido e de Chocolate", price: "15,00 €" },
-          { name: "Broas", note: "Noz, anis, mel, chocolate, frutas cristalizadas…", price: "12,00 € / kg" },
+          { name: "Broas", note: "Noz, anis, mel, chocolate, frutas cristalizadas…", price: "14,00 € / kg" },
           { name: "Bolos Secos de Alfarroba e Limão", price: "12,00 € / kg" },
           { name: "Bolos Secos Torcidos", price: "10,00 € / kg" },
           { name: "Ferraduras", price: "10,00 € / kg" },
