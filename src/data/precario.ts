@@ -93,7 +93,7 @@ export const precario: Section[] = [
           { name: "Arroz de Pato", price: "18,00 € / kg" },
           { name: "Lasanha", price: "18,00 € / kg" },
           { name: "Quiches", price: "25,00 € / un." },
-          { name: "Pão Recheado", price: "18,00 € / kg" },
+          { name: "Pão Recheado", price: "25,00 € / un." },
           { name: "Bola de Carne", price: "18,00 € / kg" },
           { name: "Polvo à Lagareiro", price: consulta },
         ],
