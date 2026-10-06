@@ -313,6 +313,33 @@ button {
   will-change: transform;
 }
 
+/* --- Barre de puces collée sous l'en-tête (Criações, Preçário) --------- */
+.chipbar {
+  position: sticky;
+  top: calc(var(--header-h) - 1px);
+  z-index: 5;
+  margin-inline: calc(var(--gutter) * -1);
+  padding: 1rem var(--gutter);
+  background: var(--c-bg);
+  transition: top 0.5s var(--ease-out);
+}
+
+/* Quand l'en-tête se cache (ordinateur), la barre remonte tout en haut */
+html:has(.header.is-hidden) .chipbar {
+  top: 0;
+}
+
+.chipbar__scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chipbar__scroll::-webkit-scrollbar {
+  display: none;
+}
+
 /* --- Puces de filtre / d'onglets (Criações, Preçário) ------------------ */
 .chip {
   flex: none;

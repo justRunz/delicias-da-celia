@@ -19,10 +19,10 @@ import { company } from "../data/site";
     </p>
   </PageHero>
 
-  <section class="menu" data-menu>
+  <section class="menu">
     <div class="container">
-      <nav class="tabs" aria-label="Categorias do preçário" data-reveal="up">
-        <div class="tabs__scroll" data-tabs>
+      <nav class="chipbar" aria-label="Categorias do preçário" data-reveal="up">
+        <div class="chipbar__scroll" data-tabs>
           {precario.map((s, i) => (
             <a href={`#${s.id}`} class:list={["chip", { "is-active": i === 0 }]} data-tab={s.id}>
               {s.label}
@@ -99,32 +99,6 @@ import { company } from "../data/site";
 <style>
   .menu {
     padding-bottom: var(--section);
-  }
-
-  /* --- Onglets (puces) collés sous l'en-tête --- */
-  .tabs {
-    position: sticky;
-    top: calc(var(--header-h) - 1px);
-    z-index: 5;
-    margin-inline: calc(var(--gutter) * -1);
-    padding: 1rem var(--gutter);
-    background: var(--c-bg);
-    transition: top 0.5s var(--ease-out);
-  }
-
-  :global(html:has(.header.is-hidden)) .tabs {
-    top: 0;
-  }
-
-  .tabs__scroll {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-
-  .tabs__scroll::-webkit-scrollbar {
-    display: none;
   }
 
   .menu__sections {

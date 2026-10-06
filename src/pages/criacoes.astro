@@ -41,8 +41,8 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
 
   <section class="works" data-works>
     <div class="container">
-      <div class="filters" data-reveal="up">
-        <div class="filters__scroll" role="group" aria-label="Filtrar por categoria" data-filters>
+      <div class="chipbar" data-reveal="up">
+        <div class="chipbar__scroll filters__scroll" role="group" aria-label="Filtrar por categoria" data-filters>
           <button class="chip is-active" data-filter="all" aria-pressed="true">
             Tudo <span>{creations.length}</span>
           </button>
@@ -94,37 +94,13 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     padding-bottom: var(--section);
   }
 
-  /* --- Filtres --- */
-  .filters {
-    position: sticky;
-    top: calc(var(--header-h) - 1px);
-    z-index: 5;
-    margin-inline: calc(var(--gutter) * -1);
-    padding: 1rem var(--gutter);
-    background: var(--c-bg);
-    transition: top 0.5s var(--ease-out);
-  }
-
-  /* Quand l'en-tête se cache (ordinateur), la barre remonte tout en haut */
-  :global(html:has(.header.is-hidden)) .filters {
-    top: 0;
-  }
-
+  /* --- Filtres : fondu à droite, indique que la liste continue --- */
   .filters__scroll {
-    display: flex;
-    gap: 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
-    /* Fondu à droite : indique que la liste continue */
     mask-image: linear-gradient(90deg, #000 calc(100% - 4rem), transparent);
   }
 
   .filters__scroll.is-end {
     mask-image: none;
-  }
-
-  .filters__scroll::-webkit-scrollbar {
-    display: none;
   }
 
   /* --- Grille --- */
