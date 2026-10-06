@@ -26,7 +26,11 @@ const { title, description } = Astro.props;
     <meta property="og:locale" content="pt_PT" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
+    <!-- Favicon : logo de l'en-tête (napperon + pâtissière), généré depuis src/assets/logo -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#f7f1ea" />
 
     <script is:inline>document.documentElement.classList.add("js");</script>
