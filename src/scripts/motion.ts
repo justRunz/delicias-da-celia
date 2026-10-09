@@ -227,7 +227,8 @@ if (reduced) {
     gsap.to(path, {
       strokeDashoffset: 0,
       ease: "none",
-      scrollTrigger: { trigger: wrap, start: "top 70%", end: "bottom 60%", scrub: 0.6 },
+      // Même repère que les pastilles (80 % de l'écran) : la ligne arrive au 3 quand il s'allume
+      scrollTrigger: { trigger: wrap, start: "top 80%", end: "bottom 80%", scrub: 0.6 },
     });
     wrap.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => {
       const dot = step.querySelector<HTMLElement>("[data-step-dot]")!;
@@ -242,7 +243,8 @@ if (reduced) {
       });
       ScrollTrigger.create({
         trigger: step,
-        start: "top 62%",
+        // 80 % : sur grand écran, toute la section tient à l'écran, le 3 doit déjà s'allumer
+        start: "top 80%",
         onLeaveBack: () => dot.classList.remove("is-on"),
         onEnter: () => {
           dot.classList.add("is-on");
