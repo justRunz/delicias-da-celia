@@ -659,6 +659,17 @@ const doily =
       const first = nome.split(/\s+/)[0];
       card.querySelector<HTMLElement>("[data-thanks-title]")!.textContent = first ? `Obrigado, ${first}!` : "Obrigado!";
       card.querySelector<HTMLElement>("[data-thanks-demo]")!.hidden = !demo;
+      // D'abord remonter en haut de la carte : en bas de page, la carte qui rétrécit
+      // ferait sauter la page et le remerciement finirait au-dessus de l'écran
+      const offset = -(document.querySelector<HTMLElement>("[data-header]")?.offsetHeight ?? 0) - 16;
+      if (window.lenis && !reduced) window.lenis.scrollTo(card, { offset, duration: 0.8, onComplete: () => swap() });
+      else {
+        window.scrollTo({ top: card.getBoundingClientRect().top + scrollY + offset });
+        swap();
+      }
+    };
+
+    const swap = () => {
       const from = card.offsetHeight;
       form.hidden = true;
       thanks.hidden = false;
