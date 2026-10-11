@@ -31,8 +31,13 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
   // Cible pas encore apparue (data-reveal) : décalée de quelques px vers le bas, on retire ce décalage
   const shift = target ? Number(gsap.getProperty(target, "y")) || 0 : 0;
-  if (lenis) lenis.scrollTo(target ?? 0, { offset: target ? headerOffset() - shift : 0, duration: 1.4 });
-  else (target ?? document.body).scrollIntoView();
+  // Arrivé sur le formulaire : le premier champ ([data-autofocus]) est sélectionné
+  const focus = () => target?.querySelector<HTMLElement>("[data-autofocus]")?.focus({ preventScroll: true });
+  if (lenis) lenis.scrollTo(target ?? 0, { offset: target ? headerOffset() - shift : 0, duration: 1.4, onComplete: focus });
+  else {
+    (target ?? document.body).scrollIntoView();
+    focus();
+  }
   history.replaceState(null, "", url.pathname + url.hash);
 });
 
