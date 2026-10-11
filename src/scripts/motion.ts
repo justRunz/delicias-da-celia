@@ -29,7 +29,9 @@ document.addEventListener("click", (e) => {
   const target = toTop ? null : document.querySelector<HTMLElement>(decodeURIComponent(url.hash));
   if (!toTop && !target) return;
   e.preventDefault();
-  if (lenis) lenis.scrollTo(target ?? 0, { offset: target ? headerOffset() : 0, duration: 1.4 });
+  // Cible pas encore apparue (data-reveal) : décalée de quelques px vers le bas, on retire ce décalage
+  const shift = target ? Number(gsap.getProperty(target, "y")) || 0 : 0;
+  if (lenis) lenis.scrollTo(target ?? 0, { offset: target ? headerOffset() - shift : 0, duration: 1.4 });
   else (target ?? document.body).scrollIntoView();
   history.replaceState(null, "", url.pathname + url.hash);
 });
