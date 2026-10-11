@@ -6,7 +6,7 @@
 - Textes des spécialités et de « A Célia » = propositions (ex. batizados, comunhões, casamentos ; folhados).
 - Nom : le site écrit « Delícias » avec accent (Facebook : « Delicias »).
 - Avis cité : Carlos M. (Facebook, 2019). Seuls les avis visibles sans connexion ont été repris.
-- Domaine : https://asdeliciasdacelia.jstrunz.me (`site` dans astro.config.mjs).
+- Domaine : https://asdelicias-dacelia.com (`site` dans astro.config.mjs) ; l'ancien asdeliciasdacelia.jstrunz.me peut rediriger vers lui.
 - Photos : 9 photos publiques de la page Facebook ; en ajouter d'autres dans src/assets/photos.
 
 ## Page Criações (/criacoes)
