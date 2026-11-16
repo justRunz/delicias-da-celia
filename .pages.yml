@@ -1,0 +1,32 @@
+# Configuration de Pages CMS (https://pagescms.org) : édition du preçário depuis le navigateur.
+content:
+  - name: precario
+    label: Preçário
+    type: file
+    path: src/data/pricing.json
+    format: json
+    fields:
+      - name: sections
+        label: Categorias
+        type: object
+        list: true
+        fields:
+          - { name: id, label: "Âncora (sem espaços nem acentos)", type: string, required: true }
+          - { name: label, label: Nome, type: string, required: true }
+          - { name: intro, label: Introdução, type: string }
+          - name: groups
+            label: Grupos
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Título, type: string, required: true }
+              - { name: priceHead, label: "Legenda da coluna de preços (opcional)", type: string }
+              - { name: footnote, label: "Nota (opcional)", type: string }
+              - name: items
+                label: Produtos
+                type: object
+                list: true
+                fields:
+                  - { name: name, label: Produto, type: string, required: true }
+                  - { name: note, label: "Descrição (opcional)", type: string }
+                  - { name: price, label: "Preço (ex.: 25,00 € · 18,00 € / kg · Sob consulta)", type: string, required: true }
