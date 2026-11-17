@@ -382,7 +382,7 @@
     }
   ],
   "notice": {
-    "show": true,
+    "show": false,
     "badge": "Brevemente",
     "title": "Preçário da época natalícia 2026",
     "text": "Bolos-rei, troncos, fritos de Natal e o cardápio completo."
