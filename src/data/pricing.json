@@ -379,21 +379,6 @@
         }
       ],
       "id": "pao"
-    },
-    {
-      "label": "Natal 2026",
-      "groups": [
-        {
-          "title": "Fritos",
-          "items": [
-            {
-              "name": "Coscuroes",
-              "price": "18,00 € / kg"
-            }
-          ]
-        }
-      ],
-      "id": "natal2026"
     }
   ]
 }
