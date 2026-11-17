@@ -8,3 +8,6 @@ export type Group = { title: string; items: Item[]; footnote?: string; /** lége
 export type Section = { id: string; label: string; intro: string; groups: Group[] };
 
 export const precario: Section[] = data.sections;
+
+/** Bloc « Brevemente » en bas du preçário ; `show: false` le masque. */
+export const notice: { show: boolean; badge?: string; title: string; text: string } = data.notice;

@@ -34,3 +34,12 @@ content:
               - { name: footnote, label: "Nota (opcional)", type: string, description: "Aparece por baixo da lista, ex.: «Mais 2,00 € por dúzia se forem entregues fritos.»" }
               - { name: priceHead, label: "Legenda da coluna de preços (opcional)", type: string, description: "Só se os preços tiverem duas colunas, ex.: «Pequeno / normal»." }
           - { name: id, label: Âncora, type: string, required: true, description: "Identificador técnico da categoria (minúsculas, sem espaços nem acentos, ex.: bolos). Não alterar nas categorias existentes." }
+      - name: notice
+        label: Aviso (Brevemente)
+        type: object
+        description: "Caixa no fim da página do preçário."
+        fields:
+          - { name: show, label: Mostrar, type: boolean, description: "Desmarque para esconder a caixa do site." }
+          - { name: badge, label: Etiqueta, type: string, description: "Ex.: Brevemente" }
+          - { name: title, label: Título, type: string, required: true }
+          - { name: text, label: Texto, type: string, required: true, description: "A frase «Siga-nos no Instagram para saber primeiro.» é acrescentada automaticamente." }
