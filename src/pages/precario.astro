@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import ContactCta from "../components/ContactCta.astro";
 import Icon from "../components/Icon.astro";
-import { precario } from "../data/pricing";
+import { precario, notice } from "../data/pricing";
 import { company } from "../data/site";
 ---
 
@@ -65,14 +65,16 @@ import { company } from "../data/site";
           </section>
         ))}
 
-        <aside class="soon" data-reveal="up">
-          <span class="soon__badge">Brevemente</span>
-          <p class="soon__title display">Preçário da época natalícia 2026</p>
-          <p class="soon__text">
-            Bolos-rei, troncos, fritos de Natal e o cardápio completo. Siga-nos no{" "}
-            <a href={company.instagram} target="_blank" rel="noopener">Instagram</a> para saber primeiro.
-          </p>
-        </aside>
+        {notice.show && (
+          <aside class="soon" data-reveal="up">
+            {notice.badge && <span class="soon__badge">{notice.badge}</span>}
+            <p class="soon__title display">{notice.title}</p>
+            <p class="soon__text">
+              {notice.text} Siga-nos no{" "}
+              <a href={company.instagram} target="_blank" rel="noopener">Instagram</a> para saber primeiro.
+            </p>
+          </aside>
+        )}
 
         <p class="menu__legal" data-reveal="up">
           Preços em euros. Podem variar conforme o tamanho, a quantidade e a personalização.
