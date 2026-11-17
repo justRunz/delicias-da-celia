@@ -1,7 +1,6 @@
 {
   "sections": [
     {
-      "id": "bolos",
       "label": "Bolos e doces",
       "intro": "Bolos inteiros, tartes, tortas e sobremesas caseiras.",
       "groups": [
@@ -10,8 +9,8 @@
           "items": [
             {
               "name": "Bolo de Aniversário",
-              "note": "Cenoura, chocolate, pão de ló, red velvet, amêndoa…",
-              "price": "Sob consulta"
+              "price": "Sob consulta",
+              "note": "Cenoura, chocolate, pão de ló, red velvet, amêndoa…"
             },
             {
               "name": "Bolo de Aniversário Personalizado",
@@ -63,8 +62,8 @@
             },
             {
               "name": "Delícias da Célia",
-              "note": "Vários sabores",
-              "price": "1,50 € / un."
+              "price": "1,50 € / un.",
+              "note": "Vários sabores"
             }
           ]
         },
@@ -117,17 +116,15 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "bolos"
     },
     {
-      "id": "salgados",
       "label": "Salgados",
       "intro": "Salgadinhos à dúzia, para festas, lanches e eventos.",
       "groups": [
         {
           "title": "Salgados à dúzia",
-          "priceHead": "Pequeno / normal",
-          "footnote": "Mais 2,00 € por dúzia se forem entregues já cozidos ou fritos.",
           "items": [
             {
               "name": "Rissóis de Peixe",
@@ -189,12 +186,14 @@
               "name": "Coxinhas",
               "price": "8 € / 10 €"
             }
-          ]
+          ],
+          "footnote": "Mais 2,00 € por dúzia se forem entregues já cozidos ou fritos.",
+          "priceHead": "Pequeno / normal"
         }
-      ]
+      ],
+      "id": "salgados"
     },
     {
-      "id": "refeicoes",
       "label": "Refeições",
       "intro": "Pratos caseiros e sopas, ao quilo ou por encomenda.",
       "groups": [
@@ -264,10 +263,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "refeicoes"
     },
     {
-      "id": "epoca",
       "label": "Produtos da época",
       "intro": "Doçaria de Natal e de festas, por encomenda na época.",
       "groups": [
@@ -292,8 +291,8 @@
             },
             {
               "name": "Fritos de Natal",
-              "note": "Coscorões, enrolados, sonhos, azevias",
-              "price": "18,00 € / kg"
+              "price": "18,00 € / kg",
+              "note": "Coscorões, enrolados, sonhos, azevias"
             },
             {
               "name": "Pão de Ló Húmido e de Chocolate",
@@ -301,8 +300,8 @@
             },
             {
               "name": "Broas",
-              "note": "Noz, anis, mel, chocolate, frutas cristalizadas…",
-              "price": "14,00 € / kg"
+              "price": "14,00 € / kg",
+              "note": "Noz, anis, mel, chocolate, frutas cristalizadas…"
             },
             {
               "name": "Bolos Secos de Alfarroba e Limão",
@@ -346,10 +345,10 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "epoca"
     },
     {
-      "id": "pao",
       "label": "Pão quente",
       "intro": "Pão caseiro acabado de cozer. A novidade da casa.",
       "groups": [
@@ -378,7 +377,23 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "pao"
+    },
+    {
+      "label": "Natal 2026",
+      "groups": [
+        {
+          "title": "Fritos",
+          "items": [
+            {
+              "name": "Coscuroes",
+              "price": "18,00 € / kg"
+            }
+          ]
+        }
+      ],
+      "id": "natal2026"
     }
   ]
 }
