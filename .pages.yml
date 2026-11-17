@@ -1,4 +1,5 @@
 # Configuration de Pages CMS (https://pagescms.org) : édition du preçário depuis le navigateur.
+# Listes repliées par défaut, chaque ligne titrée par son nom (summary).
 content:
   - name: precario
     label: Preçário
@@ -9,24 +10,27 @@ content:
       - name: sections
         label: Categorias
         type: object
-        list: true
+        list:
+          collapsible: { collapsed: true, summary: "{label}" }
         fields:
-          - { name: id, label: "Âncora (sem espaços nem acentos)", type: string, required: true }
           - { name: label, label: Nome, type: string, required: true }
           - { name: intro, label: Introdução, type: string }
           - name: groups
             label: Grupos
             type: object
-            list: true
+            list:
+              collapsible: { collapsed: true, summary: "{title}" }
             fields:
               - { name: title, label: Título, type: string, required: true }
-              - { name: priceHead, label: "Legenda da coluna de preços (opcional)", type: string }
-              - { name: footnote, label: "Nota (opcional)", type: string }
               - name: items
                 label: Produtos
                 type: object
-                list: true
+                list:
+                  collapsible: { collapsed: true, summary: "{name} — {price}" }
                 fields:
                   - { name: name, label: Produto, type: string, required: true }
-                  - { name: note, label: "Descrição (opcional)", type: string }
-                  - { name: price, label: "Preço (ex.: 25,00 € · 18,00 € / kg · Sob consulta)", type: string, required: true }
+                  - { name: price, label: Preço, type: string, required: true, description: "Ex.: 25,00 € · 18,00 € / kg · 1,50 € / un. Escreva «Sob consulta» para preço sob pedido." }
+                  - { name: note, label: "Descrição (opcional)", type: string, description: "Pequeno texto por baixo do nome, ex.: sabores disponíveis." }
+              - { name: footnote, label: "Nota (opcional)", type: string, description: "Aparece por baixo da lista, ex.: «Mais 2,00 € por dúzia se forem entregues fritos.»" }
+              - { name: priceHead, label: "Legenda da coluna de preços (opcional)", type: string, description: "Só se os preços tiverem duas colunas, ex.: «Pequeno / normal»." }
+          - { name: id, label: Âncora, type: string, required: true, description: "Identificador técnico da categoria (minúsculas, sem espaços nem acentos, ex.: bolos). Não alterar nas categorias existentes." }
