@@ -10,15 +10,15 @@ import rolls from "../../assets/photos/paezinhos.jpg";
 import chourico from "../../assets/photos/pao-chourico.jpg";
 import cake from "../../assets/photos/bolo-aniversario.jpg";
 
-// shape : forme du cadre (arche, ronde, carrée) pour rythmer la frise
+// shape : format du cadre rectangulaire (portrait, paysage, carré) pour rythmer la frise
 const photos = [
   { src: table, alt: "Mesa de festa com travessas de salgados e doces", caption: "Mesa de festa", shape: "tall" },
   { src: parabens, alt: "Bolo de «Parabéns» com rosas de açúcar e velas 65", caption: "Bolo de Parabéns", shape: "wide" },
-  { src: breads, alt: "Pães caseiros enfarinhados sobre um pano de cozinha", caption: "Pão caseiro", shape: "arch" },
+  { src: breads, alt: "Pães caseiros enfarinhados sobre um pano de cozinha", caption: "Pão caseiro", shape: "portrait" },
   { src: slices, alt: "Pão com chouriço cortado às fatias num cesto com naperon", caption: "Pão com chouriço", shape: "square" },
   { src: board, alt: "Tábua de queijos, enchidos, uvas e nozes", caption: "Tábua de queijos e enchidos", shape: "tall" },
-  { src: rolls, alt: "Cesto de pãezinhos dourados", caption: "Pãezinhos", shape: "round" },
-  { src: chourico, alt: "Tabuleiro de pães com chouriço e pães redondos", caption: "Acabados de sair do forno", shape: "arch" },
+  { src: rolls, alt: "Cesto de pãezinhos dourados", caption: "Pãezinhos", shape: "square" },
+  { src: chourico, alt: "Tabuleiro de pães com chouriço e pães redondos", caption: "Acabados de sair do forno", shape: "portrait" },
   { src: cake, alt: "Bolo de aniversário com o tema Bluey", caption: "Aniversário da Constança", shape: "tall" },
 ];
 ---
@@ -124,6 +124,7 @@ const photos = [
   .gallery__frame {
     overflow: hidden;
     background: var(--c-line);
+    border-radius: var(--radius-lg);
     height: var(--h);
     aspect-ratio: var(--ar);
   }
@@ -144,44 +145,19 @@ const photos = [
     --ar: 3 / 4;
   }
 
-  .gallery__item--tall .gallery__frame {
-    border-radius: var(--radius-lg);
-  }
-
   .gallery__item--wide {
     --h: min(38vh, 380px);
     --ar: 16 / 10;
   }
 
-  .gallery__item--wide .gallery__frame {
-    border-radius: var(--radius-lg);
-  }
-
-  .gallery__item--arch {
+  .gallery__item--portrait {
     --h: min(48vh, 480px);
     --ar: 4 / 5;
-  }
-
-  .gallery__item--arch .gallery__frame {
-    border-radius: 999px 999px var(--radius-lg) var(--radius-lg);
   }
 
   .gallery__item--square {
     --h: min(34vh, 340px);
     --ar: 1;
-  }
-
-  .gallery__item--square .gallery__frame {
-    border-radius: var(--radius-lg);
-  }
-
-  .gallery__item--round {
-    --h: min(36vh, 360px);
-    --ar: 1;
-  }
-
-  .gallery__item--round .gallery__frame {
-    border-radius: 50%;
   }
 
   figcaption {
@@ -242,7 +218,7 @@ const photos = [
     }
 
     .gallery__item--tall,
-    .gallery__item--arch {
+    .gallery__item--portrait {
       --h: 380px;
     }
 
@@ -250,8 +226,7 @@ const photos = [
       --h: 240px;
     }
 
-    .gallery__item--square,
-    .gallery__item--round {
+    .gallery__item--square {
       --h: 260px;
     }
 
