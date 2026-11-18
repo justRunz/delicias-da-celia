@@ -6,6 +6,7 @@ import "@fontsource-variable/geist/wght.css";
 import "@fontsource-variable/fraunces/full.css";
 import "@fontsource-variable/fraunces/full-italic.css";
 import "../styles/global.css";
+import { company } from "../data/site";
 
 interface Props {
   title: string;
@@ -13,6 +14,29 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+
+// Données structurées : WebSite → Google affiche le nom au lieu du domaine ;
+// Bakery → fiche locale (adresse, téléphone, réseaux).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    { "@type": "WebSite", name: company.name, url: Astro.site?.href },
+    {
+      "@type": "Bakery",
+      name: company.name,
+      url: Astro.site?.href,
+      logo: new URL("/apple-touch-icon.png", Astro.site).href,
+      telephone: company.phoneHref.replace("tel:", ""),
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: company.place,
+        addressRegion: company.city,
+        addressCountry: "PT",
+      },
+      sameAs: [company.facebook, company.instagram],
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -24,6 +48,8 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={company.name} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <meta property="og:locale" content="pt_PT" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
