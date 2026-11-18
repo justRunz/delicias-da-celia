@@ -33,8 +33,6 @@ export type Creation = {
 // Photos reprises des albums Facebook de la Célia (octobre 2026). Ordre = ordre dans chaque catégorie.
 export const creations: Creation[] = [
   // Créations récentes (album « Téléchargements mobiles » et « Photos », 2024-2026)
-  { file: "criacoes/tradicional-01", category: "tradicional", title: "Cardápio da Páscoa" },
-  { file: "criacoes/tradicional-02", category: "tradicional", title: "Cardápio de Natal" },
   { file: "criacoes/tradicional-03", category: "tradicional", title: "Bolinhos de massa doce" },
   { file: "criacoes/doces-33", category: "doces", title: "Biscoitos com açúcar em pó" },
   { file: "criacoes/tradicional-04", category: "tradicional", title: "Broas com amêndoa" },
@@ -136,7 +134,6 @@ export const creations: Creation[] = [
   { file: "photos/pao-chourico-fatias", category: "salgados", title: "Pão com chouriço às fatias" },
   { file: "photos/paes-caseiros", category: "salgados", title: "Pão caseiro" },
   { file: "photos/paezinhos", category: "salgados", title: "Pãezinhos caseiros" },
-  { file: "photos/banca", category: "doces", title: "Bolos secos embalados para oferecer" },
   { file: "criacoes/meninas-01", category: "meninas", title: "Bolo Minnie" },
   { file: "criacoes/meninas-02", category: "meninas", title: "Bolo princesa em dois andares" },
   { file: "criacoes/meninas-03", category: "meninas", title: "Castelo de princesas" },
