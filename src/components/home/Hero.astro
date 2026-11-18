@@ -52,7 +52,7 @@ const ring = "feito à mão · por encomenda · em Santarém · ";
             src={cake}
             alt="Bolo de aniversário com o Stitch e a Angel, cobertura azul e rosa com brilhos"
             widths={[480, 720, 960, 1280]}
-            sizes="(max-width: 900px) 80vw, 38vw"
+            sizes="(max-width: 699px) 80vw, 45vw"
             loading="eager"
             fetchpriority="high"
           />
@@ -282,6 +282,29 @@ const ring = "feito à mão · por encomenda · em Santarém · ";
       padding-bottom: 4rem;
     }
 
+    .hero__badge {
+      width: 128px;
+      right: 0;
+    }
+
+    .hero__scroll {
+      display: none;
+    }
+  }
+
+  /* Tablette : texte et photo côte à côte, en plus compact */
+  @media (min-width: 700px) and (max-width: 900px) {
+    .hero__inner {
+      gap: 1.5rem;
+    }
+
+    .hero__badge {
+      width: 104px;
+    }
+  }
+
+  /* Téléphone : photo sous le texte */
+  @media (max-width: 699px) {
     .hero__inner {
       grid-template-columns: 1fr;
       gap: 3.5rem;
@@ -290,15 +313,6 @@ const ring = "feito à mão · por encomenda · em Santarém · ";
     .hero__visual {
       justify-self: center;
       width: min(100%, 420px);
-    }
-
-    .hero__badge {
-      width: 128px;
-      right: 0;
-    }
-
-    .hero__scroll {
-      display: none;
     }
   }
 
