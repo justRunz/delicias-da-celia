@@ -27,12 +27,45 @@ const enParagraphes = (value: string) =>
 /** « 2026-10-18 » → « 18/10/2026 » */
 const dataPt = (iso: string) => (/^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso.split("-").reverse().join("/") : iso);
 
+// Photos de référence : 3 au plus, déjà réduites en JPEG par le navigateur.
+// Vercel refuse de toute façon les requêtes de plus de 4,5 Mo.
+const FOTOS = { max: 3, parFichier: 2 * 1024 * 1024, total: 4 * 1024 * 1024 } as const;
+
+/** Type réel d'après les premiers octets (le nom et le type annoncés ne prouvent rien). */
+const tipoImagem = (b: Uint8Array): "png" | "jpg" | null => {
+  if (b.length > 8 && b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47 && b[4] === 0x0d && b[5] === 0x0a && b[6] === 0x1a && b[7] === 0x0a) return "png";
+  if (b.length > 3 && b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) return "jpg";
+  return null;
+};
+
 export const POST: APIRoute = async ({ request }) => {
-  let payload: Record<string, unknown>;
+  if (Number(request.headers.get("content-length")) > FOTOS.total + 64 * 1024) {
+    return json(413, { error: "As fotos são demasiado pesadas." });
+  }
+
+  let form: FormData;
   try {
-    payload = await request.json();
+    form = await request.formData();
   } catch {
     return json(400, { error: "Pedido ilegível." });
+  }
+  const payload: Record<string, unknown> = Object.fromEntries(
+    [...form.entries()].filter(([, v]) => typeof v === "string"),
+  );
+  payload.tipo = form.getAll("tipo");
+
+  // Photos : vérifiées octet par octet, renommées par nous (jamais le nom envoyé)
+  const ficheiros = form.getAll("fotos").filter((f): f is File => typeof f !== "string");
+  if (ficheiros.length > FOTOS.max) return json(400, { error: `No máximo ${FOTOS.max} fotos.` });
+  let total = 0;
+  const anexos: { filename: string; content: string }[] = [];
+  for (const [i, f] of ficheiros.entries()) {
+    total += f.size;
+    if (f.size > FOTOS.parFichier || total > FOTOS.total) return json(413, { error: "As fotos são demasiado pesadas." });
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    const ext = tipoImagem(bytes);
+    if (!ext) return json(400, { error: "Apenas imagens PNG ou JPEG são aceites." });
+    anexos.push({ filename: `referencia-${i + 1}.${ext}`, content: Buffer.from(bytes).toString("base64") });
   }
 
   // Piège à robots : champ masqué que seul un script remplit. On répond « enviado ».
@@ -71,7 +104,7 @@ export const POST: APIRoute = async ({ request }) => {
   // Envoi pas encore configuré (pas de clé Resend)
   if (!RESEND_API_KEY || !EMAIL_TO || !EMAIL_FROM) {
     if (import.meta.env.DEV) {
-      console.info("[contacto] Mode démonstration, message non envoyé :", { nome, telefone, email, tipo, data, pessoas });
+      console.info("[contacto] Mode démonstration, message non envoyé :", { nome, telefone, email, tipo, data, pessoas, fotos: anexos.map((a) => a.filename) });
       return json(200, { ok: true, demo: true });
     }
     console.error("[contacto] RESEND_API_KEY, EMAIL_FROM ou EMAIL_TO manquant");
@@ -85,6 +118,7 @@ export const POST: APIRoute = async ({ request }) => {
     ["Encomenda", tipo || "—"],
     ["Data do evento", data || "—"],
     ["Pessoas", pessoas || "—"],
+    ["Fotos", anexos.length ? `${anexos.length} em anexo` : "—"],
   ];
 
   const texto = [...linhas.map(([l, v]) => `${l}: ${v}`), "", mensagem].join("\n");
@@ -114,6 +148,7 @@ export const POST: APIRoute = async ({ request }) => {
         subject: `Nova encomenda pelo site — ${tipo || "sem tipo"} — ${nome}`,
         text: texto,
         html,
+        ...(anexos.length && { attachments: anexos }),
       }),
     });
     if (!response.ok) {
