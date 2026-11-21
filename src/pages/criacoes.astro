@@ -11,7 +11,7 @@ const labelOf = new Map<string, string>(categories.map((c) => [c.id, c.label]));
 // « Tudo » : les mises en avant d'abord, puis le reste dans l'ordre des catégories
 const catRank = (id: string) => categories.findIndex((c) => c.id === id);
 const rank = (file: string) => (featured.includes(file) ? featured.indexOf(file) : featured.length);
-const ordered = [...creations].sort((a, b) => rank(a.file) - rank(b.file) || catRank(a.category) - catRank(b.category));
+const ordered = creations.toSorted((a, b) => rank(a.file) - rank(b.file) || catRank(a.category) - catRank(b.category));
 
 const items = await Promise.all(
   ordered.map(async (c) => {
