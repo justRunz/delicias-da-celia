@@ -15,7 +15,7 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 
 const URL = process.env.DEMO_URL ?? "https://asdelicias-dacelia.com/";
-const SCROLL_SECONDS = Number(process.env.DEMO_SECONDS ?? 15);
+const SCROLL_SECONDS = Number(process.env.DEMO_SECONDS ?? 20); // 15 s felt too fast
 const HOLD_START = 2; // seconds on the hero before scrolling
 const HOLD_END = 2; // seconds at the bottom
 const size = { width: 1440, height: 900 };
