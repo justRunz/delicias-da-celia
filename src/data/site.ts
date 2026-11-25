@@ -1,3 +1,5 @@
+import legalData from "./legal.json";
+
 // Details taken from the Facebook page and the stall banner (October 2026).
 // Points to confirm with Célia are listed in TEXTOS.md.
 
@@ -26,3 +28,12 @@ export const nav = [
   { label: "Quem somos", href: "/#sobre" },
   { label: "Como encomendar", href: "/#encomendar" },
 ];
+
+// Legal information (/informacao-legal page). Identification lives in legal.json,
+// editable through Pages CMS (see .pages.yml); "A COMPLETAR" = to ask Célia (TEXTOS.md).
+export const legal = {
+  ...legalData,
+  // No regional arbitration centre for the Santarém district, so CNIACC is competent (to confirm)
+  ral: { name: "CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo", url: "https://www.cniacc.pt" },
+  complaints: "https://www.livroreclamacoes.pt",
+};

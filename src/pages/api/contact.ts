@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
-import { RESEND_API_KEY, EMAIL_FROM, EMAIL_TO } from "astro:env/server";
+import { CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, EMAIL_FROM, EMAIL_TO } from "astro:env/server";
+import { company } from "../../data/site";
 
 // Route rendered on demand; the rest of the site stays static.
 export const prerender = false;
@@ -58,14 +59,19 @@ export const POST: APIRoute = async ({ request }) => {
   const files = form.getAll("photos").filter((f): f is File => typeof f !== "string");
   if (files.length > PHOTOS.max) return json(400, { error: `No máximo ${PHOTOS.max} fotos.` });
   let total = 0;
-  const attachments: { filename: string; content: string }[] = [];
+  const attachments: { filename: string; content: string; type: string; disposition: "attachment" }[] = [];
   for (const [i, f] of files.entries()) {
     total += f.size;
     if (f.size > PHOTOS.perFile || total > PHOTOS.total) return json(413, { error: "As fotos são demasiado pesadas." });
     const bytes = new Uint8Array(await f.arrayBuffer());
     const ext = imageType(bytes);
     if (!ext) return json(400, { error: "Apenas imagens PNG ou JPEG são aceites." });
-    attachments.push({ filename: `referencia-${i + 1}.${ext}`, content: Buffer.from(bytes).toString("base64") });
+    attachments.push({
+      filename: `referencia-${i + 1}.${ext}`,
+      content: Buffer.from(bytes).toString("base64"),
+      type: ext === "png" ? "image/png" : "image/jpeg",
+      disposition: "attachment",
+    });
   }
 
   // Honeypot: hidden field only a script fills in. We reply "sent".
@@ -101,13 +107,13 @@ export const POST: APIRoute = async ({ request }) => {
     }
   }
 
-  // Sending not configured yet (no Resend key)
-  if (!RESEND_API_KEY || !EMAIL_TO || !EMAIL_FROM) {
+  // Sending not configured yet (no Cloudflare token)
+  if (!CLOUDFLARE_ACCOUNT_ID || !CLOUDFLARE_API_TOKEN || !EMAIL_TO || !EMAIL_FROM) {
     if (import.meta.env.DEV) {
       console.info("[contact] Demo mode, message not sent:", { name, phone, email, type, date, people, photos: attachments.map((a) => a.filename) });
       return json(200, { ok: true, demo: true });
     }
-    console.error("[contact] RESEND_API_KEY, EMAIL_FROM or EMAIL_TO missing");
+    console.error("[contact] CLOUDFLARE_ACCOUNT_ID, CLOUDFLARE_API_TOKEN, EMAIL_FROM or EMAIL_TO missing");
     return json(503, { error: "O envio ainda não está disponível. Ligue ou envie mensagem pelo WhatsApp." });
   }
 
@@ -136,13 +142,15 @@ export const POST: APIRoute = async ({ request }) => {
     <div style="border-top:1px solid #e2d5c5;margin-top:16px;padding-top:16px">${toParagraphs(message)}</div>
   `;
 
+  // Cloudflare Email Service (REST API). EMAIL_TO must be a verified destination address
+  // in Email Routing, which keeps sending free without a paid Workers plan.
   try {
-    const response = await fetch("https://api.resend.com/emails", {
+    const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/email/sending/send`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      headers: { Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        from: EMAIL_FROM,
-        to: [EMAIL_TO],
+        from: { address: EMAIL_FROM, name: company.name },
+        to: EMAIL_TO,
         // Replying to the e-mail replies straight to the customer
         reply_to: email,
         subject: `Nova encomenda pelo site — ${type || "sem tipo"} — ${name}`,
@@ -151,12 +159,13 @@ export const POST: APIRoute = async ({ request }) => {
         ...(attachments.length && { attachments: attachments }),
       }),
     });
-    if (!response.ok) {
-      console.error("Resend rejected the e-mail", response.status, await response.text());
+    const result = (await response.json().catch(() => null)) as { success?: boolean } | null;
+    if (!response.ok || !result?.success) {
+      console.error("Cloudflare rejected the e-mail", response.status, JSON.stringify(result));
       return json(502, { error: "O envio falhou. Ligue ou envie mensagem pelo WhatsApp." });
     }
   } catch (error) {
-    console.error("Could not reach Resend", error);
+    console.error("Could not reach Cloudflare", error);
     return json(502, { error: "O envio falhou. Ligue ou envie mensagem pelo WhatsApp." });
   }
 
