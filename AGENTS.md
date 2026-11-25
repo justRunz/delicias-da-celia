@@ -43,7 +43,7 @@ The site is tested on an iPhone. Safari tints the status and address bars from t
 
 ## Images
 
-Photos live in `src/assets/photos/` and `src/assets/creations/` (JPEG) and go through `astro:assets`. Gallery entries are listed in `src/data/creations.ts`, where `title` doubles as alt text.
+Photos live in `src/assets/photos/` and `src/assets/creations/` (JPEG) and go through `astro:assets`. Never convert the sources, Astro encodes at build time (WebP by default). The Criações grid uses `<Picture formats={["avif", "webp"]}>`. The lightbox link stays WebP since it is a single URL. Gallery entries are listed in `src/data/creations.ts`, where `title` doubles as alt text.
 
 ## Development
 
