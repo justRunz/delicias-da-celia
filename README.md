@@ -15,9 +15,7 @@ Birthday cakes, cake design, traditional sweets, savoury bites and catering.
 
 <br><br>
 
-<p align="center"><img src="docs/home-desktop.jpg" alt="Home page on desktop" width="70%"></p>
-
-<p align="center"><img src="docs/home-mobile.jpg" alt="Home page on mobile" width="20%">&nbsp;&nbsp;&nbsp;<img src="docs/gallery-mobile.jpg" alt="Gallery of creations on mobile" width="20%"></p>
+<p align="center"><img src="docs/home-desktop.jpg" alt="Home page on desktop" width="58%">&nbsp;&nbsp;<img src="docs/home-mobile.jpg" alt="Home page on mobile" width="16.75%">&nbsp;&nbsp;<img src="docs/gallery-mobile.jpg" alt="Gallery of creations on mobile" width="16.75%"></p>
 
 </div>
 
