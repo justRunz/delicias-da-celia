@@ -13,6 +13,10 @@ Birthday cakes, cake design, traditional sweets, savoury bites and catering.
 ![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000?logo=vercel&logoColor=white)
 ![Cloudflare](https://img.shields.io/badge/Email-Cloudflare-F38020?logo=cloudflare&logoColor=white)
 
+<br><br>
+
+<p align="center"><img src="docs/home-desktop.jpg" alt="Home page on desktop" width="58%">&nbsp;&nbsp;<img src="docs/home-mobile.jpg" alt="Home page on mobile" width="16.75%">&nbsp;&nbsp;<img src="docs/gallery-mobile.jpg" alt="Gallery of creations on mobile" width="16.75%"></p>
+
 </div>
 
 ---
