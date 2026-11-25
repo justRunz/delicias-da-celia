@@ -84,8 +84,6 @@ To send real emails, copy `.env.example` to `.env` and fill in the Cloudflare ke
 | Colours, fonts, spacing | [`src/styles/global.css`](src/styles/global.css) |
 | Scroll animations | [`src/scripts/motion.ts`](src/scripts/motion.ts) |
 
-Content still to confirm with the client is tracked in [`TEXTOS.md`](TEXTOS.md).
-
 ---
 
 <div align="center">
