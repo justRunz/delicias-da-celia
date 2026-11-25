@@ -1,3 +1,5 @@
+import legalData from "./legal.json";
+
 // Informations reprises de la page Facebook et de la bannière de la banca (octobre 2026).
 // Les points à confirmer avec la Célia sont listés dans TEXTOS.md.
 
@@ -27,13 +29,10 @@ export const nav = [
   { label: "Como encomendar", href: "/#encomendar" },
 ];
 
-// Informations légales (page /informacao-legal). « A COMPLETAR » = à demander à la Célia (voir TEXTOS.md).
+// Informations légales (page /informacao-legal). L'identification est dans legal.json,
+// éditable via Pages CMS (voir .pages.yml) ; « A COMPLETAR » = à demander à la Célia (TEXTOS.md).
 export const legal = {
-  holder: "Célia Gaspar", // nom légal : ENI (empresária em nome individual) ou société
-  nif: "A COMPLETAR",
-  address: "A COMPLETAR, Vale de Figueira, Santarém",
-  email: "contacto@asdelicias-dacelia.com",
-  updated: "25 de novembro de 2026",
+  ...legalData,
   // Pas de centre d'arbitrage régional pour le district de Santarém : le CNIACC est compétent (à confirmer)
   ral: { name: "CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo", url: "https://www.cniacc.pt" },
   complaints: "https://www.livroreclamacoes.pt",
