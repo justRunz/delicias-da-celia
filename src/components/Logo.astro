@@ -5,7 +5,7 @@
  * The doily slowly spins when the parent link is hovered.
  */
 import { Image } from "astro:assets";
-import chef from "../assets/logo/chef.png";
+import chef from "../assets/logo/chef.webp";
 
 interface Props {
   tone?: "dark" | "light";
@@ -91,16 +91,15 @@ const path =
     stroke-dasharray: 0 2.4;
   }
 
-  /* Baker in the white medallion */
+  /* Baker in the white medallion: transparent image shown whole, padded so the hat clears the dotted ring */
   .logo__mark :global(.logo__chef) {
     position: absolute;
     left: 50%;
     top: 50%;
     width: 29px;
     height: 29px;
-    object-fit: cover;
-    object-position: 50% 30%;
-    border-radius: 50%;
+    padding: 2px;
+    object-fit: contain;
     transform: translate(-50%, -50%);
   }
 
