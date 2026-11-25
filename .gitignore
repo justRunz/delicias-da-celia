@@ -5,7 +5,3 @@ dist/
 .env
 .vercel/
 TEXTOS.md
-docs/.recording/
-docs/demo.mp4
-docs/demo.gif
-scripts/record-demo.mjs
