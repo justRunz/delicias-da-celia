@@ -9,6 +9,12 @@
 - Domaine : https://asdelicias-dacelia.com (`site` dans astro.config.mjs) ; l'ancien asdeliciasdacelia.jstrunz.me peut rediriger vers lui.
 - Photos : 9 photos publiques de la page Facebook ; en ajouter d'autres dans src/assets/photos.
 
+## Informação legal (/informacao-legal)
+
+- **À fournir :** NIF, statut (ENI ou société) et nom légal, adresse complète, e-mail de contact public. Les champs « A COMPLETAR » sont dans `src/data/site.ts` (objet `legal`).
+- Confirmer l'organisme de médiation (CNIACC par défaut pour le district de Santarém) et la durée de conservation des demandes (12 mois).
+- Logo officiel du Livro de Reclamações : à télécharger sur livroreclamacoes.pt et à mettre dans le pied de page à la place du lien texte.
+
 ## Page Criações (/criacoes)
 
 - 132 photos reprises des albums Facebook publics (« Bolos meninas », « Bolos menino », « Bolachas e cupcakes », « batizados », photos de profil) + les photos de l'accueil. Liste, catégories et titres : `src/data/creations.ts`.

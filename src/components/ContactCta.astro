@@ -140,7 +140,7 @@ const doily =
         <div class="field">
           <label class="check">
             <input type="checkbox" name="consentimento" required aria-describedby="f-rgpd-err" />
-            <span>Aceito que os meus dados sejam usados apenas para responder a este pedido. *</span>
+            <span>Aceito que os meus dados sejam usados apenas para responder a este pedido (<a href="/informacao-legal#privacidade" target="_blank">política de privacidade</a>). *</span>
           </label>
           <p class="field__err" id="f-rgpd-err" aria-live="polite"></p>
         </div>
@@ -586,6 +586,12 @@ const doily =
     font-weight: 400 !important;
     color: var(--c-ink-soft);
     cursor: pointer;
+  }
+
+  .check a {
+    color: var(--c-accent-deep);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   .check input {
