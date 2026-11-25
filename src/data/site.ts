@@ -1,3 +1,5 @@
+import legalData from "./legal.json";
+
 // Informations reprises de la page Facebook et de la bannière de la banca (octobre 2026).
 // Les points à confirmer avec la Célia sont listés dans TEXTOS.md.
 
@@ -26,3 +28,12 @@ export const nav = [
   { label: "Quem somos", href: "/#sobre" },
   { label: "Como encomendar", href: "/#encomendar" },
 ];
+
+// Informations légales (page /informacao-legal). L'identification est dans legal.json,
+// éditable via Pages CMS (voir .pages.yml) ; « A COMPLETAR » = à demander à la Célia (TEXTOS.md).
+export const legal = {
+  ...legalData,
+  // Pas de centre d'arbitrage régional pour le district de Santarém : le CNIACC est compétent (à confirmer)
+  ral: { name: "CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo", url: "https://www.cniacc.pt" },
+  complaints: "https://www.livroreclamacoes.pt",
+};

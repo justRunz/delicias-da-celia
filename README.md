@@ -2,7 +2,7 @@
 
 Site vitrine de la pâtisserie maison [As Delícias da Célia](https://www.facebook.com/asdeliciasdacelia.pt/) (Vale de Figueira, Santarém) : bolos de aniversário, cake design, bolos secos, doces, salgados et catering.
 
-Site en portugais construit avec [Astro](https://astro.build), animations [GSAP](https://gsap.com) (ScrollTrigger, Flip) et défilement doux [Lenis](https://lenis.darkroom.engineering). Les pages sont statiques ; seule la route d'envoi du formulaire (`/api/contacto`) tourne côté serveur, sur [Vercel](https://vercel.com), avec [Resend](https://resend.com) pour les e-mails.
+Site en portugais construit avec [Astro](https://astro.build), animations [GSAP](https://gsap.com) (ScrollTrigger, Flip) et défilement doux [Lenis](https://lenis.darkroom.engineering). Les pages sont statiques ; seule la route d'envoi du formulaire (`/api/contacto`) tourne côté serveur, sur [Vercel](https://vercel.com), avec [Cloudflare Email Service](https://developers.cloudflare.com/email-service/) pour les e-mails.
 
 ## Lancer le projet
 

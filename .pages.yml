@@ -43,3 +43,15 @@ content:
           - { name: badge, label: Etiqueta, type: string, description: "Ex.: Brevemente" }
           - { name: title, label: Título, type: string, required: true }
           - { name: text, label: Texto, type: string, required: true, description: "A frase «Siga-nos no Instagram para saber primeiro.» é acrescentada automaticamente." }
+
+  - name: legal
+    label: Informação legal
+    type: file
+    path: src/data/legal.json
+    format: json
+    fields:
+      - { name: holder, label: Titular, type: string, required: true, description: "Nome legal da empresária em nome individual ou da sociedade." }
+      - { name: nif, label: NIF, type: string, required: true, description: "Número de identificação fiscal (ou NIPC, se for sociedade)." }
+      - { name: address, label: Morada, type: string, required: true, description: "Morada completa, com código postal." }
+      - { name: email, label: E-mail, type: string, required: true, description: "E-mail de contacto mostrado no site." }
+      - { name: updated, label: Última atualização, type: string, required: true, description: "Ex.: 25 de novembro de 2026. Atualize sempre que mudar alguma informação." }
