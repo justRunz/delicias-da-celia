@@ -1,5 +1,5 @@
 ---
-import { Image, getImage } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import Lightbox from "../components/Lightbox.astro";
@@ -58,8 +58,9 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
         {items.map((it, i) => (
           <li class:list={["cell", `cell--${it.shape}`]} data-category={it.category}>
             <a href={it.full} data-lightbox data-caption={it.title} class="cell__link">
-              <Image
+              <Picture
                 src={it.src}
+                formats={["avif", "webp"]}
                 alt={it.title}
                 widths={[360, 600, 900]}
                 sizes="(max-width: 640px) 50vw, (max-width: 1000px) 33vw, 25vw"
@@ -134,6 +135,10 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     background: var(--c-flour);
     cursor: zoom-in;
     isolation: isolate;
+  }
+
+  .cell__link :global(picture) {
+    height: 100%;
   }
 
   .cell__link :global(img) {
