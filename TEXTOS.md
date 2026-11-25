@@ -13,7 +13,7 @@
 
 - **À fournir :** NIF, statut (ENI ou société) et nom légal. Adresse : Rua do Sobral 21A, 2000-740 Vale de Figueira. E-mail public : contacto@asdelicias-dacelia.com (Cloudflare Email Routing, renvoie vers asdelicias.dacelia@gmail.com, qui est aussi le destinataire du formulaire, `EMAIL_TO`). Les champs « A COMPLETAR » sont dans `src/data/legal.json`, modifiables dans Pages CMS (« Informação legal »).
 - Confirmer l'organisme de médiation (CNIACC par défaut pour le district de Santarém) et la durée de conservation des demandes (12 mois).
-- Logo officiel du Livro de Reclamações : à télécharger sur livroreclamacoes.pt et à mettre dans le pied de page à la place du lien texte.
+- Livro de Reclamações : lien texte dans le pied de page (choix délibéré, le logo officiel blanc ne va pas avec le site).
 
 ## Page Criações (/criacoes)
 
