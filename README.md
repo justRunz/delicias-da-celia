@@ -80,15 +80,6 @@ npm run build
 
 To send real emails, copy `.env.example` to `.env` and fill in the Cloudflare keys. Without them the form works in demo mode and logs the message to the console.
 
-### Recording the demo video
-
-[`scripts/record-demo.mjs`](scripts/record-demo.mjs) drives a headless Chromium with Playwright, scrolls the page at an even pace through Lenis, captures Retina frames from Chrome's screencast and encodes a 60 fps `docs/demo.mp4` with ffmpeg.
-
-```bash
-npx playwright install chromium   # first time only
-npm run demo                      # add -- --gif for a short GIF as well
-```
-
 ## Where to edit what
 
 | What | Where |
