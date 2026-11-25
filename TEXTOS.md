@@ -26,7 +26,7 @@
 
 ## Formulaire de contact (#contacto, en bas de chaque page)
 
-- Envoi par e-mail via Cloudflare Email Service (route `src/pages/api/contacto.ts`, hébergement Vercel).
+- Envoi par e-mail via Cloudflare Email Service (route `src/pages/api/contact.ts`, hébergement Vercel).
 - Envoi par Cloudflare Email Service (API REST). Variables `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`, `EMAIL_FROM`, `EMAIL_TO` (voir `.env.example`), en local dans `.env` et dans Vercel.
 - `EMAIL_TO` (asdelicias.dacelia@gmail.com) doit rester une adresse de destination vérifiée dans Email Routing : l'envoi est alors gratuit. Envoyer à d'autres adresses demanderait l'offre Workers Paid.
 - Le domaine doit être déclaré dans Email Sending (Compute → Email Service → Email Sending → Onboard Domain) pour que `EMAIL_FROM` soit accepté.
@@ -34,7 +34,7 @@
 
 ## Preçário (/precario) et Instagram
 
-- Prix recopiés des 4 PDF du Linktree (linktr.ee/Asdeliciasdacelia) : `src/data/precario.ts`. À mettre à jour à chaque nouveau preçário.
+- Prix recopiés des 4 PDF du Linktree (linktr.ee/Asdeliciasdacelia) : `src/data/pricing.json`. À mettre à jour à chaque nouveau preçário.
 - Corrigé « Albarroba » en « Alfarroba » (faute probable du PDF) : à confirmer.
 - Salgados : prix lus comme « par dúzia, petit / normal » : à confirmer.
 - Le preçário de Natal 2026 est annoncé « brevemente » : l'ajouter quand il sort.

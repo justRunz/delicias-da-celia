@@ -1,8 +1,8 @@
 ---
 /**
- * Logo : reprend l'autocollant de la Célia (src/assets/logo/logo-original.png) en miniature —
- * napperon rose festonné, couronne de pointillés, pâtissière au centre — suivi du nom.
- * Le napperon tourne doucement au survol du lien parent.
+ * Logo: a miniature of Célia's sticker (src/assets/logo/logo-original.png) —
+ * scalloped pink doily, ring of dots, baker in the centre — followed by the name.
+ * The doily slowly spins when the parent link is hovered.
  */
 import { Image } from "astro:assets";
 import chef from "../assets/logo/chef.png";
@@ -12,7 +12,7 @@ interface Props {
 }
 const { tone = "dark" } = Astro.props;
 
-// Contour festonné : 18 arrondis autour d'un cercle
+// Scalloped outline: 18 bumps around a circle
 const scallops = 18;
 const R = 21;
 const r = 4;
@@ -91,7 +91,7 @@ const path =
     stroke-dasharray: 0 2.4;
   }
 
-  /* Pâtissière dans le médaillon blanc */
+  /* Baker in the white medallion */
   .logo__mark :global(.logo__chef) {
     position: absolute;
     left: 50%;

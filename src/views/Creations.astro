@@ -8,7 +8,7 @@ import { categories, creations, featured, imageOf } from "../data/creations";
 
 const labelOf = new Map<string, string>(categories.map((c) => [c.id, c.label]));
 
-// « Tudo » : les mises en avant d'abord, puis le reste dans l'ordre des catégories
+// "Tudo": highlights first, then the rest in category order
 const catRank = (id: string) => categories.findIndex((c) => c.id === id);
 const rank = (file: string) => (featured.includes(file) ? featured.indexOf(file) : featured.length);
 const ordered = creations.toSorted((a, b) => rank(a.file) - rank(b.file) || catRank(a.category) - catRank(b.category));
@@ -18,7 +18,7 @@ const items = await Promise.all(
     const src = imageOf(c.file);
     const full = await getImage({ src, width: Math.min(src.width, 1600), format: "webp" });
     const ratio = src.width / src.height;
-    // Forme de la vignette selon l'orientation de la photo
+    // Thumbnail shape based on the photo's orientation
     const shape = ratio > 1.55 ? "wide" : ratio < 0.85 ? "tall" : "std";
     return { ...c, src, full: full.src, shape, label: labelOf.get(c.category) ?? "" };
   }),
@@ -94,7 +94,7 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     padding-bottom: var(--section);
   }
 
-  /* --- Filtres : fondu à droite, indique que la liste continue --- */
+  /* --- Filters: fade on the right shows the list continues --- */
   .filters__scroll {
     mask-image: linear-gradient(90deg, #000 calc(100% - 4rem), transparent);
   }
@@ -103,7 +103,7 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     mask-image: none;
   }
 
-  /* --- Grille --- */
+  /* --- Grid --- */
   .grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -143,7 +143,7 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     transition: transform 1.2s var(--ease-out);
   }
 
-  /* Dégradé cacao + titre qui montent au survol */
+  /* Cocoa gradient + title rising on hover */
   .cell__info {
     position: absolute;
     inset: auto 0 0;
@@ -254,8 +254,8 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     empty.hidden = visible > 0;
 
     if (animate && !reduced) {
-      // Pendant l'animation les photos sortent du flux : on fige la hauteur de la grille
-      // (la plus grande des deux) pour que la suite de la page ne remonte pas par-dessus.
+      // During the animation photos leave the flow, so lock the grid height
+      // (the larger of the two) so the rest of the page does not jump up over it.
       const toHeight = grid.offsetHeight;
       gsap.set(grid, { height: Math.max(fromHeight, toHeight) });
       Flip.from(state, {
@@ -279,7 +279,7 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
       ScrollTrigger.refresh();
     }
 
-    // Lien partageable : /criacoes?categoria=batizados
+    // Shareable link: /criacoes?categoria=batizados
     const url = new URL(location.href);
     if (filter === "all") url.searchParams.delete("categoria");
     else url.searchParams.set("categoria", filter);
@@ -290,15 +290,15 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
     ch.addEventListener("click", () => {
       if (ch.classList.contains("is-active")) return;
       apply(ch.dataset.filter!, true);
-      // Ramène le haut de la grille sous la barre de filtres si on est descendu loin
+      // Bring the top of the grid back under the filter bar after scrolling far down
       const top = grid.getBoundingClientRect().top;
       if (top < 0) window.lenis?.scrollTo(grid, { offset: -(bar.getBoundingClientRect().bottom + 16), duration: 1 });
-      // Fait défiler la puce choisie dans la barre (mobile)
+      // Scroll the chosen chip into view in the bar (mobile)
       bar.scrollTo({ left: ch.offsetLeft - bar.clientWidth / 2 + ch.offsetWidth / 2, behavior: "smooth" });
     }),
   );
 
-  // Retire le fondu quand on arrive au bout de la liste des filtres
+  // Remove the fade at the end of the filter list
   const updateEnd = () => bar.classList.toggle("is-end", bar.scrollLeft + bar.clientWidth >= bar.scrollWidth - 4);
   bar.addEventListener("scroll", updateEnd, { passive: true });
   window.addEventListener("resize", updateEnd);
@@ -307,13 +307,13 @@ const filters = categories.map((c) => ({ ...c, count: creations.filter((x) => x.
   const initial = new URLSearchParams(location.search).get("categoria");
   if (initial && chips.some((c) => c.dataset.filter === initial)) {
     apply(initial, false);
-    // Arrivée par un lien de catégorie : la puce active est rendue visible dans la barre
+    // Arriving from a category link brings the active chip into view in the bar
     const active = chips.find((c) => c.dataset.filter === initial)!;
     bar.scrollLeft = active.offsetLeft - bar.clientWidth / 2 + active.offsetWidth / 2;
     updateEnd();
   }
 
-  // Apparition en cascade des premières photos
+  // Staggered entrance of the first photos
   if (!reduced) {
     gsap.from(
       cells.filter((c) => !c.classList.contains("is-hidden")).slice(0, 12),

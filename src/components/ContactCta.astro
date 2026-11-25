@@ -3,9 +3,9 @@ import Icon from "./Icon.astro";
 import DatePicker from "./DatePicker.astro";
 import { company } from "../data/site";
 
-const tipos = ["Bolo de aniversário", "Cake design", "Batizado ou comunhão", "Bolos secos e bolachas", "Doces e salgados", "Catering / mesa de festa", "Outro"];
+const types = ["Bolo de aniversário", "Cake design", "Batizado ou comunhão", "Bolos secos e bolachas", "Doces e salgados", "Catering / mesa de festa", "Outro"];
 
-// Contour festonné du médaillon de remerciement (comme le napperon du logo)
+// Scalloped outline of the thank-you medallion (like the doily in the logo)
 const scallops = 22;
 const R = 54;
 const doily =
@@ -66,13 +66,13 @@ const doily =
 
         <div class="row">
           <div class="field">
-            <label for="f-nome">Nome *</label>
-            <input id="f-nome" name="nome" type="text" autocomplete="name" required data-autofocus aria-describedby="f-nome-err" />
-            <p class="field__err" id="f-nome-err" aria-live="polite"></p>
+            <label for="f-name">Nome *</label>
+            <input id="f-name" name="name" type="text" autocomplete="name" required data-autofocus aria-describedby="f-name-err" />
+            <p class="field__err" id="f-name-err" aria-live="polite"></p>
           </div>
           <div class="field">
             <label for="f-tel">Telefone *</label>
-            <input id="f-tel" name="telefone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="f-tel-err" />
+            <input id="f-tel" name="phone" type="tel" autocomplete="tel" inputmode="tel" required aria-describedby="f-tel-err" />
             <p class="field__err" id="f-tel-err" aria-live="polite"></p>
           </div>
         </div>
@@ -84,13 +84,13 @@ const doily =
         </div>
 
         <div class="field">
-          <span class="field__label" id="f-tipo-label">
+          <span class="field__label" id="f-type-label">
             O que procura? <span class="field__note">Pode escolher várias opções.</span>
           </span>
-          <div class="pills" role="group" aria-labelledby="f-tipo-label">
-            {tipos.map((t) => (
+          <div class="pills" role="group" aria-labelledby="f-type-label">
+            {types.map((t) => (
               <label class="pill">
-                <input type="checkbox" name="tipo" value={t} />
+                <input type="checkbox" name="type" value={t} />
                 <span>{t}</span>
               </label>
             ))}
@@ -99,47 +99,47 @@ const doily =
 
         <div class="row">
           <div class="field">
-            <DatePicker id="f-data" name="data" label="Data do evento" describedby="f-data-help" />
-            <p class="field__help" id="f-data-help">
+            <DatePicker id="f-date" name="date" label="Data do evento" describedby="f-date-help" />
+            <p class="field__help" id="f-date-help">
               Para hoje? <a href={company.phoneHref}>Ligue</a> ou envie{" "}
               <a href={company.whatsapp} target="_blank" rel="noopener">mensagem</a>.
             </p>
           </div>
           <div class="field">
-            <label for="f-pessoas">Número de pessoas</label>
-            <input id="f-pessoas" name="pessoas" type="number" inputmode="numeric" min="1" max="500" />
+            <label for="f-people">Número de pessoas</label>
+            <input id="f-people" name="people" type="number" inputmode="numeric" min="1" max="500" />
           </div>
         </div>
 
         <div class="field">
           <label for="f-msg">Mensagem *</label>
-          <textarea id="f-msg" name="mensagem" rows="4" required aria-describedby="f-msg-help f-msg-err"></textarea>
+          <textarea id="f-msg" name="message" rows="4" required aria-describedby="f-msg-help f-msg-err"></textarea>
           <p class="field__help" id="f-msg-help">Sabores, tema, decoração, nome a escrever no bolo…</p>
           <p class="field__err" id="f-msg-err" aria-live="polite"></p>
         </div>
 
-        <!-- Photos de référence : glisser-déposer ou choisir (PNG/JPEG uniquement) -->
+        <!-- Reference photos: drag and drop or pick (PNG/JPEG only) -->
         <div class="field" data-drop-field>
-          <span class="field__label" id="f-fotos-label">
+          <span class="field__label" id="f-photos-label">
             Fotos de referência <span class="field__note">Até 3 imagens, PNG ou JPEG.</span>
           </span>
           <label class="drop" data-drop>
-            <input class="drop__input" type="file" accept="image/png,image/jpeg" multiple aria-labelledby="f-fotos-label" aria-describedby="f-fotos-err" data-drop-input />
+            <input class="drop__input" type="file" accept="image/png,image/jpeg" multiple aria-labelledby="f-photos-label" aria-describedby="f-photos-err" data-drop-input />
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="1.6" /><path d="m4 18 5-5 4 4 2.5-2.5L20 18" />
             </svg>
             <span><strong>Arraste uma foto para aqui</strong> ou clique para escolher</span>
           </label>
           <ul class="thumbs" role="list" data-thumbs></ul>
-          <p class="field__err" id="f-fotos-err" aria-live="polite" data-drop-err></p>
+          <p class="field__err" id="f-photos-err" aria-live="polite" data-drop-err></p>
         </div>
 
-        <!-- Piège à robots : champ invisible pour les humains -->
+        <!-- Honeypot: field invisible to humans -->
         <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
 
         <div class="field">
           <label class="check">
-            <input type="checkbox" name="consentimento" required aria-describedby="f-rgpd-err" />
+            <input type="checkbox" name="consent" required aria-describedby="f-rgpd-err" />
             <span>Aceito que os meus dados sejam usados apenas para responder a este pedido (<a href="/informacao-legal#privacidade" target="_blank">política de privacidade</a>). *</span>
           </label>
           <p class="field__err" id="f-rgpd-err" aria-live="polite"></p>
@@ -154,7 +154,7 @@ const doily =
         </div>
       </form>
 
-      <!-- Remerciement, affiché à la place du formulaire après l'envoi -->
+      <!-- Thank-you message, shown in place of the form after sending -->
       <div class="thanks" data-thanks hidden tabindex="-1">
         <svg class="thanks__badge" viewBox="0 0 120 120" aria-hidden="true">
           <path class="thanks__doily" d={doily} data-thanks-doily />
@@ -298,7 +298,7 @@ const doily =
     color: var(--c-on-dark);
   }
 
-  /* --- Carte du formulaire --- */
+  /* --- Form card --- */
   .card {
     position: relative;
     padding: clamp(1.5rem, 3.5vw, 3rem);
@@ -308,7 +308,7 @@ const doily =
     box-shadow: 0 40px 80px -40px rgb(0 0 0 / 0.5);
   }
 
-  /* Petite dentelle rose en haut de la carte */
+  /* Small pink lace at the top of the card */
   .card::before {
     content: "";
     position: absolute;
@@ -367,7 +367,7 @@ const doily =
     border-radius: var(--radius);
     background: var(--c-surface);
     color: var(--c-ink);
-    /* 16 px minimum : sinon l'iPhone zoome sur le champ */
+    /* 16 px minimum, otherwise the iPhone zooms into the field */
     font: inherit;
     font-size: max(16px, var(--fs-base));
     transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s;
@@ -426,7 +426,7 @@ const doily =
     border-color: #b3261e;
   }
 
-  /* Choix du type d'encomenda : pastilles */
+  /* Order type choice: pills */
   .pills {
     display: flex;
     flex-wrap: wrap;
@@ -467,7 +467,7 @@ const doily =
     transform: scale(1.04);
   }
 
-  /* Petite coche dessinée qui apparaît dans les pastilles cochées */
+  /* Small drawn tick that appears in checked pills */
   .pill span::before {
     content: "";
     display: inline-block;
@@ -493,7 +493,7 @@ const doily =
     outline-offset: 2px;
   }
 
-  /* Zone de dépôt des photos */
+  /* Photo drop zone */
   .drop {
     position: relative;
     display: flex;
@@ -532,7 +532,7 @@ const doily =
     box-shadow: 0 0 0 4px var(--c-accent-soft);
   }
 
-  /* Champ fichier masqué mais focusable (clavier et lecteurs d'écran) */
+  /* File input hidden but focusable (keyboard and screen readers) */
   .drop__input {
     position: absolute;
     inset: 0;
@@ -635,7 +635,7 @@ const doily =
     color: #b3261e;
   }
 
-  /* --- Remerciement --- */
+  /* --- Thank-you --- */
   .thanks {
     display: flex;
     flex-direction: column;
@@ -729,18 +729,18 @@ const doily =
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const messages: Record<string, (el: HTMLInputElement | HTMLTextAreaElement) => string> = {
-      nome: () => "Indique o seu nome.",
-      telefone: (el) => (el.value ? "Este número não parece válido." : "Indique um número de telefone."),
+      name: () => "Indique o seu nome.",
+      phone: (el) => (el.value ? "Este número não parece válido." : "Indique um número de telefone."),
       email: (el) => (el.value ? "Este e-mail não parece válido." : "Indique o seu e-mail."),
-      mensagem: (el) => (el.value ? "Conte um pouco mais (10 caracteres no mínimo)." : "Escreva uma mensagem."),
-      consentimento: () => "Precisamos do seu acordo para lhe responder.",
+      message: (el) => (el.value ? "Conte um pouco mais (10 caracteres no mínimo)." : "Escreva uma mensagem."),
+      consent: () => "Precisamos do seu acordo para lhe responder.",
     };
 
 
-    // Règles maison (plus fiables que pattern/minlength quand la valeur n'est pas tapée au clavier)
+    // Custom rules (more reliable than pattern/minlength when the value is not typed on a keyboard)
     const extra: Record<string, (v: string) => boolean> = {
-      telefone: (v) => /^[0-9+().\s-]+$/.test(v) && v.replace(/\D/g, "").length >= 9,
-      mensagem: (v) => v.trim().length >= 10,
+      phone: (v) => /^[0-9+().\s-]+$/.test(v) && v.replace(/\D/g, "").length >= 9,
+      message: (v) => v.trim().length >= 10,
     };
 
     const check = (el: HTMLInputElement | HTMLTextAreaElement) => {
@@ -756,20 +756,20 @@ const doily =
     };
 
     const fields = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("[required]")];
-    // On ne signale l'erreur qu'après le premier passage dans le champ
+    // Only flag the error after the field has been visited once
     fields.forEach((el) => {
       el.addEventListener("blur", () => el.value && check(el));
       el.addEventListener("input", () => el.closest(".field")!.classList.contains("has-error") && check(el));
       el.addEventListener("change", () => el.type === "checkbox" && check(el));
     });
 
-    // --- Photos de référence ---
-    // Chaque image est décodée puis redessinée en JPEG (max 1600 px) : un fichier qui
-    // n'est pas une vraie image échoue au décodage, les métadonnées (position GPS…)
-    // disparaissent et le poids reste sous la limite de Vercel (4,5 Mo par requête).
-    // Le serveur revérifie tout de son côté.
-    const MAX_FOTOS = 3;
-    const fotos: Blob[] = [];
+    // --- Reference photos ---
+    // Each image is decoded then redrawn as JPEG (max 1600 px). A file that
+    // is not a real image fails to decode, metadata (GPS location…)
+    // is dropped, and the size stays under Vercel's limit (4.5 MB per request).
+    // The server checks everything again on its side.
+    const MAX_PHOTOS = 3;
+    const photos: Blob[] = [];
     const drop = form.querySelector<HTMLElement>("[data-drop]")!;
     const dropInput = form.querySelector<HTMLInputElement>("[data-drop-input]")!;
     const thumbs = form.querySelector<HTMLElement>("[data-thumbs]")!;
@@ -782,7 +782,7 @@ const doily =
       canvas.width = Math.round(bitmap.width * scale);
       canvas.height = Math.round(bitmap.height * scale);
       const ctx = canvas.getContext("2d")!;
-      ctx.fillStyle = "#fff"; // fond blanc pour les PNG transparents
+      ctx.fillStyle = "#fff"; // white background for transparent PNGs
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
       bitmap.close();
@@ -802,7 +802,7 @@ const doily =
           remove.textContent = "×";
           remove.setAttribute("aria-label", `Remover foto ${i + 1}`);
           remove.addEventListener("click", () => {
-            fotos.splice(i, 1);
+            photos.splice(i, 1);
             renderThumbs();
             dropInput.focus();
           });
@@ -815,8 +815,8 @@ const doily =
     const addFiles = async (files: FileList | File[]) => {
       dropErr.textContent = "";
       for (const file of files) {
-        if (fotos.length >= MAX_FOTOS) {
-          dropErr.textContent = `No máximo ${MAX_FOTOS} fotos.`;
+        if (photos.length >= MAX_PHOTOS) {
+          dropErr.textContent = `No máximo ${MAX_PHOTOS} fotos.`;
           break;
         }
         if (!["image/png", "image/jpeg"].includes(file.type) || file.size > 20 * 1024 * 1024) {
@@ -824,7 +824,7 @@ const doily =
           continue;
         }
         try {
-          fotos.push(await toJpeg(file));
+          photos.push(await toJpeg(file));
         } catch {
           dropErr.textContent = "Esta imagem não pôde ser lida.";
         }
@@ -836,7 +836,7 @@ const doily =
       if (dropInput.files) addFiles([...dropInput.files]);
       dropInput.value = "";
     });
-    // Sans preventDefault, le navigateur ouvrirait l'image à la place du site
+    // Without preventDefault, the browser would open the image instead of the site
     ["dragenter", "dragover"].forEach((t) =>
       drop.addEventListener(t, (e) => {
         e.preventDefault();
@@ -850,12 +850,12 @@ const doily =
       if (e.dataTransfer?.files.length) addFiles([...e.dataTransfer.files]);
     });
 
-    const showThanks = (nome: string, demo: boolean) => {
-      const first = nome.split(/\s+/)[0];
+    const showThanks = (name: string, demo: boolean) => {
+      const first = name.split(/\s+/)[0];
       card.querySelector<HTMLElement>("[data-thanks-title]")!.textContent = first ? `Obrigado, ${first}!` : "Obrigado!";
       card.querySelector<HTMLElement>("[data-thanks-demo]")!.hidden = !demo;
-      // D'abord remonter en haut de la carte : en bas de page, la carte qui rétrécit
-      // ferait sauter la page et le remerciement finirait au-dessus de l'écran
+      // First scroll to the top of the card. At the bottom of the page, the shrinking card
+      // would make the page jump and the thank-you would end up above the screen
       const offset = -(document.querySelector<HTMLElement>("[data-header]")?.offsetHeight ?? 0) - 16;
       if (window.lenis && !reduced) window.lenis.scrollTo(card, { offset, duration: 0.8, onComplete: () => swap() });
       else {
@@ -871,7 +871,7 @@ const doily =
       thanks.focus({ preventScroll: true });
       if (reduced) return;
 
-      // La carte change de hauteur en douceur, puis le napperon tourne et la coche se dessine
+      // The card changes height smoothly, then the doily spins and the tick draws itself
       const to = card.offsetHeight;
       const tick = card.querySelector<SVGPathElement>("[data-thanks-tick]")!;
       const len = tick.getTotalLength();
@@ -898,13 +898,13 @@ const doily =
 
       submit.setAttribute("aria-busy", "true");
       label.textContent = "A enviar…";
-      // Envoi en multipart (champs + photos) ; le navigateur fixe lui-même le Content-Type
+      // Sent as multipart (fields + photos); the browser sets the Content-Type itself
       const formData = new FormData(form);
-      fotos.forEach((blob, i) => formData.append("fotos", blob, `foto-${i + 1}.jpg`));
-      const nome = String(formData.get("nome") ?? "");
+      photos.forEach((blob, i) => formData.append("photos", blob, `photo-${i + 1}.jpg`));
+      const name = String(formData.get("name") ?? "");
 
       try {
-        const response = await fetch("/api/contacto", { method: "POST", body: formData });
+        const response = await fetch("/api/contact", { method: "POST", body: formData });
         const result = await response.json().catch(() => ({}));
         if (!response.ok) {
           status.textContent = result.error ?? "O envio falhou. Tente de novo ou ligue-nos.";
@@ -912,9 +912,9 @@ const doily =
           return;
         }
         form.reset();
-        fotos.length = 0;
+        photos.length = 0;
         renderThumbs();
-        showThanks(nome, Boolean(result.demo));
+        showThanks(name, Boolean(result.demo));
       } catch {
         status.textContent = "O envio falhou: verifique a ligação à internet, ou ligue-nos.";
         status.classList.add("is-error");

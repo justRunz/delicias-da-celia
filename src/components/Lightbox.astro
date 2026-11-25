@@ -1,8 +1,8 @@
 ---
 /**
- * Visionneuse plein écran (reprise d'Inova Deco).
- * Usage : des liens <a data-lightbox href="grande-image.webp" data-caption="..."> dans un
- * conteneur [data-lightbox-group]. Clavier (← → Échap) et glissement au doigt.
+ * Full-screen viewer (taken from Inova Deco).
+ * Usage: links <a data-lightbox href="large-image.webp" data-caption="..."> inside a
+ * [data-lightbox-group] container. Keyboard (← → Escape) and swipe.
  */
 import Icon from "./Icon.astro";
 ---
@@ -168,7 +168,7 @@ import Icon from "./Icon.astro";
       e.preventDefault();
       e.stopPropagation();
       const group = link.closest("[data-lightbox-group]") ?? document;
-      // Ignore les photos masquées par un filtre
+      // Skip photos hidden by a filter
       items = [...group.querySelectorAll<HTMLAnchorElement>("a[data-lightbox]")].filter((a) => a.offsetParent);
       show(items.indexOf(link));
       dialog.showModal();
@@ -185,10 +185,10 @@ import Icon from "./Icon.astro";
     if (e.key === "ArrowLeft") show(index - 1);
     if (e.key === "ArrowRight") show(index + 1);
   });
-  // Clic sur le fond = fermer
+  // Clicking the backdrop closes
   dialog.addEventListener("click", (e) => e.target === dialog && dialog.close());
 
-  // Glissement au doigt
+  // Swipe
   let startX = 0;
   dialog.addEventListener("touchstart", (e) => (startX = e.touches[0].clientX), { passive: true });
   dialog.addEventListener(

@@ -4,7 +4,7 @@ import Icon from "../components/Icon.astro";
 import { company } from "../data/site";
 ---
 
-<!-- Page 404 : le « 0 » est un napperon ovale, festonné comme celui du logo. -->
+<!-- 404 page: the "0" is an oval doily, scalloped like the one in the logo. -->
 <Base title={`Página não encontrada · ${company.name}`} description="Esta página não existe ou mudou de sítio.">
   <section class="nf">
     <div class="container nf__inner">
@@ -78,20 +78,20 @@ import { company } from "../data/site";
     stroke-linecap: round;
   }
 
-  /* Festons du bord extérieur */
+  /* Scallops on the outer edge */
   .nf__scallops {
     stroke: var(--c-brand);
     stroke-width: 11;
     stroke-dasharray: 0 3.125;
   }
 
-  /* Corps du 0 */
+  /* Body of the 0 */
   .nf__ring {
     stroke: var(--c-brand);
     stroke-width: 20;
   }
 
-  /* Petits trous de dentelle qui défilent le long du 0 */
+  /* Small lace holes that travel along the 0 */
   .nf__holes {
     stroke: var(--c-bg);
     stroke-width: 5;

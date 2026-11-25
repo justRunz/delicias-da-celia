@@ -3,7 +3,7 @@ import Base from "../layouts/Base.astro";
 import PageHero from "../components/PageHero.astro";
 import ContactCta from "../components/ContactCta.astro";
 import Icon from "../components/Icon.astro";
-import { precario, notice } from "../data/pricing";
+import { sections, notice } from "../data/pricing";
 import { company } from "../data/site";
 ---
 
@@ -23,7 +23,7 @@ import { company } from "../data/site";
     <div class="container">
       <nav class="chipbar" aria-label="Categorias do preçário" data-reveal="up">
         <div class="chipbar__scroll" data-tabs>
-          {precario.map((s, i) => (
+          {sections.map((s, i) => (
             <a href={`#${s.id}`} class:list={["chip", { "is-active": i === 0 }]} data-tab={s.id}>
               {s.label}
             </a>
@@ -32,7 +32,7 @@ import { company } from "../data/site";
       </nav>
 
       <div class="menu__sections">
-        {precario.map((section) => (
+        {sections.map((section) => (
           <section class="card" id={section.id} aria-labelledby={`${section.id}-t`} data-section>
             <header class="card__head" data-reveal="up">
               <h2 class="card__title display" id={`${section.id}-t`}>{section.label}</h2>
@@ -112,18 +112,18 @@ import { company } from "../data/site";
     margin: 1.5rem auto 0;
   }
 
-  /* --- Carte d'une catégorie --- */
+  /* --- Category card --- */
   .card {
     position: relative;
     padding: clamp(1.5rem, 4vw, 3.5rem);
     border: 1px solid var(--c-line);
     border-radius: var(--radius-lg);
     background: var(--c-surface);
-    /* L'ancre s'arrête sous l'en-tête et les onglets */
+    /* The anchor stops below the header and the tabs */
     scroll-margin-top: calc(var(--header-h) + 5rem);
   }
 
-  /* Dentelle rose en haut de chaque carte, comme le napperon du logo */
+  /* Pink lace at the top of each card, like the doily in the logo */
   .card::before {
     content: "";
     position: absolute;
@@ -183,7 +183,7 @@ import { company } from "../data/site";
     color: var(--c-muted);
   }
 
-  /* --- Lignes de menu : nom ……… prix --- */
+  /* --- Menu lines: name ……… price --- */
   .lines {
     display: flex;
     flex-direction: column;
@@ -243,7 +243,7 @@ import { company } from "../data/site";
     color: var(--c-accent-deep);
   }
 
-  /* --- Bloc « brevemente » --- */
+  /* --- "Brevemente" block --- */
   .soon {
     display: flex;
     flex-direction: column;
@@ -322,7 +322,7 @@ import { company } from "../data/site";
     });
   };
 
-  // Onglet actif = catégorie au milieu de l'écran
+  // Active tab = category in the middle of the screen
   document.querySelectorAll<HTMLElement>("[data-section]").forEach((section) => {
     ScrollTrigger.create({
       trigger: section,
@@ -333,7 +333,7 @@ import { company } from "../data/site";
   });
 
   if (!reduced) {
-    // Lignes du menu : arrivent en cascade, les pointillés se tracent de gauche à droite
+    // Menu lines come in staggered, and the dotted leaders draw left to right
     document.querySelectorAll<HTMLElement>("[data-lines]").forEach((list) => {
       const lines = list.querySelectorAll(".line");
       const tl = gsap.timeline({ scrollTrigger: { trigger: list, start: "top 85%" } });

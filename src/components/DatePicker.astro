@@ -1,8 +1,8 @@
 ---
 /**
- * Sélecteur de date maison. Le calendrier natif de l'iPhone laisse choisir les jours
- * interdits (il ignore `min`) : ici, aujourd'hui et les jours passés ne sont pas cliquables.
- * La valeur (AAAA-MM-JJ) part dans un champ caché `name`. Premier jour possible : demain.
+ * Custom date picker. The iPhone's native calendar lets people pick forbidden days
+ * (it ignores `min`), so here today and past days cannot be clicked.
+ * The value (YYYY-MM-DD) goes into a hidden `name` field. Earliest possible day is tomorrow.
  */
 interface Props {
   id: string;
@@ -112,7 +112,7 @@ const { id, name, label, describedby } = Astro.props;
     color: var(--c-accent-deep);
   }
 
-  /* --- Calendrier --- */
+  /* --- Calendar --- */
   .dp__panel {
     position: absolute;
     top: calc(100% + 0.5rem);
@@ -199,14 +199,14 @@ const { id, name, label, describedby } = Astro.props;
     transform: scale(0.9);
   }
 
-  /* Jours impossibles : estompés et barrés, non cliquables */
+  /* Unavailable days: faded and struck through, not clickable */
   .dp__grid :global(.dp__day:disabled) {
     color: color-mix(in srgb, var(--c-muted) 45%, transparent);
     text-decoration: line-through;
     cursor: not-allowed;
   }
 
-  /* Aujourd'hui : petit point, mais pas sélectionnable */
+  /* Today: small dot, but not selectable */
   .dp__grid :global(.dp__day.is-today::after) {
     content: "";
     position: absolute;
@@ -268,7 +268,7 @@ const { id, name, label, describedby } = Astro.props;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const placeholder = valueEl.textContent ?? "";
 
-    // Calculé à l'ouverture : la page peut rester ouverte jusqu'au lendemain
+    // Computed on open, since the page may stay open until the next day
     let today = startOfDay(new Date());
     let first = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
     let selected: Date | null = null;
@@ -277,11 +277,11 @@ const { id, name, label, describedby } = Astro.props;
     const render = (focusDay?: number) => {
       const label = MONTHS.format(view);
       monthEl.textContent = label.charAt(0).toUpperCase() + label.slice(1);
-      // Pas de retour avant le mois du premier jour possible
+      // No going back before the month of the earliest possible day
       prev.disabled = view <= new Date(first.getFullYear(), first.getMonth(), 1);
 
       const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
-      const offset = (new Date(view.getFullYear(), view.getMonth(), 1).getDay() + 6) % 7; // lundi en premier
+      const offset = (new Date(view.getFullYear(), view.getMonth(), 1).getDay() + 6) % 7; // Monday first
       grid.replaceChildren();
       for (let i = 0; i < offset; i++) grid.appendChild(document.createElement("span"));
       for (let n = 1; n <= days; n++) {
@@ -299,7 +299,7 @@ const { id, name, label, describedby } = Astro.props;
         b.tabIndex = -1;
         grid.appendChild(b);
       }
-      // Un seul jour atteignable à la tabulation : le sélectionné, sinon le premier possible
+      // Only one day is reachable with Tab: the selected one, otherwise the earliest possible
       const target =
         grid.querySelector<HTMLButtonElement>(`[data-day="${focusDay ?? ""}"]:not(:disabled)`) ??
         grid.querySelector<HTMLButtonElement>('[aria-selected="true"]') ??
@@ -353,7 +353,7 @@ const { id, name, label, describedby } = Astro.props;
     });
     root.querySelector("[data-dp-clear]")!.addEventListener("click", () => choose(null));
 
-    // Clavier : flèches pour se déplacer, Échap pour fermer
+    // Keyboard: arrows to move, Escape to close
     panel.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -370,12 +370,12 @@ const { id, name, label, describedby } = Astro.props;
       render(date.getDate());
     });
 
-    // Clic en dehors : fermer
+    // Click outside closes
     document.addEventListener("pointerdown", (e) => {
       if (!root.contains(e.target as Node)) close(false);
     });
 
-    // Remise à zéro avec le formulaire
+    // Reset along with the form
     root.closest("form")?.addEventListener("reset", () => choose(null, false));
   });
 </script>

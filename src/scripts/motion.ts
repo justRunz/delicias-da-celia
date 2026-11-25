@@ -7,7 +7,7 @@ gsap.registerPlugin(ScrollTrigger);
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
 
-/* --- Défilement doux + ancres ------------------------------------------ */
+/* --- Smooth scrolling + anchors ---------------------------------------- */
 let lenis: Lenis | null = null;
 if (!reduced) {
   lenis = new Lenis({ lerp: 0.1 });
@@ -19,7 +19,7 @@ if (!reduced) {
 
 const headerOffset = () => -(document.querySelector<HTMLElement>("[data-header]")?.offsetHeight ?? 0) + 1;
 
-// Liens vers une section de la page courante (#contacto, /#sobre depuis l'accueil, / pour remonter)
+// Links to a section of the current page (#contacto, /#sobre from the home page, / to go back up)
 document.addEventListener("click", (e) => {
   const link = (e.target as HTMLElement).closest<HTMLAnchorElement>("a[href]");
   if (!link || link.target === "_blank" || e.metaKey || e.ctrlKey) return;
@@ -29,9 +29,9 @@ document.addEventListener("click", (e) => {
   const target = toTop ? null : document.querySelector<HTMLElement>(decodeURIComponent(url.hash));
   if (!toTop && !target) return;
   e.preventDefault();
-  // Cible pas encore apparue (data-reveal) : décalée de quelques px vers le bas, on retire ce décalage
+  // Target not revealed yet (data-reveal) is shifted a few px down, so remove that offset
   const shift = target ? Number(gsap.getProperty(target, "y")) || 0 : 0;
-  // Arrivé sur le formulaire : le premier champ ([data-autofocus]) est sélectionné
+  // On reaching the form, the first field ([data-autofocus]) gets focus
   const focus = () => target?.querySelector<HTMLElement>("[data-autofocus]")?.focus({ preventScroll: true });
   if (lenis) lenis.scrollTo(target ?? 0, { offset: target ? headerOffset() - shift : 0, duration: 1.4, onComplete: focus });
   else {
@@ -41,7 +41,7 @@ document.addEventListener("click", (e) => {
   history.replaceState(null, "", url.pathname + url.hash);
 });
 
-/* --- Découpe d'un titre en mots ----------------------------------------- */
+/* --- Split a heading into words ---------------------------------------- */
 function splitWords(el: HTMLElement) {
   const walk = (node: Node): Node[] => {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -72,7 +72,7 @@ const inHero = (el: Element) => !!el.closest("[data-hero]");
 if (reduced) {
   gsap.set("[data-reveal]", { opacity: 1 });
 } else {
-  /* Titres : mots qui montent d'une fente */
+  /* Headings: words rising out of a slit */
   gsap.utils.toArray<HTMLElement>("[data-reveal='words']").forEach((el) => {
     const words = splitWords(el);
     gsap.set(el, { opacity: 1 });
@@ -87,7 +87,7 @@ if (reduced) {
     });
   });
 
-  /* Citation : les mots s'allument au fil du défilement */
+  /* Quote: words light up as you scroll */
   gsap.utils.toArray<HTMLElement>("[data-reveal='scrub']").forEach((el) => {
     const words = splitWords(el);
     gsap.set(el, { opacity: 1 });
@@ -103,7 +103,7 @@ if (reduced) {
     );
   });
 
-  /* Blocs : fondu + montée */
+  /* Blocks: fade + rise */
   gsap.utils.toArray<HTMLElement>("[data-reveal='up']").forEach((el) => {
     const delay = Number(el.dataset.delay ?? 0);
     gsap.fromTo(
@@ -120,7 +120,7 @@ if (reduced) {
     );
   });
 
-  /* Groupes : enfants en cascade */
+  /* Groups: staggered children */
   gsap.utils.toArray<HTMLElement>("[data-reveal='stagger']").forEach((el) => {
     gsap.set(el, { opacity: 1 });
     gsap.from(el.children, {
@@ -133,7 +133,7 @@ if (reduced) {
     });
   });
 
-  /* Images : rideau qui s'ouvre de bas en haut, photo qui se dézoome */
+  /* Images: curtain opening bottom to top, photo zooming out */
   gsap.utils.toArray<HTMLElement>("[data-reveal='clip']").forEach((el) => {
     const img = el.querySelector("img");
     const tl = gsap.timeline({
@@ -148,7 +148,7 @@ if (reduced) {
     if (img) tl.from(img, { scale: 1.3, duration: 1.8, ease: "expo.out" }, 0.25);
   });
 
-  /* Vignettes et badges : apparition avec rebond */
+  /* Thumbnails and badges: pop in with a bounce */
   gsap.utils.toArray<HTMLElement>("[data-reveal='pop']").forEach((el, i) => {
     gsap.fromTo(
       el,
@@ -164,7 +164,7 @@ if (reduced) {
     );
   });
 
-  /* Flottement continu des vignettes du hero */
+  /* Continuous floating of the hero thumbnails */
   gsap.utils.toArray<HTMLElement>("[data-float]").forEach((el) => {
     const alt = el.dataset.float === "b";
     gsap.to(el, {
@@ -176,7 +176,7 @@ if (reduced) {
     });
   });
 
-  /* Parallaxe douce */
+  /* Gentle parallax */
   gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
     const amount = Number(el.dataset.parallax || 12);
     gsap.fromTo(
@@ -190,12 +190,12 @@ if (reduced) {
     );
   });
 
-  /* Compteurs */
+  /* Counters */
   gsap.utils.toArray<HTMLElement>("[data-count]").forEach((el) => {
     const target = Number(el.dataset.count);
     const decimals = Number(el.dataset.decimals ?? 0);
     const obj = { v: 0 };
-    // Part de 0 dès le chargement (sinon le chiffre final s'affiche puis retombe à 0)
+    // Start from 0 on load (otherwise the final number shows, then drops to 0)
     el.textContent = (0).toFixed(decimals).replace(".", ",");
     gsap.to(obj, {
       v: target,
@@ -208,7 +208,7 @@ if (reduced) {
     });
   });
 
-  /* Bandeau : boucle infinie, accélère et change de sens avec le défilement */
+  /* Banner: infinite loop, speeds up and reverses with scrolling */
   document.querySelectorAll<HTMLElement>("[data-marquee]").forEach((marquee) => {
     const track = marquee.querySelector<HTMLElement>("[data-marquee-track]")!;
     const loop = gsap.to(track, { xPercent: -50, duration: 38, ease: "none", repeat: -1 });
@@ -226,7 +226,7 @@ if (reduced) {
     });
   });
 
-  /* Ligne « poche à douille » : se dessine au défilement, les étapes s'allument */
+  /* "Piping bag" line draws itself on scroll and the steps light up */
   document.querySelectorAll<HTMLElement>("[data-piping]").forEach((wrap) => {
     const path = wrap.querySelector<SVGPathElement>("[data-piping-path]")!;
     const len = path.getTotalLength();
@@ -234,13 +234,13 @@ if (reduced) {
     gsap.to(path, {
       strokeDashoffset: 0,
       ease: "none",
-      // Même repère que les pastilles (80 % de l'écran) : la ligne arrive au 3 quand il s'allume
+      // Same trigger point as the dots (80% of the screen), so the line reaches 3 when it lights up
       scrollTrigger: { trigger: wrap, start: "top 80%", end: "bottom 80%", scrub: 0.6 },
     });
     wrap.querySelectorAll<HTMLElement>("[data-step]").forEach((step) => {
       const dot = step.querySelector<HTMLElement>("[data-step-dot]")!;
-      // Arrive depuis la gauche (vers la ligne) : un décalage vers la droite
-      // ferait déborder la page sur mobile tant que l'animation n'a pas démarré
+      // Comes in from the left (towards the line). An offset to the right
+      // would make the page overflow on mobile until the animation starts
       gsap.from(step.children[1], {
         opacity: 0,
         x: -24,
@@ -250,7 +250,7 @@ if (reduced) {
       });
       ScrollTrigger.create({
         trigger: step,
-        // 80 % : sur grand écran, toute la section tient à l'écran, le 3 doit déjà s'allumer
+        // 80%: on large screens the whole section fits, so 3 must already light up
         start: "top 80%",
         onLeaveBack: () => dot.classList.remove("is-on"),
         onEnter: () => {
@@ -261,7 +261,7 @@ if (reduced) {
     });
   });
 
-  /* Galerie horizontale épinglée (bureau) */
+  /* Pinned horizontal gallery (desktop) */
   const mm = gsap.matchMedia();
   mm.add("(min-width: 900px)", () => {
     gsap.utils.toArray<HTMLElement>("[data-hscroll]").forEach((section) => {
@@ -279,14 +279,14 @@ if (reduced) {
           pin: true,
           scrub: 0.8,
           invalidateOnRefresh: true,
-          // Créée après les animations des sections suivantes : sans priorité, celles-ci
-          // seraient calculées sans la hauteur ajoutée par l'épinglage et se déclencheraient
-          // bien trop tôt sur ordinateur (avant même d'arriver à « Como encomendar »).
+          // Created after the animations of the following sections. Without priority, those
+          // would be computed without the height added by pinning and would fire
+          // far too early on desktop (before even reaching "Como encomendar").
           refreshPriority: 1,
           onUpdate: (self) => progress && gsap.set(progress, { scaleX: self.progress }),
         },
       });
-      // Chaque photo se redresse légèrement en entrant dans l'écran
+      // Each photo straightens slightly as it enters the screen
       track.querySelectorAll<HTMLElement>(".gallery__frame").forEach((frame) => {
         gsap.fromTo(
           frame,
@@ -308,10 +308,10 @@ if (reduced) {
     });
   });
 
-  /* Boutons aimantés (souris uniquement) */
+  /* Magnetic buttons (mouse only) */
   if (finePointer) {
     document.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
-      // Effet discret : le bouton glisse de quelques pixels au plus, sans rebond
+      // Subtle effect: the button moves a few pixels at most, without bounce
       const xTo = gsap.quickTo(el, "x", { duration: 0.8, ease: "power3.out" });
       const yTo = gsap.quickTo(el, "y", { duration: 0.8, ease: "power3.out" });
       const clamp = gsap.utils.clamp(-6, 6);
@@ -328,14 +328,14 @@ if (reduced) {
   }
 }
 
-// Remet les déclencheurs dans l'ordre de la page (la galerie épinglée a été créée en dernier)
+// Put triggers back in page order (the pinned gallery was created last)
 ScrollTrigger.sort();
 ScrollTrigger.refresh();
 
-// Les polices et images modifient les hauteurs : on recalcule une fois tout chargé
+// Fonts and images change heights, so recalculate once everything has loaded
 window.addEventListener("load", () => ScrollTrigger.refresh());
 
-// Arrivée directe sur une ancre (#galeria…) : y aller une fois la page en place
+// Landing directly on an anchor (#galeria…) scrolls there once the page is ready
 if (location.hash) {
   const target = document.querySelector<HTMLElement>(decodeURIComponent(location.hash));
   if (target) requestAnimationFrame(() => lenis?.scrollTo(target, { immediate: true, offset: headerOffset() }));

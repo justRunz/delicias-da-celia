@@ -1,10 +1,10 @@
 /* ==========================================================================
    As Delícias da Célia — design tokens & base styles
-   Palette : massa (crème), farinha (beiges), cacau (encre), framboesa (accent)
+   Palette: massa (cream), farinha (beiges), cacau (ink), framboesa (accent)
    ========================================================================== */
 
 :root {
-  /* Couleurs */
+  /* Colours */
   --c-bg: #f7f1ea;
   --c-surface: #fcf9f5;
   --c-flour: #efe6db;
@@ -15,14 +15,14 @@
   --c-cocoa: #2b1d18;
   --c-on-dark: #f7f1ea;
 
-  --c-brand: #ec6c9d;         /* rose exact du logo de la Célia (napperon, festons) */
-  --c-accent: #c9467c;        /* rose foncé : boutons et détails (texte blanc lisible) */
-  --c-accent-deep: #96295a;   /* texte accentué sur fond clair */
-  --c-accent-soft: #fae2ec;   /* fonds rosés */
-  --c-accent-tint: #f5a9c7;   /* accent clair sur fond cacao */
-  --c-shadow: 92 36 58;       /* teinte des ombres (R G B) */
+  --c-brand: #ec6c9d;         /* exact pink of Célia's logo (doily, scallops) */
+  --c-accent: #c9467c;        /* dark pink for buttons and details (white text stays readable) */
+  --c-accent-deep: #96295a;   /* accent text on a light background */
+  --c-accent-soft: #fae2ec;   /* pink backgrounds */
+  --c-accent-tint: #f5a9c7;   /* light accent on a cocoa background */
+  --c-shadow: 92 36 58;       /* shadow tint (R G B) */
 
-  /* Typographie */
+  /* Typography */
   --f-display: "Fraunces Variable", "Fraunces", Georgia, serif;
   --f-body: "Geist Variable", "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
 
@@ -34,14 +34,14 @@
   --fs-2xl: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
   --fs-3xl: clamp(2.6rem, 1.6rem + 4vw, 5.25rem);
 
-  /* Espacements & mise en page */
+  /* Spacing & layout */
   --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
   --section: clamp(5rem, 3rem + 7vw, 10rem);
   --max: 1360px;
   --radius: 10px;
   --radius-lg: 24px;
 
-  /* Mouvement */
+  /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --dur: 0.5s;
@@ -58,7 +58,7 @@
 
 html {
   background: var(--c-bg);
-  /* Rien ne doit permettre de faire glisser la page sur le côté (iPhone) */
+  /* Nothing should let the page slide sideways (iPhone) */
   overflow-x: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -76,9 +76,9 @@ body {
   overflow-x: clip;
 }
 
-/* Grain de papier, très léger (fixe : ne se repeint pas au défilement).
-   Sous le header (z-index 50) : le Safari d'iOS 26 colore la zone de l'heure et de la
-   barre d'adresse d'après l'élément fixe le plus haut ; ce voile transparent l'en empêchait. */
+/* Very light paper grain (fixed, so it is not repainted on scroll).
+   Below the header (z-index 50): iOS 26 Safari tints the status bar and address bar
+   from the topmost fixed element, and this transparent layer was getting in the way. */
 body::after {
   content: "";
   position: fixed;
@@ -137,7 +137,7 @@ button {
   outline-offset: 3px;
 }
 
-/* --- Typographie --------------------------------------------------------- */
+/* --- Typography ----------------------------------------------------------- */
 .display {
   font-family: var(--f-display);
   font-weight: 380;
@@ -200,8 +200,8 @@ button {
   white-space: nowrap;
 }
 
-/* Festons (bord de napperon / de glaçage) posés au-dessus d'une section.
-   La couleur est celle de la section : --scallop. */
+/* Scallops (doily / icing edge) placed above a section.
+   The colour is the section's own, set with --scallop. */
 .scallop {
   position: relative;
 }
@@ -217,7 +217,7 @@ button {
   pointer-events: none;
 }
 
-/* --- Boutons ------------------------------------------------------------- */
+/* --- Buttons ------------------------------------------------------------- */
 .btn {
   --btn-bg: var(--c-ink);
   --btn-fg: var(--c-bg);
@@ -241,7 +241,7 @@ button {
   transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
 }
 
-/* Remplissage qui monte comme une crème au survol */
+/* Fill that rises like cream on hover */
 .btn::before {
   content: "";
   position: absolute;
@@ -308,12 +308,12 @@ button {
   color: var(--c-ink);
 }
 
-/* Le bouton aimanté bouge via transform : le contenu suit avec un léger décalage */
+/* The magnetic button moves via transform and its content follows with a slight lag */
 [data-magnetic] {
   will-change: transform;
 }
 
-/* --- Barre de puces collée sous l'en-tête (Criações, Preçário) --------- */
+/* --- Chip bar stuck under the header (Criações, Preçário) ---------- */
 .chipbar {
   position: sticky;
   top: calc(var(--header-h) - 1px);
@@ -324,7 +324,7 @@ button {
   transition: top 0.5s var(--ease-out);
 }
 
-/* Quand l'en-tête se cache (ordinateur), la barre remonte tout en haut */
+/* When the header hides (desktop), the bar moves up to the very top */
 html:has(.header.is-hidden) .chipbar {
   top: 0;
 }
@@ -340,7 +340,7 @@ html:has(.header.is-hidden) .chipbar {
   display: none;
 }
 
-/* --- Puces de filtre / d'onglets (Criações, Preçário) ------------------ */
+/* --- Filter / tab chips (Criações, Preçário) --------------------------- */
 .chip {
   flex: none;
   display: inline-flex;
@@ -389,7 +389,7 @@ html:has(.header.is-hidden) .chipbar {
   background-size: 100% 1px;
 }
 
-/* --- Animations (état initial, géré par GSAP) ---------------------------- */
+/* --- Animations (initial state, handled by GSAP) ------------------------- */
 html.js [data-reveal] {
   opacity: 0;
 }
@@ -408,8 +408,8 @@ html.js [data-reveal] {
   }
 }
 
-/* Mots découpés pour l'animation des titres.
-   Marge intérieure compensée : les italiques et accents ne sont pas rognés. */
+/* Words split for the heading animation.
+   Offset padding so italics and accents are not clipped. */
 .w {
   display: inline-block;
   overflow: hidden;

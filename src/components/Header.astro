@@ -5,7 +5,7 @@ import { company, nav } from "../data/site";
 
 const drawerLinks = [{ label: "Início", href: "/" }, ...nav, { label: "Contacto", href: "#contacto" }];
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-// Lien de page (ex. /criacoes) actif selon l'adresse ; les ancres de l'accueil sont suivies au défilement
+// Page link (e.g. /criacoes) active based on the URL; home page anchors are tracked on scroll
 const isPage = (href: string) => !href.includes("#") && href !== "/" && path === href;
 ---
 
@@ -44,7 +44,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
   </div>
 </header>
 
-<!-- Hors du <header> : son flou (backdrop-filter) enfermerait le menu dans sa hauteur -->
+<!-- Outside the <header>: its blur (backdrop-filter) would trap the menu within its height -->
 <div class="drawer" data-drawer hidden>
   <div class="drawer__head container">
     <Logo />
@@ -86,8 +86,8 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     inset: 0 0 auto;
     z-index: 50;
     height: var(--header-h);
-    /* Fond toujours plein (même couleur que la page) : le Safari d'iOS 26 s'en sert
-       pour colorer la zone de l'heure. Transparent, il laisse voir la page derrière. */
+    /* Always a solid background (same colour as the page). iOS 26 Safari uses it
+       to tint the status bar area. If transparent, the page shows through. */
     background: var(--c-bg);
     transition: transform 0.5s var(--ease-out), box-shadow 0.4s;
   }
@@ -123,7 +123,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     transition: color 0.3s;
   }
 
-  /* Petit point framboise sous le lien actif / survolé */
+  /* Small raspberry dot under the active / hovered link */
   .header__link::after {
     content: "";
     position: absolute;
@@ -175,7 +175,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     border: 0;
   }
 
-  /* Tiroir mobile */
+  /* Mobile drawer */
   .drawer {
     position: fixed;
     inset: 0;
@@ -218,7 +218,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     font-variant-numeric: tabular-nums;
   }
 
-  /* Masque : le texte « sort » d'une fente en montant */
+  /* Mask: the text rises out of a slit */
   .drawer__mask {
     display: block;
     overflow: hidden;
@@ -271,15 +271,15 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
   const onScroll = () => {
     const y = window.scrollY;
     header.classList.toggle("is-scrolled", y > 20);
-    // Sur mobile, le header reste toujours visible : caché, il laisserait un vide
-    // sous l'heure de l'iPhone (Safari y affiche la page).
+    // On mobile the header always stays visible. Hidden, it would leave a gap
+    // under the iPhone clock (Safari shows the page there).
     header.classList.toggle("is-hidden", hideOnScroll.matches && y > last && y > 400);
     last = y;
   };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  // Lien actif selon la section visible
+  // Active link based on the visible section
   const links = header.querySelectorAll<HTMLAnchorElement>("[data-spy]");
   const spy = new IntersectionObserver(
     (entries) => {
@@ -295,7 +295,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     if (section) spy.observe(section);
   });
 
-  // Tiroir mobile
+  // Mobile drawer
   const drawer = document.querySelector<HTMLElement>("[data-drawer]")!;
   const burger = header.querySelector<HTMLButtonElement>("[data-burger]")!;
   const close = drawer.querySelector<HTMLButtonElement>("[data-close]")!;
@@ -314,12 +314,12 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
     drawer.hidden = false;
     burger.setAttribute("aria-expanded", "true");
     lock(true);
-    // Focus sur « fermer » seulement au clavier (detail = 0) : au doigt, Safari
-    // afficherait le contour de focus autour de la croix.
+    // Focus "close" only for keyboard use (detail = 0). On touch, Safari
+    // would show the focus ring around the cross.
     if (e.detail === 0) close.focus();
     if (reduced) return;
 
-    // Cercle qui part du bouton burger et recouvre l'écran
+    // Circle that grows from the burger button and covers the screen
     const r = burger.getBoundingClientRect();
     const at = `${r.left + r.width / 2}px ${r.top + r.height / 2}px`;
     tl?.kill();
@@ -348,7 +348,7 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
       if (!instant) burger.focus();
       return;
     }
-    // Même animation à l'envers, en plus rapide
+    // Same animation in reverse, faster
     tl.timeScale(1.6).eventCallback("onReverseComplete", () => {
       done();
       burger.focus();
@@ -359,6 +359,6 @@ const isPage = (href: string) => !href.includes("#") && href !== "/" && path ===
   burger.addEventListener("click", open);
   close.addEventListener("click", () => shut());
   drawer.addEventListener("keydown", (e) => e.key === "Escape" && shut());
-  // Clic sur un lien : on ferme sans animation, le défilement doux prend le relais
+  // Clicking a link closes without animation, smooth scrolling takes over
   drawer.querySelectorAll("[data-drawer-link]").forEach((a) => a.addEventListener("click", () => shut(true)));
 </script>
