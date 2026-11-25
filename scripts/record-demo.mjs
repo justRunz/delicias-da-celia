@@ -3,25 +3,32 @@
 //   npm run demo                      → docs/demo.mp4
 //   npm run demo -- --gif             → also docs/demo.gif
 //   DEMO_URL=http://localhost:4321 DEMO_SECONDS=25 npm run demo
+//   DEMO_KEEP=1 npm run demo          → keeps the raw frames in docs/.recording
 //
 // First run only: npx playwright install chromium
+//
+// Playwright's built-in recordVideo is 1x and heavily compressed (VP8 at ~1 Mbit/s),
+// so frames come straight from Chrome's screencast instead: Retina (2x), near-lossless
+// JPEG, each with its real timestamp, then encoded once with x264.
 import { chromium } from "playwright";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, rmSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 
 const URL = process.env.DEMO_URL ?? "https://asdelicias-dacelia.com/";
 const SCROLL_SECONDS = Number(process.env.DEMO_SECONDS ?? 20);
 const HOLD_START = 2; // seconds on the hero before scrolling
 const HOLD_END = 2; // seconds at the bottom
 const size = { width: 1440, height: 900 };
+const SCALE = 2; // device pixel ratio of the capture
+const OUTPUT_WIDTH = 1920; // keeps the MP4 under GitHub's 10 MB upload limit
 const OUT = "docs";
 const TMP = `${OUT}/.recording`;
 
+if (!process.env.DEMO_KEEP) rmSync(TMP, { recursive: true, force: true });
 mkdirSync(TMP, { recursive: true });
 const browser = await chromium.launch();
-const context = await browser.newContext({ viewport: size, recordVideo: { dir: TMP, size } });
+const context = await browser.newContext({ viewport: size, deviceScaleFactor: SCALE });
 const page = await context.newPage();
-const recordingStart = Date.now();
 
 await page.goto(URL, { waitUntil: "networkidle" });
 
@@ -33,7 +40,25 @@ await page.evaluate(async () => {
   await document.fonts.ready;
 });
 await page.waitForTimeout(2500); // let the hero intro animation finish
-const scrollStart = Date.now();
+
+// Chrome only sends a frame when the page changes, so each one keeps its timestamp
+// and becomes a duration in ffmpeg's concat list.
+const cdp = await context.newCDPSession(page);
+const frames = [];
+cdp.on("Page.screencastFrame", async ({ data, metadata, sessionId }) => {
+  const file = `frame-${String(frames.length).padStart(5, "0")}.jpg`;
+  writeFileSync(`${TMP}/${file}`, Buffer.from(data, "base64"));
+  frames.push({ file, t: metadata.timestamp });
+  await cdp.send("Page.screencastFrameAck", { sessionId }).catch(() => {});
+});
+await cdp.send("Page.startScreencast", {
+  format: "jpeg",
+  quality: 95,
+  maxWidth: size.width * SCALE,
+  maxHeight: size.height * SCALE,
+});
+// Nudge one repaint so the first frame arrives even on a still page.
+await page.evaluate(() => window.scrollBy(0, 0));
 await page.waitForTimeout(HOLD_START * 1000);
 
 // Scroll through Lenis (the site's smooth scroll), linear so the speed stays even.
@@ -54,17 +79,29 @@ await page.evaluate(async (seconds) => {
   });
 }, SCROLL_SECONDS);
 await page.waitForTimeout(HOLD_END * 1000);
-
-const raw = await page.video().path();
-await context.close(); // the video file is written on close
+const stopAt = Date.now() / 1000;
+await cdp.send("Page.stopScreencast");
 await browser.close();
 
-// Cut the blank loading frames, keep from the hold on the hero to the end.
-const skip = ((scrollStart - recordingStart) / 1000).toFixed(2);
-const length = String(HOLD_START + SCROLL_SECONDS + HOLD_END);
-const ffmpeg = (...args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
+if (frames.length < 2) throw new Error(`Only ${frames.length} frame(s) captured`);
 
-ffmpeg("-ss", skip, "-i", raw, "-t", length, "-c:v", "libx264", "-crf", "20", "-preset", "slow",
+// The first frame stretches over the whole start hold, the last one to the end.
+const first = frames[0].t;
+const total = HOLD_START + SCROLL_SECONDS + HOLD_END;
+let list = "";
+frames.forEach((f, i) => {
+  const next = i + 1 < frames.length ? frames[i + 1].t : Math.max(stopAt, first + total);
+  list += `file '${f.file}'\nduration ${Math.max(next - f.t, 0.001).toFixed(4)}\n`;
+});
+list += `file '${frames.at(-1).file}'\n`; // concat demuxer needs the last file twice
+writeFileSync(`${TMP}/frames.txt`, list);
+const fps = (frames.length / (frames.at(-1).t - first)).toFixed(1);
+console.log(`${frames.length} frames captured (~${fps} fps while scrolling)`);
+
+const ffmpeg = (...args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
+ffmpeg("-f", "concat", "-safe", "0", "-i", `${TMP}/frames.txt`,
+  "-vf", `fps=60,scale=${OUTPUT_WIDTH}:-2:flags=lanczos`,
+  "-c:v", "libx264", "-crf", "22", "-preset", "veryslow",
   "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", `${OUT}/demo.mp4`);
 console.log(`✓ ${OUT}/demo.mp4`);
 
@@ -79,4 +116,4 @@ if (process.argv.includes("--gif")) {
   console.log(`✓ ${OUT}/demo.gif`);
 }
 
-rmSync(TMP, { recursive: true, force: true });
+if (!process.env.DEMO_KEEP) rmSync(TMP, { recursive: true, force: true });
