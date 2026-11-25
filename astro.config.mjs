@@ -15,7 +15,8 @@ export default defineConfig({
   // le formulaire fonctionne en mode démonstration en développement.
   env: {
     schema: {
-      RESEND_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
+      CLOUDFLARE_ACCOUNT_ID: envField.string({ context: "server", access: "secret", optional: true }),
+      CLOUDFLARE_API_TOKEN: envField.string({ context: "server", access: "secret", optional: true }),
       EMAIL_FROM: envField.string({ context: "server", access: "secret", optional: true }),
       EMAIL_TO: envField.string({ context: "server", access: "secret", optional: true }),
     },

@@ -32,7 +32,7 @@ export const legal = {
   holder: "Célia Gaspar", // nom légal : ENI (empresária em nome individual) ou société
   nif: "A COMPLETAR",
   address: "A COMPLETAR, Vale de Figueira, Santarém",
-  email: "A COMPLETAR",
+  email: "contacto@asdelicias-dacelia.com",
   updated: "25 de novembro de 2026",
   // Pas de centre d'arbitrage régional pour le district de Santarém : le CNIACC est compétent (à confirmer)
   ral: { name: "CNIACC, Centro Nacional de Informação e Arbitragem de Conflitos de Consumo", url: "https://www.cniacc.pt" },

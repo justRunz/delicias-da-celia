@@ -11,7 +11,7 @@
 
 ## Informação legal (/informacao-legal)
 
-- **À fournir :** NIF, statut (ENI ou société) et nom légal, adresse complète, e-mail de contact public. Les champs « A COMPLETAR » sont dans `src/data/site.ts` (objet `legal`).
+- **À fournir :** NIF, statut (ENI ou société) et nom légal, adresse complète. E-mail public : contacto@asdelicias-dacelia.com (Cloudflare Email Routing, renvoie vers asdelicias.dacelia@gmail.com, qui est aussi le destinataire du formulaire, `EMAIL_TO`). Les champs « A COMPLETAR » sont dans `src/data/site.ts` (objet `legal`).
 - Confirmer l'organisme de médiation (CNIACC par défaut pour le district de Santarém) et la durée de conservation des demandes (12 mois).
 - Logo officiel du Livro de Reclamações : à télécharger sur livroreclamacoes.pt et à mettre dans le pied de page à la place du lien texte.
 
@@ -26,9 +26,10 @@
 
 ## Formulaire de contact (#contacto, en bas de chaque page)
 
-- Envoi par e-mail via Resend, comme Renov MC (route `src/pages/api/contacto.ts`, hébergement Vercel).
-- **À fournir :** l'adresse e-mail de la Célia (destinataire), puis créer un compte Resend et renseigner `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO` (voir `.env.example`), en local dans `.env` et dans Vercel.
-- Sans nom de domaine vérifié, Resend n'envoie qu'à l'adresse du compte : créer le compte Resend avec l'adresse de la Célia.
+- Envoi par e-mail via Cloudflare Email Service (route `src/pages/api/contacto.ts`, hébergement Vercel).
+- Envoi par Cloudflare Email Service (API REST). Variables `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN`, `EMAIL_FROM`, `EMAIL_TO` (voir `.env.example`), en local dans `.env` et dans Vercel.
+- `EMAIL_TO` (asdelicias.dacelia@gmail.com) doit rester une adresse de destination vérifiée dans Email Routing : l'envoi est alors gratuit. Envoyer à d'autres adresses demanderait l'offre Workers Paid.
+- Le domaine doit être déclaré dans Email Sending (Compute → Email Service → Email Sending → Onboard Domain) pour que `EMAIL_FROM` soit accepté.
 - Tant que la clé n'est pas renseignée : en développement, le formulaire affiche le remerciement avec la mention « versão de demonstração » ; en ligne, il invite à appeler ou à écrire par WhatsApp.
 
 ## Preçário (/precario) et Instagram
