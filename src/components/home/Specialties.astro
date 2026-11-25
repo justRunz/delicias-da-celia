@@ -7,7 +7,7 @@ import stand from "../../assets/photos/banca.jpg";
 import chourico from "../../assets/photos/pao-chourico.jpg";
 import table from "../../assets/photos/mesa-salgados.jpg";
 
-// Les cinq spécialités reprises de la bannière de la Célia
+// The five specialties taken from Célia's banner
 const items = [
   {
     title: "Bolos de aniversário",
@@ -83,7 +83,7 @@ const items = [
     </ol>
   </div>
 
-  <!-- Aperçu qui suit le curseur (bureau uniquement) -->
+  <!-- Preview that follows the cursor (desktop only) -->
   <div class="spec__preview" data-spec-preview aria-hidden="true">
     {items.map((item, i) => (
       <Image class="spec__preview-img" src={item.img} alt="" widths={[480, 720]} sizes="320px" data-spec-img={i} />
@@ -136,7 +136,7 @@ const items = [
     cursor: default;
   }
 
-  /* Fond rosé qui monte au survol */
+  /* Pink background that rises on hover */
   .spec__item::before {
     content: "";
     position: absolute;
@@ -210,7 +210,7 @@ const items = [
     width: 280px;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    /* Petit tirage photo : cadre blanc, liseré fin et ombre douce */
+    /* Small photo print: white frame, thin border and soft shadow */
     border: 6px solid #fff;
     border-radius: 16px;
     background: var(--c-flour);
@@ -269,7 +269,7 @@ const items = [
 <script>
   import { gsap } from "gsap";
 
-  // Aperçu photo qui suit le curseur, avec changement d'image en rideau
+  // Photo preview that follows the cursor, with a curtain image change
   const list = document.querySelector<HTMLElement>("[data-spec-list]");
   const preview = document.querySelector<HTMLElement>("[data-spec-preview]");
   const canHover = window.matchMedia("(hover: hover) and (min-width: 901px)").matches;
@@ -286,10 +286,10 @@ const items = [
 
     const place = (e: PointerEvent) => {
       const h = preview.offsetHeight;
-      // À droite du curseur : la photo accompagne le titre sans le cacher
+      // Right of the cursor, so the photo follows the title without hiding it
       xTo(e.clientX + 32);
       yTo(e.clientY - h / 2);
-      // Légère inclinaison selon la vitesse horizontale
+      // Slight tilt based on horizontal speed
       rTo(gsap.utils.clamp(-10, 10, (e.clientX - lastX) * 0.6));
       lastX = e.clientX;
     };

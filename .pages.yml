@@ -1,7 +1,7 @@
-# Configuration de Pages CMS (https://pagescms.org) : édition du preçário depuis le navigateur.
-# Listes repliées par défaut, chaque ligne titrée par son nom (summary).
+# Pages CMS config (https://pagescms.org): edit the price list from the browser.
+# Lists are collapsed by default, each row titled by its name (summary).
 content:
-  - name: precario
+  - name: pricing
     label: Preçário
     type: file
     path: src/data/pricing.json

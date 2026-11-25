@@ -2,17 +2,35 @@
 import { defineConfig, envField } from "astro/config";
 import vercel from "@astrojs/vercel";
 
+// Portuguese URLs, English file names: each public route points to a view in src/views/.
+// One route per view keeps one bundle per page. index, 404 and the API stay in src/pages.
+const routes = {
+  "/criacoes": "Creations",
+  "/precario": "Pricing",
+};
+const portugueseRoutes = {
+  name: "portuguese-routes",
+  hooks: {
+    "astro:config:setup": ({ injectRoute }) => {
+      for (const [pattern, view] of Object.entries(routes))
+        injectRoute({ pattern, entrypoint: new URL(`./src/views/${view}.astro`, import.meta.url) });
+    },
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
-  // Adresse publique du site (domaine acheté chez Cloudflare, branché sur Vercel)
+  // Public site URL (domain bought from Cloudflare, connected to Vercel)
   site: "https://asdelicias-dacelia.com",
 
-  // Le site reste statique ; seule la route /api/contacto (envoi du formulaire)
-  // est rendue à la demande (voir `export const prerender = false` dans ce fichier).
+  // The site stays static; only the /api/contact route (form submission)
+  // is rendered on demand (see `export const prerender = false` in that file).
   adapter: vercel(),
 
-  // Variables de l'envoi d'e-mails (voir .env.example). Facultatives : sans clé,
-  // le formulaire fonctionne en mode démonstration en développement.
+  integrations: [portugueseRoutes],
+
+  // E-mail sending variables (see .env.example). Optional: without a key,
+  // the form runs in demo mode during development.
   env: {
     schema: {
       RESEND_API_KEY: envField.string({ context: "server", access: "secret", optional: true }),
@@ -21,14 +39,14 @@ export default defineConfig({
     },
   },
 
-  // Barre d'outils de développement désactivée : fixée en bas de l'écran, elle empêchait
-  // le Safari d'iOS 26 de colorer la zone de la barre d'adresse (n'existe pas en production).
+  // Dev toolbar disabled: fixed at the bottom of the screen, it stopped
+  // iOS 26 Safari from tinting the address bar area (it does not exist in production).
   devToolbar: { enabled: false },
 
-  // Prépare ces bibliothèques dès le démarrage du serveur de développement
-  // (évite l'erreur « Outdated Optimize Dep » au premier chargement).
+  // Pre-bundle these libraries when the dev server starts
+  // (avoids the "Outdated Optimize Dep" error on first load).
   vite: {
-    // Autorise l'aperçu via un tunnel Cloudflare (test sur téléphone hors du Wi-Fi)
+    // Allow previews through a Cloudflare tunnel (testing on a phone off Wi-Fi)
     server: { allowedHosts: [".trycloudflare.com"] },
     optimizeDeps: {
       include: ["gsap", "gsap/ScrollTrigger", "gsap/Flip", "lenis"],

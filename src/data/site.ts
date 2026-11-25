@@ -1,5 +1,5 @@
-// Informations reprises de la page Facebook et de la bannière de la banca (octobre 2026).
-// Les points à confirmer avec la Célia sont listés dans TEXTOS.md.
+// Details taken from the Facebook page and the stall banner (October 2026).
+// Points to confirm with Célia are listed in TEXTOS.md.
 
 const phoneDigits = "351913815229";
 
@@ -13,12 +13,12 @@ export const company = {
   instagram: "https://www.instagram.com/_as_delicias_da_celia_/",
   place: "Vale de Figueira",
   city: "Santarém",
-  // Recommandations Facebook (vérifié le 5 octobre 2026)
+  // Facebook recommendations (checked on 5 October 2026)
   rating: { percent: 100, count: 12 },
-  followers: 1.3, // en milliers
+  followers: 1.3, // in thousands
 };
 
-// Liens « /#section » : fonctionnent depuis toutes les pages (défilement doux sur l'accueil)
+// "/#section" links work from every page (smooth scroll on the home page)
 export const nav = [
   { label: "Especialidades", href: "/#especialidades" },
   { label: "Criações", href: "/criacoes" },

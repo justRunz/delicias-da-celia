@@ -10,7 +10,7 @@ import rolls from "../../assets/photos/paezinhos.jpg";
 import chourico from "../../assets/photos/pao-chourico.jpg";
 import cake from "../../assets/photos/bolo-aniversario.jpg";
 
-// shape : format du cadre rectangulaire (portrait, paysage, carré) pour rythmer la frise
+// shape: frame format (portrait, landscape, square) to vary the strip's rhythm
 const photos = [
   { src: table, alt: "Mesa de festa com travessas de salgados e doces", caption: "Mesa de festa", shape: "tall" },
   { src: parabens, alt: "Bolo de «Parabéns» com rosas de açúcar e velas 65", caption: "Bolo de Parabéns", shape: "wide" },
@@ -191,7 +191,7 @@ const photos = [
     transform-origin: left;
   }
 
-  /* Mobile / tablette : simple défilement horizontal au doigt */
+  /* Mobile / tablet: plain horizontal swipe scrolling */
   @media (max-width: 899px) {
     .gallery__pin {
       min-height: 0;

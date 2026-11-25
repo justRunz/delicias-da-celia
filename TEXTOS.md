@@ -27,7 +27,7 @@
 
 ## Preçário (/precario) et Instagram
 
-- Prix recopiés des 4 PDF du Linktree (linktr.ee/Asdeliciasdacelia) : `src/data/precario.ts`. À mettre à jour à chaque nouveau preçário.
+- Prix recopiés des 4 PDF du Linktree (linktr.ee/Asdeliciasdacelia) : `src/data/pricing.json`. À mettre à jour à chaque nouveau preçário.
 - Corrigé « Albarroba » en « Alfarroba » (faute probable du PDF) : à confirmer.
 - Salgados : prix lus comme « par dúzia, petit / normal » : à confirmer.
 - Le preçário de Natal 2026 est annoncé « brevemente » : l'ajouter quand il sort.
