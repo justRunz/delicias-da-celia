@@ -15,16 +15,19 @@ import { execFileSync } from "node:child_process";
 import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 
 const URL = process.env.DEMO_URL ?? "https://asdelicias-dacelia.com/";
-const SCROLL_SECONDS = Number(process.env.DEMO_SECONDS ?? 20);
+const SCROLL_SECONDS = Number(process.env.DEMO_SECONDS ?? 15);
 const HOLD_START = 2; // seconds on the hero before scrolling
 const HOLD_END = 2; // seconds at the bottom
 const size = { width: 1440, height: 900 };
 const SCALE = 2; // device pixel ratio of the capture
-const OUTPUT_WIDTH = 1920; // keeps the MP4 under GitHub's 10 MB upload limit
+const OUTPUT_WIDTH = 1920;
+// GitHub refuses videos over 10 MB: the encoder spends exactly this budget,
+// so a shorter scroll gets more bits per second and comes out sharper.
+const TARGET_BYTES = 9_300_000;
 const OUT = "docs";
 const TMP = `${OUT}/.recording`;
 
-if (!process.env.DEMO_KEEP) rmSync(TMP, { recursive: true, force: true });
+rmSync(TMP, { recursive: true, force: true });
 mkdirSync(TMP, { recursive: true });
 const browser = await chromium.launch();
 const context = await browser.newContext({ viewport: size, deviceScaleFactor: SCALE });
@@ -99,10 +102,16 @@ const fps = (frames.length / (frames.at(-1).t - first)).toFixed(1);
 console.log(`${frames.length} frames captured (~${fps} fps while scrolling)`);
 
 const ffmpeg = (...args) => execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args], { stdio: "inherit" });
-ffmpeg("-f", "concat", "-safe", "0", "-i", `${TMP}/frames.txt`,
-  "-vf", `fps=60,scale=${OUTPUT_WIDTH}:-2:flags=lanczos`,
-  "-c:v", "libx264", "-crf", "22", "-preset", "veryslow",
-  "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", `${OUT}/demo.mp4`);
+// Two-pass encode at the bitrate that fills TARGET_BYTES (2 % kept for the MP4 container).
+const kbps = Math.floor((TARGET_BYTES * 8 * 0.98) / total / 1000);
+const encode = (pass, out) =>
+  ffmpeg("-f", "concat", "-safe", "0", "-i", `${TMP}/frames.txt`,
+    "-vf", `fps=60,scale=${OUTPUT_WIDTH}:-2:flags=lanczos`,
+    "-c:v", "libx264", "-preset", "veryslow", "-b:v", `${kbps}k`,
+    "-pass", String(pass), "-passlogfile", `${TMP}/x264`,
+    "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-an", ...(pass === 1 ? ["-f", "null"] : []), out);
+encode(1, "/dev/null");
+encode(2, `${OUT}/demo.mp4`);
 console.log(`✓ ${OUT}/demo.mp4`);
 
 if (process.argv.includes("--gif")) {
