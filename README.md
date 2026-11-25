@@ -13,6 +13,16 @@ Birthday cakes, cake design, traditional sweets, savoury bites and catering.
 ![Vercel](https://img.shields.io/badge/Hosted%20on-Vercel-000?logo=vercel&logoColor=white)
 ![Cloudflare](https://img.shields.io/badge/Email-Cloudflare-F38020?logo=cloudflare&logoColor=white)
 
+<br><br>
+
+<img src="docs/home-desktop.jpg" alt="Home page on desktop" width="100%">
+
+<br><br>
+
+<img src="docs/home-mobile.jpg" alt="Home page on mobile" width="32%">
+&nbsp;&nbsp;
+<img src="docs/gallery-mobile.jpg" alt="Gallery of creations on mobile" width="32%">
+
 </div>
 
 ---
@@ -71,6 +81,15 @@ npm run build
 ```
 
 To send real emails, copy `.env.example` to `.env` and fill in the Cloudflare keys. Without them the form works in demo mode and logs the message to the console.
+
+### Recording the demo video
+
+[`scripts/record-demo.mjs`](scripts/record-demo.mjs) drives a headless Chromium with Playwright, scrolls the page at an even pace through Lenis and encodes `docs/demo.mp4` with ffmpeg.
+
+```bash
+npx playwright install chromium   # first time only
+npm run demo                      # add -- --gif for a short GIF as well
+```
 
 ## Where to edit what
 
